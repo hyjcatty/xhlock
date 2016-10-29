@@ -125,12 +125,17 @@ function get_size(){
     }
     console.log("winWidth = "+winWidth);
     console.log("winHeight= "+winHeight);
-    logoHeight=parseInt(winHeight/5);
-    headHeight=parseInt(winHeight/5);
+    var tempheight = winHeight;
+    if(winHeight>winWidth) tempheight = winWidth;
+    logoHeight=parseInt(tempheight/5);
+    headHeight=parseInt(tempheight/5);
     $("#logo").css("height",logoHeight);
     $("#webhead").css("height",logoHeight);
     $("body").css("height",winHeight);
     var module_height = parseInt((winHeight-180)/2)-64;
     $("#kuang").css("margin-top",module_height);
+    if(winHeight>winWidth){
+        $("#webhead").css("margin-top",logoHeight);
+    }
 
 }

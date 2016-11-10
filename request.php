@@ -2298,6 +2298,302 @@ case "CameraHAdj":
                     );
         $jsonencode = _encode($retval);
         echo $jsonencode; break;
+    case "UserKey":
+        $usr = $_GET["userid"];
+        $usr_keylist = array();
+        $temp = array(
+            'id'=>"xxx1",
+        	'name'=>"0440",
+        	'domain'=>"区域2"
+        );
+        array_push($usr_keylist,$temp);
+        $temp = array(
+            'id'=>"xxx2",
+            'name'=>"0440",
+            'domain'=>"区域2"
+        );
+        array_push($usr_keylist,$temp);
+        $temp = array(
+            'id'=>"xxx1",
+            'name'=>"0440",
+            'domain'=>"区域3"
+        );
+        array_push($usr_keylist,$temp);
+        $retval=array(
+            'status'=>'true',
+            'ret'=>$usr_keylist
+        );
+        $jsonencode = _encode($retval);
+        echo $jsonencode; break;
+    case "ProjKeyList":
+        $proj_keylist = array();
+        for($i=0;$i<40;$i++){
+            $projcode = ($i)%14;
+            $temp = array(
+                'id'=> (string)($i+1),
+                'name'=> "钥匙".(string)($i+1),
+                'ProjCode'=> $projcode,
+                'username'=>"巡检员".(string)($i+1)
+            );
+            array_push($proj_keylist,$temp);
+        }
+        $retval=array(
+            'status'=>'true',
+            'ret'=> $proj_keylist
+        );
+
+
+        $jsonencode = _encode($retval);
+        echo $jsonencode; break;
+    case "ProjKey":
+        $projcode = $_GET["ProjCode"];
+        $proj_keylist = array();
+
+
+        $proj_keylist = array();
+        $temp = array(
+            'id'=>"0440",
+            'name'=>"0440",
+            'username'=>"巡检员1"
+        );
+        array_push($proj_keylist,$temp);
+        $temp = array(
+            'id'=>"04433",
+            'name'=>"04433",
+            'username'=>"巡检员2"
+        );
+        array_push($proj_keylist,$temp);
+        $temp = array(
+            'id'=>"0xh0",
+            'name'=>"0xh0",
+            'username'=>"未授予"
+        );
+        array_push($proj_keylist,$temp);
+        $retval=array(
+            'status'=>'true',
+            'ret'=>$proj_keylist
+        );
+        $jsonencode = _encode($retval);
+        echo $jsonencode; break;
+	case "ProjUserList":
+        $proj_userlist = array();
+        for($i=0;$i<40;$i++){
+            $projcode = ($i)%14;
+            $temp = array(
+                'id'=> (string)($i+1),
+                'name'=> "巡检员".(string)($i+1),
+                'ProjCode'=> $projcode
+            );
+            array_push($proj_userlist,$temp);
+        }
+        $retval=array(
+            'status'=>'true',
+            'ret'=> $proj_userlist
+        );
+
+
+        $jsonencode = _encode($retval);
+        echo $jsonencode; break;
+    case "KeyTable":
+        $total = 94;
+        $query_length = (int)($_GET['length']);
+        $start = (int)($_GET['startseq']);
+        if($query_length> $total-$start){$query_length = $total-$start;}
+        $keytable = array();
+        for($i=0;$i<$query_length;$i++){
+            $type="R";
+            if(($i%7)==0) $type= "B";
+            if(($i%5)==0) $type= "P";
+            if(($i%11)==0) $type= "I";
+    		$temp = array(
+    			'KeyCode'=>(string)($start+($i+1)),
+    			'KeyName'=>"key".(string)($start+($i+1)),
+    			'KeyType'=>$type,
+    			'HardwareCode'=>"xdsdsd",
+    			'KeyProj'=>(string)($start%5),
+    			'KeyProjName'=>"区域".(string)($start+$i),
+				'KeyUser'=>"user",
+    			'KeyUserName'=>"user",
+    			'Memo'=>"备注".(string)($start+$i)
+    		);
+    		array_push($keytable,$temp);
+        }
+    	$retval=array(
+    		'status'=>'true',
+    		'start'=> (string)$start,
+    		'total'=> (string)$total,
+    		'length'=>(string)$query_length,
+    		'ret'=> $keytable
+    	);
+    	$jsonencode = _encode($retval);
+    	echo $jsonencode; break;
+    case "KeyNew":
+    /*var map={
+        action:"KeyNew",
+        KeyCode: key.KeyCode,
+        KeyName:key.KeyName,
+		KeyProj:key.KeyProj,
+        KeyType:key.KeyType,
+        HardwareCode:key.HardwareCode,
+        Memo:key.Memo,
+        user:usr.id
+    };*/
+    	$retval=array(
+    		'status'=>'true',
+    		'msg'=>''
+    	);
+        $jsonencode = _encode($retval);
+    	echo $jsonencode; break;
+    case "KeyDel":
+            /*var map={
+                    action:"KeyDel",
+                    'id'=>KeyId
+                    'user'=>userid
+                };*/
+    	$retval=array(
+    		'status'=>'true',
+    		'msg'=>''
+    	);
+        $jsonencode = _encode($retval);
+    	echo $jsonencode; break;
+    case "DomainAuthlist":
+    /*action:DomainAuthlist
+      DomainCode:0
+    */
+        $DomainCode=$_GET['DomainCode'];
+        $authlist = array();
+        for($i=0;$i<5;$i++){
+                    $temp = array(
+                        'AuthId'=>(string)($i),
+                        'DomainId'=>"区域".(string)($i),
+                        'DomainName'=>"区域".(string)($i),
+                        'KeyId'=>"钥匙".(string)($i),
+                        'KeyName'=>"钥匙".(string)($i),
+                        'UserId'=>"用户".(string)($i),
+                        'UserName'=>"用户".(string)($i),
+                        'AuthWay'=>"sssssss"
+                    );
+                    array_push($authlist,$temp);
+        }
+        $retval=array(
+                    'status'=>'true',
+                    'ret'=>$authlist
+                );
+                $jsonencode = _encode($retval);
+                echo $jsonencode; break;
+    case "KeyAuthlist":
+        $keyid=$_GET['KeyId'];
+        $authlist = array();
+        for($i=0;$i<5;$i++){
+            		$temp = array(
+                        'AuthId'=>(string)($i),
+                        'DomainId'=>"区域".(string)($i),
+                        'DomainName'=>"区域".(string)($i),
+                        'KeyId'=>"钥匙".(string)($i),
+                        'KeyName'=>"钥匙".(string)($i),
+                        'UserId'=>"用户".(string)($i),
+                        'UserName'=>"用户".(string)($i),
+                        'AuthWay'=>"sssssss"
+            		);
+            		array_push($authlist,$temp);
+        }
+        $retval=array(
+                    'status'=>'true',
+                    'ret'=>$authlist
+                );
+                $jsonencode = _encode($retval);
+                echo $jsonencode; break;
+    case "KeyGrant":
+            /*action:KeyGrant
+              KeyId:1
+              UserId:none
+              id:1234567*/
+        	$retval=array(
+        		'status'=>'true',
+        		'msg'=>''
+        	);
+            $jsonencode = _encode($retval);
+        	echo $jsonencode; break;
+    case "KeyAuthNew":
+        /*var map={
+                    action:"KeyAuthNew",
+                    'KeyId'=>keyid,
+                    'DomainId'=>StatCode,
+                    'AuthWay'=>"always",
+					user:usr.id
+                };*/
+        $retval=array(
+            'status'=>'true',
+            'msg'=>''
+        );
+        $jsonencode = _encode($retval);
+        echo $jsonencode; break;
+	case "KeyAuthDel":
+        /*var map={
+                    action:"KeyAuthDel",
+                    'AuthId'=>Authid,
+					user:usr.id
+                };*/
+        $retval=array(
+            'status'=>'true',
+            'msg'=>''
+        );
+        $jsonencode = _encode($retval);
+        echo $jsonencode; break;
+    case "KeyHistory":
+/*action:KeyHistory
+  condition[ProjCode]:2
+  condition[Time]:1
+  condition[KeyWord]:asda
+  id:1234567
+    var condition = {
+        ProjCode:Query_project,
+        Time:Query_time,
+        KeyWord:Query_word
+    };
+    var map={
+        action:"KeyHistory",
+        condition:"condition",
+        id:usr.id
+    };
+        var retval={
+            status:"true",
+            ColumnName: column_name,
+            TableData:row_content
+        };*/
+        $usr = $_GET["id"];
+        $condition = $_GET["condition"];
+    $column = 16;
+    $row = 40;
+    $column_name = array();
+    $row_content = array();
+    for( $i=0;$i<$column;$i++){
+        array_push($column_name,"第".(string)($i+1)."列");
+    }
+    for($i=0;$i<$row;$i++){
+        $one_row = array();
+        array_push($one_row,(string)($i+1));
+        array_push($one_row,"备注".(string)($i+1));
+        for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
+
+        //one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+        array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+        //one_row.push("测试");
+        array_push($one_row,"测试");
+        //one_row.push("名称");
+        array_push($one_row,"名称");
+        //one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+        array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+        array_push($row_content,$one_row);
+        //row_content.push(one_row);
+    }
+    $retval=array(
+        'status'=>'true',
+        'ColumnName'=> $column_name,
+        'TableData'=>$row_content
+    );
+    $jsonencode = _encode($retval);
+	echo $jsonencode; break;
 	default:
 	break;
 }

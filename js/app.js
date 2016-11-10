@@ -60,6 +60,7 @@ var project_pg_list=null;
 var user_table=null;
 var user_selected;
 var user_selected_auth;
+var user_selected_key;
 var NewUserAuthDual2;
 var user_module_status;
 
@@ -96,6 +97,7 @@ var point_total=0;
 var point_table=null;
 var point_selected;
 var project_selected_point;
+var project_selected_key;
 var point_module_status;
 
 // device table control
@@ -107,6 +109,19 @@ var device_table=null;
 var device_selected;
 var device_selected_sensor;
 var device_module_status;
+
+
+
+// key table control
+var key_list=null;
+var proj_user_list=null;
+var key_initial = false;
+var key_start=0;
+var key_total=0;
+var key_table=null;
+var key_selected;
+var key_selected_auth;
+var key_module_status;
 
 //warning Control
 var monitor_map_list = null;
@@ -123,6 +138,11 @@ var Monitor_table_total=0;
 //warning Static table Control
 var Monitor_Static_table_initialized = true;
 var  if_static_table_initialize = false;
+//key history table Control
+var Key_History_table_initialized = false;
+var  if_key_history_table_initialize = false;
+//key auth Control
+var Key_auth_initialized = false;
 //alarm Control
 var alarm_type_list = null;
 var alarm_map_initialized = false;
@@ -140,6 +160,11 @@ var if_table_initialize = false;
 var sensor_list=null;
 var select_sensor_devcode=null;
 var select_sensor = null;
+
+//key module control
+var select_key_auth = null;
+
+
 
 //Camera Control
 var camera_unit_h;
@@ -488,6 +513,12 @@ $(document).ready(function() {
         touchcookie();
         user_manager();
     });
+    $("#KeyManage").on('click',function(){
+        CURRENT_URL = "KeyManage";
+        active_menu("KeyManage");
+        touchcookie();
+        key_manage();
+    });
     $("#PGManage").on('click',function(){
         CURRENT_URL = "PGManage";
         active_menu("PGManage");
@@ -688,6 +719,25 @@ $(document).ready(function() {
         active_menu("WEBConf");
         touchcookie();
         WEB_Conf();
+    });
+    $("#KeyManage").on('click',function(){
+        CURRENT_URL = "KeyManage";
+        active_menu("KeyManage");
+        touchcookie();
+        key_manage();
+        //KEY_Manage();
+    });
+    $("#KeyAuth").on('click',function(){
+        CURRENT_URL = "KeyAuth";
+        active_menu("KeyAuth");
+        touchcookie();
+        key_auth();
+    });
+    $("#KeyHistory").on('click',function(){
+        CURRENT_URL = "KeyHistory";
+        active_menu("KeyHistory");
+        touchcookie();
+        key_history();
     });
 
 
@@ -987,7 +1037,6 @@ $(document).ready(function() {
         }
     });
 
-
     $("#DevProjCode_choice").change(function(){
         get_proj_point_option($("#DevProjCode_choice").val(),$("#DevStatCode_choice"),"");
     });
@@ -1142,7 +1191,105 @@ $(document).ready(function() {
             openlock(statcode);
         }
     });
+    $('.keyrow').on('click',function() {
+        var keyid = $(this).attr("id");
+        if(keyid!==undefined&&keyid!=="" ){
+            get_key_auth_list(keyid);
+        }
+    });
 
+
+// key view buttons
+    $("#KeyfreshButton").on('click',function(){
+        touchcookie();
+        clear_key_detail_panel();
+        key_intialize(0);
+    });
+    $("#KeyExportButton").on('click',function(){
+        touchcookie();
+        var condition_user = [];//new Array();
+        var temp ={
+            ConditonName: "UserId",
+            Equal:usr.id,
+            GEQ:"",
+            LEQ:""
+        };
+        condition_user.push(temp);
+        Data_export_Normal("钥匙表导出","keytable",condition_user,[]);//new Array());
+    });
+    $("#KeyNewButton").on('click',function(){
+        touchcookie();
+        show_new_key_module();
+    });
+    $("#KeyDelButton").on('click',function(){
+        touchcookie();
+        if(key_selected === null){
+            show_alarm_module(true,"请选择一把钥匙");
+        }else{
+            modal_middle($('#KeyDelAlarm'));
+            $('#KeyDelAlarm').modal('show');
+        }
+    });
+    $("#KeyModifyButton").on('click',function(){
+        touchcookie();
+        if(key_selected === null){
+            show_alarm_module(true,"请选择一把钥匙");
+        }else{
+            show_mod_key_module(key_selected);
+        }
+    });
+    $("#delKeyCommit").on('click',function(){
+        //发送请求并且告知成功失败
+        //刷新表格
+        del_key(key_selected.KeyID);
+        touchcookie();
+    });
+    $("#newKeyCommit").on('click',function(){
+        //检查输入项目
+        //发送请求
+        //刷新表格
+        if(key_module_status){
+            submit_new_key_module();
+            touchcookie();
+        }else{
+            submit_mod_key_module();
+            touchcookie();
+        }
+    });
+    $("#KeyHistoryTableFlash").on('click',function(){
+        query_open_lock_history();
+
+        touchcookie();
+    });
+	$("#KeyAuthQuery").on('click',function(){
+		get_domain_auth_list($("#KeyAuthPoint_choice").val());
+        touchcookie();
+    });
+	$("#KeyAuthNew").on('click',function(){
+        show_auth_new_module($("#KeyAuthProj_choice").val(),$("#KeyAuthPoint_choice").val(),$("#KeyAuthPoint_choice").find("option:selected").text());
+        touchcookie();
+    });
+	$("#KeyUserChange").on('click',function(){
+		show_key_grant_module($("#KeyUserKey_choice").val(),$("#KeyUserUser_choice").val(),$("#KeyUserKey_choice").find("option:selected").text(),$("#KeyUserUser_choice").find("option:selected").text());
+        touchcookie();
+    });
+	$("#delKeyAuthCommit").on('click',function(){
+		//console.log("click"+$(this).attr("AuthId"));
+		$('#KeyAuthDelAlarm').modal('hide');
+		key_auth_delete($(this).attr("AuthId"));
+        touchcookie();
+    });
+    $("#newKeyAuthCommit").on('click',function(){
+        click_new_key_auch_commit();
+		touchcookie();
+    });
+	$("#NewKeyAuthEndTime_Input").change(function(){
+        $("#NewKeyAuthEndTime_Input").val(check_key_auth_date($(this).val()));
+    });
+	$("#KeyGrantCommit").on('click',function(){
+		$('#KeyGrantAlarm').modal('hide');
+        click_key_grant_commit($(this).attr("KeyId"),$(this).attr("UserId"));
+    });
 
     //alert($(window).height());
     //alert($(window).width());
@@ -1186,6 +1333,12 @@ function pg_manage(){
     write_title("项目组管理","根据您的权限对项目组进行添加/删除/修改等操作");
     $("#PGManageView").css("display","block");
     if(!pg_initial){ pg_intialize(0);}
+}
+function key_manage(){
+    clear_window();
+    write_title("钥匙管理","根据您的权限对项目组进行添加/删除/修改等操作");
+    $("#KeyManageView").css("display","block");
+    if(!key_initial){ key_intialize(0);}
 }
 function proj_manage(){
     clear_window();
@@ -1374,6 +1527,25 @@ function WEB_Conf(){
     write_title("施工中","");
     $("#Undefined").css("display","block");
 }
+/*
+function KEY_Manage(){
+    clear_window();
+    write_title("施工中","");
+    $("#Undefined").css("display","block");
+}*/
+function key_auth(){
+    clear_window();
+    write_title("钥匙授权","");
+    $("#KeyAuthView").css("display","block");
+    key_auth_initialize();
+}
+function key_history(){
+    clear_window();
+    write_title("开锁历史查询","请输入查询条件");
+    $("#KeyHistoryView").css("display","block");
+    key_history_initialize();
+    //query_static_warning();
+}
 
 function clear_window(){
     $("#UserManageView").css("display","none");
@@ -1390,6 +1562,9 @@ function clear_window(){
     $("#WarningHandleView").css("display","none");
     $("#Desktop").css("display","none");
     $("#Undefined").css("display","none");
+    $("#KeyManageView").css("display","none");
+    $("#KeyHistoryView").css("display","none");
+    $("#KeyAuthView").css("display","none");
 }
 
 
@@ -1525,7 +1700,25 @@ function get_user_proj(user){
         }
         user_selected_auth = result.ret;
         //HYJ add for server slow;
-        draw_user_detail_panel();
+        draw_user_detail_proj_table();
+    });
+}
+function get_user_key(user){
+
+    var map={
+        action:"UserKey",
+        userid: user
+    };
+    jQuery.get(request_head, map, function (data) {
+        log(data);
+        var result=JSON.parse(data);
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        user_selected_key = result.ret;
+        //HYJ add for server slow;
+        draw_user_detail_key_table();
     });
 }
 function user_intialize(start) {
@@ -1655,6 +1848,9 @@ function draw_user_table(data){
 
 }
 function Initialize_user_detail(){
+
+    draw_user_detail_panel();
+    get_user_key(user_selected.id);
     get_user_proj(user_selected.id);
     //window.setTimeout(draw_user_detail_panel, wait_time_short);
 }
@@ -1684,6 +1880,7 @@ function clear_user_detail_panel(){
     $("#Label_user_detail").empty();
     $("#Label_user_detail").append(txt);
     $("#Table_user_authed").empty();
+    $("#Table_user_key").empty();
 }
 function draw_user_detail_panel(){
     $("#Label_user_detail").empty();
@@ -1727,6 +1924,10 @@ function draw_user_detail_panel(){
     //user_selected_auth
 
 
+
+
+}
+function draw_user_detail_proj_table(){
     $("#Table_user_authed").empty();
     txt ="<thead> <tr> <th>已关联项目 </th> </tr> </thead> <tbody >";
     for(var i=0;i<user_selected_auth.length;i++){
@@ -1734,7 +1935,21 @@ function draw_user_detail_panel(){
     }
     txt = txt+ "</tbody>";
     $("#Table_user_authed").append(txt);
-
+}
+function draw_user_detail_key_table(){
+    $("#Table_user_key").empty();
+    txt ="<thead> <tr> <th>钥匙名称 </th> <th>归属区域 </th></tr> </thead> <tbody >";
+    for(var i=0;i<user_selected_key.length;i++){
+        txt = txt + "<tr id='"+user_selected_key[i].id+"' class='keyrow'> <td>"+ user_selected_key[i].name+"</td> <td>"+ user_selected_key[i].domain+"</td></tr>";
+    }
+    txt = txt+ "</tbody>";
+    $("#Table_user_key").append(txt);
+    $('.keyrow').on('click',function() {
+        var keyid = $(this).attr("id");
+        if(keyid!==undefined&&keyid!=="" ){
+            get_key_auth_list(keyid);
+        }
+    });
 }
 function show_new_user_module(){
 
@@ -2054,11 +2269,12 @@ function get_pg_proj(pgid){
     });
 }
 function pg_intialize(start) {
+
+    if(project_list === null)get_project_list();
     pg_initial = true;
     pg_table = null;
     get_pg_table(start, table_row * 5);
     clear_pg_detail_panel();
-    get_project_list();
     //window.setTimeout(draw_pg_table_head, wait_time_middle);
 }
 function draw_pg_table_head(){
@@ -2435,6 +2651,425 @@ function submit_mod_pg_module(){
     });
     modify_pg(pg,proj);
 }
+
+/**
+ * Key view function part
+ */
+function get_key_table(start,length){
+    var map={
+        action:"KeyTable",
+        startseq: start,
+        length:length,
+        user:usr.id
+    };
+    jQuery.get(request_head, map, function (data) {
+        log(data);
+        var result=JSON.parse(data);
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        key_table = result.ret;
+
+        key_start = parseInt(result.start);
+        key_total = parseInt(result.total);
+        //HYJ add for server slow
+        draw_key_table_head();
+    });
+}
+function del_key(id){
+    var map={
+        action:"keyDel",
+        id: id,
+        user:usr.id
+    };
+    jQuery.get(request_head, map, function (data) {
+        log(data);
+        var result=JSON.parse(data);
+        var ret = result.status;
+        if(ret == "true"){
+            show_alarm_module(false,"删除成功！");
+            clear_key_detail_panel();
+            key_intialize(0);
+        }else{
+            show_alarm_module(true,"删除失败！"+result.msg);
+        }
+    });
+    $("#KeyDelAlarm").modal('hide');
+
+}
+function new_key(key){
+	    
+    var map={
+        action:"KeyNew",
+        KeyCode: key.KeyCode,
+        KeyName:key.KeyName,
+		KeyProj:key.KeyProj,
+        KeyType:key.KeyType,
+        HardwareCode:key.HardwareCode,
+        Memo:key.Memo,
+        user:usr.id
+    };
+    jQuery.get(request_head, map, function (data) {
+        log(data);
+        var result=JSON.parse(data);
+        var ret = result.status;
+        if(ret == "true"){
+            show_alarm_module(false,"创建成功！");
+            $('#newKeyModal').modal('hide');
+            clear_key_detail_panel();
+            key_intialize(0);
+        }else{
+            show_alarm_module(true,"创建失败！"+result.msg);
+        }
+    });
+}
+function modify_key(key){
+    var map={
+        action:"KeyMod",
+        KeyCode: key.KeyCode,
+        KeyName:key.KeyName,
+		KeyProj:key.KeyProj,
+        KeyType:key.KeyType,
+        HardwareCode:key.HardwareCode,
+        Memo:key.Memo,
+        user:usr.id
+    };
+    jQuery.get(request_head, map, function (data) {
+        log(data);
+        var result=JSON.parse(data);
+        var ret = result.status;
+        if(ret == "true"){
+            show_alarm_module(false,"修改成功！");
+            $('#newKeyModal').modal('hide');
+            clear_key_detail_panel();
+            key_intialize(0);
+        }else{
+            show_alarm_module(true,"修改失败！"+result.msg);
+        }
+    });
+}
+
+
+
+function get_key_auth(keyid){
+    var map={
+        action:"KeyAuthlist",
+        KeyId: keyid
+    };
+    jQuery.get(request_head, map, function (data) {
+        log(data);
+        var result=JSON.parse(data);
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        key_selected_auth = result.ret;
+        //hyj add for server slow.
+		draw_key_detail_auth_table();
+    });
+}
+function key_intialize(start) {
+
+    if(project_list === null)get_project_list();
+    key_initial = true;
+    key_table = null;
+    get_key_table(start, table_row * 5);
+    clear_key_detail_panel();
+}
+function draw_key_table_head(){
+    if(null === key_table)return;
+    var page_number = Math.ceil((key_table.length)/table_row);
+
+    $("#Key_Page_control").empty();
+    var txt = "<li>"+
+        "<a href='#' id='key_page_prev'>Prev</a>"+
+        "</li>";
+    var page_start_number = Math.ceil(key_start/table_row);
+    var i;
+    for(i=0;i<page_number;i++){
+        txt=txt+ "<li>"+
+            "<a href='#' id='key_page_"+i+"'>"+(i+page_start_number+1)+"</a>"+
+            "</li>";
+    }
+    txt=txt+"<li>"+
+        "<a href='#' id='key_page_next'>Next</a>"+
+        "</li>";
+    $("#Key_Page_control").append(txt);
+    table_head="<thead>"+
+        "<tr>"+"<th>编号</th> <th>名称 </th> <th>归口部门 </th> <th>使用人 </th> <th>种类 </th>";
+    table_head=table_head+"</tr></thread>";
+    key_page_click = function(){
+        draw_key_table($(this));
+    };
+    for(i=0;i<page_number;i++){
+        $("#key_page_"+i).on('click',key_page_click);
+    }
+    if(key_start<=0){
+        $("#key_page_prev").css("display","none");
+    }else{
+        $("#key_page_prev").css("display","block");
+        $("#key_page_prev").on('click',function(){
+            var new_start = key_start-(table_row*5);
+            if(new_start<0) new_start =0;
+            key_intialize(new_start);
+        });
+    }
+
+    if((key_start+(table_row*5))>=key_total){
+        $("#key_page_next").css("display","none");
+    }else{
+        $("#key_page_next").css("display","block");
+        $("#key_page_next").on('click',function(){
+            key_intialize(key_start+(table_row*5));
+        });
+    }
+
+    draw_key_table($("#key_page_0"));
+}
+function key_type_transfer(keyType){
+    if(keyType == "R") return "射频卡";
+    if(keyType == "B") return "蓝牙";
+    if(keyType == "U") return "用户名";
+    if(keyType == "I") return "身份证";
+    if(keyType == "W") return "微信号";
+    if(keyType == "P") return "电话号码";
+    return "未知类型";
+
+}
+function draw_key_table(data){
+
+    $("#Table_key").empty();
+    if(null === key_table) return;
+    var sequence = (parseInt(data.html())-1)*table_row-key_start;
+    var txt = table_head;
+    txt = txt +"<tbody>";
+    var i;
+    for(i=0;i<table_row;i++){
+        if((sequence+i)<key_table.length){
+            if(0!==i%2){
+                txt =txt+ "<tr class='success  li_menu' id='key_table_cell"+i+"' KeyCode='"+key_table[sequence+i].KeyCode+"'>";
+            }else{ txt =txt+ "<tr class=' li_menu' id='key_table_cell"+i+"' KeyCode='"+key_table[sequence+i].KeyCode+"'>";}
+            txt = txt +"<td>" + key_table[sequence+i].KeyCode+"</td>"+"<td>" + key_table[sequence+i].KeyName+"</td>"+"<td>" + key_table[sequence+i].KeyProjName+"</td>"+"<td>" + key_table[sequence+i].KeyUserName+"</td>"+"<td>" + key_type_transfer(key_table[sequence+i].KeyType)+"</td>";
+            
+
+            txt = txt +"</tr>";
+        }else{
+            if(0!==i%2){
+                txt =txt+ "<tr class='success' id='key_table_cell"+i+"' KeyCode='null'>";
+            }else{ txt =txt+ "<tr  id='key_table_cell"+i+"' KeyCode='null'>";}
+            txt = txt +"<td>--</td>"+"<td>--</td>"+"<td>--</td>"+"<td>--</td>"+"<td>--</td>";
+            txt = txt +"</tr>";
+        }
+
+    }
+    txt = txt+"</tbody>";
+
+    $("#Table_key").append(txt);
+    key_table_cell_click = function(){
+        if($(this).attr("KeyCode") !="null"){
+            for(var i=0;i<key_table.length;i++){
+                if($(this).attr("KeyCode") == key_table[i].KeyCode){
+                    key_selected =key_table[i];
+                    break;
+                }
+            }
+
+            Initialize_key_detail();
+            touchcookie();
+        }
+    };
+    for(i=0;i<table_row;i++){
+        $("#key_table_cell"+i).on('click',key_table_cell_click);
+    }
+    touchcookie();
+}
+function Initialize_key_detail(){
+
+    draw_key_detail_panel();
+    get_key_auth(key_selected.KeyCode);
+}
+function clear_key_detail_panel(){
+    key_selected = null;
+
+    var txt = "<p></p><p></p>"+
+        "<div class='col-md-6 col-sm-6 col-xs-12 column'>"+
+        "<dl >"+
+        "<dt >钥匙编号：</dt><dd>&nbsp&nbsp&nbsp&nbsp</dd>"+
+        "<dt >钥匙名称：</dt><dd>&nbsp&nbsp&nbsp&nbsp</dd>"+
+        "</dl>"+
+        "</div>"+
+        "<div class='col-md-6 col-sm-6 col-xs-12 column'>"+
+        "<dl >"+
+        "<dt>归口部门：</dt><dd>&nbsp&nbsp&nbsp&nbsp</dd>"+
+        "<dt>使用人：</dt><dd>&nbsp&nbsp&nbsp&nbsp</dd>"+
+        "</dl>"+
+        "</div>"+
+        "<div class='col-md-12 col-sm-12 col-xs-12 column'>"+
+        "<dl >"+
+        "<dt>钥匙种类：</dt><dd>&nbsp&nbsp&nbsp&nbsp</dd>"+
+        "<dt>硬件码：</dt><dd>&nbsp&nbsp&nbsp&nbsp</dd>"+
+        "<dt>备注：</dt><dd>&nbsp&nbsp&nbsp&nbsp</dd>"+
+        "</dl>"+
+        "</div>";
+
+
+    $("#Label_key_detail").empty();
+    $("#Label_key_detail").append(txt);
+    $("#Table_key_auth").empty();
+}
+function draw_key_detail_panel(){
+    $("#Label_key_detail").empty();
+    var txt = "<p></p><p></p>"+
+        "<div class='col-md-6 col-sm-6 col-xs-12 column'>"+
+        "<dl >"+
+        "<dt >钥匙编号：</dt><dd>"+key_selected.KeyCode+"</dd>"+
+        "<dt >钥匙名称：</dt><dd>"+key_selected.KeyName+"</dd>"+
+        "</dl>"+
+        "</div>"+
+        "<div class='col-md-6 col-sm-6 col-xs-12 column'>"+
+        "<dl >"+
+        "<dt>归口部门：</dt><dd>"+key_selected.KeyProjName+"</dd>"+
+        "<dt>使用人：</dt><dd>"+key_selected.KeyUserName+"</dd>"+
+        "</dl>"+
+        "</div>"+
+        "<div class='col-md-12 col-sm-12 col-xs-12 column'>"+
+        "<dl >"+
+        "<dt>钥匙种类：</dt><dd>"+key_type_transfer(key_selected.KeyType)+"</dd>"+
+        "<dt>硬件码：</dt><dd>"+key_selected.HardwareCode+"</dd>"+
+        "<dt>备注：</dt><dd>"+key_selected.Memo+"</dd>"+
+        "</dl>"+
+        "</div>";
+    $("#Label_key_detail").append(txt);
+
+
+
+}
+function draw_key_detail_auth_table(){
+	$("#Table_key_auth").empty();
+	txt ="<thead> <tr> <th>授权设备 </th> <th>授权方式 </th></tr> </thead> <tbody >";
+	for(var i=0;i<key_selected_auth.length;i++){
+		txt = txt + "<tr> <td>"+ key_selected_auth[i].DomainName+"</td> <td>"+ key_selected_auth[i].AuthWay+"</td></tr>";
+	}
+	txt = txt+ "</tbody>";
+    $("#Table_key_auth").append(txt);
+}
+function build_key_module_proj_choice(){
+    if(project_list === null) return;
+    var txt ="";
+    for( i=0;i<project_list.length;i++){
+        txt = txt +"<option value="+project_list[i].id+">"+project_list[i].name+"</option>";
+    }
+    $("#NewKeyProj_choice").append(txt);
+}
+function show_new_key_module(){
+
+    $("#newKeyModalLabel").text("创建新钥匙");
+    build_key_module_proj_choice();
+    key_module_status = true;
+
+    $("#NewKeyName_Input").val("");
+    $("#NewKeyHardwareID_Input").val("");
+    $("#NewKeyMemo_Input").val("");
+    $("#NewKeyName_Input").attr("placeholder","钥匙名称");
+    $("#NewKeyHardwareID_Input").attr("placeholder","硬件码");
+    $("#NewKeyMemo_Input").attr("placeholder","备注");
+
+
+
+
+    modal_middle($('#newKeyModal'));
+
+    $('#newKeyModal').modal('show');
+
+}
+function submit_new_key_module(){
+    var new_KeyCode = "";
+	var new_KeyName = $("#NewKeyName_Input").val();
+	var new_KeyType = $("#NewKeyType_choice").val();
+	var new_KeyProj = $("#NewKeyProj_choice").val();
+    var new_KeyHardwareCode = $("#NewKeyHardwareID_Input").val();
+    var new_KeyMemo = $("#NewKeyMemo_Input").val();
+
+    if(new_KeyName === null || new_KeyName === ""){
+        $("#NewKeyName_Input").attr("placeholder","钥匙名称不能为空");
+        $("#NewKeyName_Input").focus();
+        return;
+    }
+    if(new_KeyHardwareCode === null || new_KeyHardwareCode === ""){
+        $("#NewKeyHardwareID_Input").attr("placeholder","硬件码不能为空");
+        $("#NewKeyHardwareID_Input").focus();
+        return;
+    }
+    
+
+    var key = {
+        KeyCode:new_KeyCode,
+        KeyName:new_KeyName,
+        KeyType:new_KeyType,
+        KeyProj:new_KeyProj,
+        HardwareCode:new_KeyHardwareCode,
+        Memo:new_KeyMemo
+    };
+
+    new_key(key);
+}
+function show_mod_key_module(key){
+    build_key_module_proj_choice();
+    $("#newkeyModalLabel").text("钥匙修改");
+    key_module_status = false;
+
+    $("#NewKeyName_Input").val(key.KeyName);
+    $("#NewKeyHardwareID_Input").val(key.HardwareCode);
+    $("#NewKeyMemo_Input").val(key.Memo);
+    $("#NewKeyName_Input").attr("placeholder","钥匙名称");
+    $("#NewKeyHardwareID_Input").attr("placeholder","硬件码");
+    $("#NewKeyMemo_Input").attr("placeholder","备注");
+    $("#NewKeyType_choice").val(key.KeyType);
+    $("#NewKeyProj_choice").val(key.KeyProj);
+
+    modal_middle($('#newKeyModal'));
+
+    $('#newKeyModal').modal('show');
+}
+function submit_mod_key_module(){
+    var new_KeyCode = key_selected.KeyCode;
+	var new_KeyName = $("#NewKeyName_Input").val();
+	var new_KeyType = $("#NewKeyType_choice").val();
+	var new_KeyProj = $("#NewKeyProj_choice").val();
+    var new_KeyHardwareCode = $("#NewKeyHardwareID_Input").val();
+    var new_KeyMemo = $("#NewKeyMemo_Input").val();
+
+    if(new_KeyName === null || new_KeyName === ""){
+        $("#NewKeyName_Input").attr("placeholder","钥匙名称不能为空");
+        $("#NewKeyName_Input").focus();
+        return;
+    }
+    if(new_KeyHardwareCode === null || new_KeyHardwareCode === ""){
+        $("#NewKeyHardwareID_Input").attr("placeholder","硬件码不能为空");
+        $("#NewKeyHardwareID_Input").focus();
+        return;
+    }
+    
+
+    var key = {
+        KeyCode:new_KeyCode,
+        KeyName:new_KeyName,
+        KeyType:new_KeyType,
+        KeyProj:new_KeyProj,
+        HardwareCode:new_KeyHardwareCode,
+        Memo:new_KeyMemo
+    };
+    modify_key(key);
+}
+
+
+
+
+
+
+
+
 /*
  Project view function part
  */
@@ -2555,7 +3190,25 @@ function get_proj_point(ProjCode){
         }
         project_selected_point = result.ret;
         //HYJ add for server slow;
-        draw_proj_detail_panel();
+
+        draw_proj_detail_point_table();
+    });
+}
+function get_proj_key(ProjCode){
+    var map={
+        action:"ProjKey",
+        ProjCode: ProjCode
+    };
+    jQuery.get(request_head, map, function (data) {
+        log(data);
+        var result=JSON.parse(data);
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        project_selected_key = result.ret;
+        //HYJ add for server slow;
+        draw_proj_detail_key_table();
     });
 }
 function proj_intialize(start) {
@@ -2680,7 +3333,9 @@ function draw_proj_table(data){
 }
 
 function Initialize_proj_detail(){
+    draw_proj_detail_panel();
     get_proj_point(project_selected.ProjCode);
+    get_proj_key(project_selected.ProjCode);
     //window.setTimeout(draw_proj_detail_panel, wait_time_short);
 }
 function clear_proj_detail_panel(){
@@ -2725,6 +3380,7 @@ function clear_proj_detail_panel(){
     $("#Label_proj_detail").empty();
     $("#Label_proj_detail").append(txt);
     $("#Table_proj_point").empty();
+    $("#Table_proj_key").empty();
 }
 function draw_proj_detail_panel(){
     $("#Label_proj_detail").empty();
@@ -2765,7 +3421,8 @@ function draw_proj_detail_panel(){
         "<p></p>"+
         "<label>备注："+project_selected.Stage+"</label>";*/
     $("#Label_proj_detail").append(txt);
-
+}
+function draw_proj_detail_point_table(){
     $("#Table_proj_point").empty();
     txt ="<thead> <tr> <th>站点清单 </th> </tr> </thead> <tbody >";
     for(var i=0;i<project_selected_point.length;i++){
@@ -2773,7 +3430,21 @@ function draw_proj_detail_panel(){
     }
     txt = txt+ "</tbody>";
     $("#Table_proj_point").append(txt);
-
+}
+function draw_proj_detail_key_table(){
+    $("#Table_proj_key").empty();
+    txt ="<thead> <tr> <th>钥匙名称 </th> <th>所有人 </th></tr> </thead> <tbody >";
+    for(var i=0;i<project_selected_key.length;i++){
+        txt = txt + "<tr id='"+project_selected_key[i].id+"' class='keyrow'> <td>"+ project_selected_key[i].name+"</td> <td>"+ project_selected_key[i].username+"</td></tr>";
+    }
+    txt = txt+ "</tbody>";
+    $("#Table_proj_key").append(txt);
+    $('.keyrow').on('click',function() {
+        var keyid = $(this).attr("id");
+        if(keyid!==undefined&&keyid!=="" ){
+            get_key_auth_list(keyid);
+        }
+    });
 }
 function show_new_proj_module(){
 
@@ -2963,7 +3634,6 @@ function get_projdev_version(ProjCode){
             txt = txt +">"+projdev[i].DevCode+projdev[i].ProjName+projdev[i].version+"</option>";
             $("#duallistboxDevUpdate").append(txt);
         }
-        //$("#duallistboxPGProj_new").append(txt);
         $("#duallistboxDevUpdate").bootstrapDualListbox('refresh', true);
 
     });
@@ -4728,6 +5398,109 @@ function query_static_warning(){
 }
 
 
+
+
+//Open Lock History query
+function build_key_history_proj_choice(){
+    if(project_list === null) return;
+    var txt ="";
+    for( i=0;i<project_list.length;i++){
+        txt = txt +"<option value="+project_list[i].id+">"+project_list[i].name+"</option>";
+    }
+    $("#KeyHistoryProj_choice").append(txt);
+}
+function key_history_initialize(){
+    if(Key_History_table_initialized === false){
+        if(project_list === null) {
+            get_project_list();
+            window.setTimeout(build_key_history_proj_choice, wait_time_long);
+        }else{
+            build_key_history_proj_choice();
+        }
+        Key_History_table_initialized = true;
+    }
+
+
+}
+function query_open_lock_history(){
+    if(Key_History_table_initialized !== true) return;
+    var Query_project = $("#KeyHistoryProj_choice").val();
+    var Query_time = $("#KeyHistoryTime_choice").val();
+    var Query_word = $("#KeyHistoryWord_Input").val();
+    var condition = {
+        ProjCode:Query_project,
+        Time:Query_time,
+        KeyWord:Query_word
+    };
+    var map={
+        action:"KeyHistory",
+        condition:condition,
+        id:usr.id
+    };
+    jQuery.get(request_head, map, function (data) {
+        log(data);
+        var result=JSON.parse(data);
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        var Last_update_date=(new Date()).Format("yyyy-MM-dd_hhmmss");
+        $("#KeyHistoryLastFlash").empty();
+        $("#KeyHistoryLastFlash").append("最后刷新时间："+Last_update_date);
+        var ColumnName = result.ColumnName;
+        var TableData = result.TableData;
+        var txt = "<thead> <tr>";
+        var i;
+        for( i=0;i<ColumnName.length;i++){
+            txt = txt +"<th>"+ColumnName[i]+"</th>";
+        }
+        //txt = txt +"<th></th></tr></thead>";
+        txt = txt +"</tr></thead>";
+        txt = txt +"<tbody>";
+        for( i=0;i<TableData.length;i++){
+            txt = txt +"<tr>";
+            //txt = txt +"<td><ul class='pagination'> <li><a href='#' class = 'video_btn' StateCode='"+TableData[i][0]+"' ><em class='glyphicon glyphicon-play ' aria-hidden='true' ></em></a> </li></ul></td>";
+            //txt = txt +"<td><button type='button' class='btn btn-default lock_btn' StateCode='"+TableData[i][0]+"' ><em class='glyphicon glyphicon-lock ' aria-hidden='true' ></em></button></td><td><button type='button' class='btn btn-default video_btn' StateCode='"+TableData[i][0]+"' ><em class='glyphicon glyphicon-play ' aria-hidden='true' ></em></button></td>";
+            //console.log("StateCode="+TableData[i][0]);
+            for(var j=0;j<TableData[i].length;j++){
+                txt = txt +"<td>"+TableData[i][j]+"</td>";
+            }
+            //txt = txt + "<td><button type='button' class='btn btn-default video_btn' StateCode='"+TableData[i][0]+"' >视频</button></td>";
+            txt = txt +"</tr>";
+        }
+        txt = txt+"</tbody>";
+        $("#KeyHistoryQueryTable").empty();
+        $("#KeyHistoryQueryTable").append(txt);
+        if(if_key_history_table_initialize) $("#KeyHistoryQueryTable").DataTable().destroy();
+
+        //console.log(monitor_map_list);
+
+        var show_table  = $("#KeyHistoryQueryTable").DataTable( {
+            //dom: 'T<"clear">lfrtip',
+            "scrollY": false,
+            "scrollCollapse": true,
+
+            "scrollX": true,
+            "searching": false,
+            "autoWidth": true,
+            "lengthChange":false,
+            //bSort: false,
+            //aoColumns: [ { sWidth: "45%" }, { sWidth: "45%" }, { sWidth: "10%", bSearchable: false, bSortable: false } ],
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'excel',
+                    text: '导出到excel',
+                    filename: "HistoryData"+Last_update_date
+                }
+            ]
+
+        } );
+        if_key_history_table_initialize = true;
+
+    });
+}
+
 //Alarm
 function get_alarm_type_list(){
     var map={
@@ -5428,6 +6201,9 @@ function show_sensor_module(){
     $('#SensorModal').modal('show');
 }
 
+
+
+
 function submit_sensor_module(){
     if(null === select_sensor) {
         return;
@@ -5461,7 +6237,43 @@ function submit_sensor_module(){
         }
     });
 }
+function get_key_auth_list(KeyId){
+    var map={
+        action:"KeyAuthlist",
+        KeyId: KeyId
+    };
+    jQuery.get(request_head, map, function (data) {
+        log(data);
+        var result=JSON.parse(data);
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        select_key_auth = result.ret;
+        //hyj add for server slow.
+        show_key_auth_module();
+    });
+}
+function show_key_auth_module(){
+    if(null === select_key_auth) {
+        return;
+    }
+    $("#KeyAuthList").empty();
+    $("#KeyAuthNumber_Input").val(""+select_key_auth.length);
+    if(select_key_auth.length!==0){
+        var txt = "";
+        var i;
+        txt ="<table data-toggle='table' class='table table-hover table-bordered' ' data-click-to-select='false' ><thead> <tr> <th>授权设备 </th> <th>授权方式 </th></tr> </thead> <tbody >";
+        for(i=0;i<select_key_auth.length;i++){
+            txt = txt + "<tr> <td>"+ select_key_auth[i].DomainName+"</td> <td>"+ select_key_auth[i].AuthWay+"</td></tr>";
+        }
+        txt = txt+ "</tbody></table>";
+        $("#KeyAuthList").append(txt);
+    }
+    modal_middle($('#KeyModal'));
 
+    $('#KeyModal').modal('show');
+}
 function get_user_message(){
     var map = {
         action: "GetUserMsg",
@@ -5687,5 +6499,260 @@ function openlock(statcode){
         }else{
             show_alarm_module(true,"开锁请求失败，请重新登录！"+result.msg);
         }
+    });
+}
+//Key auth view
+function get_proj_key_list(){
+    var map={
+        action:"ProjKeyList"
+    };
+    jQuery.get(request_head, map, function (data) {
+        log(data);
+        var result=JSON.parse(data);
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        key_list = result.ret;
+
+    });
+}
+function get_proj_user_list(){
+    var map={
+        action:"ProjUserList"
+    };
+    jQuery.get(request_head, map, function (data) {
+        log(data);
+        var result=JSON.parse(data);
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        proj_user_list = result.ret;
+
+    });
+}
+function build_key_auth_proj_choice(){
+    if(project_list === null) return;
+    var txt ="";
+    for( i=0;i<project_list.length;i++){
+        txt = txt +"<option value="+project_list[i].id+">"+project_list[i].name+"</option>";
+    }
+    $("#KeyAuthProj_choice").append(txt);
+    $("#KeyUserProj_choice").append(txt);
+	update_key_auth_proj_stat_choice($("#KeyAuthProj_choice").val(),$("#KeyAuthProj_choice").find("option:selected").text());
+	update_key_auth_proj_key_choice($("#KeyUserProj_choice").val());
+	update_key_auth_proj_user_choice($("#KeyUserProj_choice").val());
+    $("#KeyAuthProj_choice").change(function(){
+        update_key_auth_proj_stat_choice($(this).val(),$(this).find("option:selected").text());
+    });
+    $("#KeyUserProj_choice").change(function(){
+        update_key_auth_proj_key_choice($(this).val());
+    });
+}
+function update_key_auth_proj_stat_choice(projcode,projname){
+	$("#KeyAuthPoint_choice").empty();
+    var txt = "";
+    for( i=0;i<point_list.length;i++){
+		if(point_list[i].ProjCode == projcode){
+        txt = txt +"<option value="+point_list[i].id+">"+point_list[i].name+"</option>";}
+    }
+	txt = "<option value="+projcode+">"+projname+":全区域</option>"+txt;
+
+	$("#KeyAuthPoint_choice").append(txt);
+}
+function update_key_auth_proj_key_choice(projcode){
+	$("#KeyUserKey_choice").empty();
+    var txt = "";
+    for( i=0;i<key_list.length;i++){
+		if(key_list[i].ProjCode == projcode){
+        txt = txt +"<option value="+key_list[i].id+">"+key_list[i].name+":"+key_list[i].username+"</option>";}
+    }
+	$("#KeyUserKey_choice").append(txt);
+}
+function update_new_key_auth_key_choice(projcode){
+	$("#NewKeyAuthKey_choice").empty();
+    var txt = "";
+    for( i=0;i<key_list.length;i++){
+		if(key_list[i].ProjCode == projcode){
+        txt = txt +"<option value="+key_list[i].id+">"+key_list[i].name+":"+key_list[i].username+"</option>";}
+    }
+	$("#NewKeyAuthKey_choice").append(txt);
+}
+function update_key_auth_proj_user_choice(projcode){
+	$("#KeyUserUser_choice").empty();
+    var txt = "";
+    for( i=0;i<proj_user_list.length;i++){
+		if(proj_user_list[i].ProjCode == projcode){
+        txt = txt +"<option value="+proj_user_list[i].id+">"+proj_user_list[i].name+"</option>";}
+    }
+	txt = "<option value='none'>部门收管</option>"+txt;
+
+	$("#KeyUserUser_choice").append(txt);
+}
+
+function key_auth_initialize(){
+    if(Key_auth_initialized === false){
+        if(project_list === null||point_list === null||key_list === null||proj_user_list === null) {
+            get_project_list();
+            get_proj_point_list();
+
+            get_proj_key_list();
+			get_proj_user_list();
+            window.setTimeout(build_key_auth_proj_choice, wait_time_middle);
+        }else{
+            build_key_auth_proj_choice();
+        }
+        Key_auth_initialized = true;
+
+    }
+}
+
+function get_domain_auth_list(DomainCode){
+	if(DomainCode === "") return;
+    var map={
+        action:"DomainAuthlist",
+        DomainCode:DomainCode
+    };
+    jQuery.get(request_head, map, function (data) {
+        log(data);
+        var result=JSON.parse(data);
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        var domain_auth_list = result.ret;
+        var txt = "<thead><tr><th></th><th>编号</th><th>钥匙</th><th>用户</th><th>授权条件</th></tr></thead><tbody>";
+        $("#Table_point_key_auth").empty();
+        for(var i=0;i<domain_auth_list.length;i++){
+            txt= txt+"<tr> <td><button type='button' class='btn btn-default Auth_del_btn' AuthId='"+domain_auth_list[i].AuthId+"' ><em class='glyphicon glyphicon-trash ' aria-hidden='true' ></em></button></td>";
+            txt = txt +"<td>"+domain_auth_list[i].AuthId+"</td><td>"+domain_auth_list[i].KeyName+"</td><td>"+domain_auth_list[i].UserName+"</td><td>"+domain_auth_list[i].AuthWay+"</td></tr>";
+        }
+        txt = txt+"</tbody>";
+        $("#Table_point_key_auth").append(txt);
+
+		$(".Auth_del_btn").on('click',function(){
+			touchcookie();
+			show_auth_delete_module($(this).attr("AuthId"));
+		});
+
+    });
+}
+
+function show_auth_delete_module(authid){
+	$("#delKeyAuthCommit").attr("AuthId",authid);
+	$("#KeyAuthDelAlertModalLabel").text("确认删除 授权"+authid);
+    modal_middle($('#KeyAuthDelAlarm'));
+
+    $('#KeyAuthDelAlarm').modal('show');
+}
+
+function key_auth_delete(authid){
+	if(authid==="")return;
+	var map={
+        action:"KeyAuthDel",
+        AuthId:authid,
+		id: usr.id
+    };
+    jQuery.get(request_head, map, function (data) {
+        log(data);
+        var result=JSON.parse(data);
+		var ret = result.status;
+        if(ret == "true"){
+            show_alarm_module(false,"删除成功！");
+			get_domain_auth_list($("#KeyAuthPoint_choice").val());
+        }else{
+            show_alarm_module(true,"修改失败！"+result.msg);
+        }
+        
+
+    });
+}
+function show_auth_new_module(projcode,domainid,domainname){
+	$("#newKeyAuthCommit").attr("DomainId",domainid);
+	$("#NewKeyAuthDomain_Input").val(domainname);
+	update_new_key_auth_key_choice(projcode);
+	$("NewKeyAuthEndTime_Input").val("");
+
+    modal_middle($('#newKeyAuthModal'));
+
+    $('#newKeyAuthModal').modal('show');
+}
+function new_key_auth(auth){
+    var map={
+        action:"KeyAuthNew",
+        Auth:auth,
+        id: usr.id
+    };
+    jQuery.get(request_head, map, function (data) {
+        log(data);
+        var result=JSON.parse(data);
+        var ret = result.status;
+        if(ret == "true"){
+            show_alarm_module(false,"新建成功！");
+            get_domain_auth_list($("#KeyAuthPoint_choice").val());
+        }else{
+            show_alarm_module(true,"新建失败！"+result.msg);
+        }
+
+    });
+}
+function click_new_key_auch_commit(){
+    var DomainId= $("#newKeyAuthCommit").attr("DomainId");
+    var KeyId=$("#NewKeyAuthKey_choice").val();
+    var authway = $("#NewKeyAuthKey_choice").val();
+    if(authway === "") authway = "always";
+    var map = {
+        DomainId: DomainId,
+        KeyId:KeyId,
+        Authway:authway
+    };
+    $('#newKeyAuthModal').modal('hide');
+    new_key_auth(map);
+}
+function check_key_auth_date(date){
+    if(date ==="" )return date;
+    else{
+        var d = new Date(date.replace(/-/g,"/"));
+		if(d.getdate == "Invalid Date"){
+			return "";
+		}
+		var today = new Date();
+		if(d.getTime()<today.getTime()){
+			return "";
+		}
+		return d.Format("yyyy-MM-dd");
+    }
+}
+function show_key_grant_module(keyid,userid,oldname,newname){
+	$("#KeyGrantCommit").attr("KeyId",keyid);
+	$("#KeyGrantCommit").attr("UserId",userid);
+	$("#KeyGrantAlertModalLabel").empty();
+    $("#KeyGrantAlertModalLabel").append("确定转移 "+oldname+"->"+newname);
+
+    modal_middle($('#KeyGrantAlarm'));
+
+    $('#KeyGrantAlarm').modal('show');
+}
+function click_key_grant_commit(keyid,userid){
+	var map={
+        action:"KeyGrant",
+        KeyId:keyid,
+		UserId:userid,
+        id: usr.id
+    };
+    jQuery.get(request_head, map, function (data) {
+        log(data);
+        var result=JSON.parse(data);
+        var ret = result.status;
+        if(ret == "true"){
+            show_alarm_module(false,"变更成功！");
+            get_domain_auth_list($("#KeyAuthPoint_choice").val());
+			get_proj_key_list();
+            window.setTimeout(build_key_auth_proj_choice, wait_time_middle);
+        }else{
+            show_alarm_module(true,"变更失败！"+result.msg);
+        }
+
     });
 }

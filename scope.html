@@ -73,12 +73,19 @@
                                         <li><a href="#" id="InstControl">数据管理</a></li>
                                     </ul>
                                 </li>
-                                <li><a><i class="fa fa-edit"></i> 项目管理 <span class="fa fa-chevron-down"></span></a>
+                                <li><a><i class="fa fa-edit"></i> 区域管理 <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        <li><a href="#" id="PGManage">项目组信息</a></li>
-                                        <li><a href="#" id="ProjManage">项目信息</a></li>
+                                        <li><a href="#" id="PGManage">大区信息</a></li>
+                                        <li><a href="#" id="ProjManage">区域信息</a></li>
                                         <li><a href="#" id="MPManage">站点信息</a></li>
                                         <li><a href="#" id="DevManage">设备信息</a></li>
+                                    </ul>
+                                </li>
+                                <li><a><i class="fa fa-key"></i> 钥匙管理 <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="#" id="KeyManage">钥匙信息</a></li>
+                                        <li><a href="#" id="KeyAuth">钥匙授权</a></li>
+                                        <li><a href="#" id="KeyHistory">开锁历史</a></li>
                                     </ul>
                                 </li>
                                 <li><a><i class="fa fa-bar-chart-o"></i> 监控管理 <span class="fa fa-chevron-down"></span></a>
@@ -481,7 +488,7 @@
                                                         </div>
 
                                                         <!--div style="max-height: 210px;overflow:scroll;overflow-x:hidden"-->
-                                                        <div class="col-md-6 col-sm-12 col-xs-12 column">
+                                                        <div class="col-md-3 col-sm-12 col-xs-12 column">
                                                             <table data-toggle="table" class="table table-hover table-bordered" id="Table_user_authed" data-click-to-select="false" >
                                                                 <thead>
                                                                 <tr>
@@ -512,6 +519,63 @@
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
+                                                                    <td>
+                                                                        PM2.5-4
+                                                                    </td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                        <div class="col-md-3 col-sm-12 col-xs-12 column">
+                                                            <table data-toggle="table" class="table table-hover table-bordered" id="Table_user_key" data-click-to-select="false" >
+                                                                <thead>
+                                                                <tr>
+                                                                    <th>
+                                                                        用户钥匙
+                                                                    </th>
+
+                                                                    <th>
+                                                                        隶属项目
+                                                                    </th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody >
+                                                                <tr>
+                                                                    <td>
+                                                                    水文观测1
+                                                                </td>
+                                                                    <td>
+                                                                        水文观测1
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        PM2.5-1
+                                                                    </td>
+                                                                    <td>
+                                                                        PM2.5-1
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        PM2.5-2
+                                                                    </td>
+                                                                    <td>
+                                                                        PM2.5-2
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        PM2.5-3
+                                                                    </td>
+                                                                    <td>
+                                                                        PM2.5-3
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        PM2.5-4
+                                                                    </td>
                                                                     <td>
                                                                         PM2.5-4
                                                                     </td>
@@ -1020,9 +1084,66 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-md-6 col-sm-12 col-xs-12 column">
+                                                        <div class="col-md-3 col-sm-12 col-xs-12 column">
                                                             <table data-toggle="table" class="table table-hover table-bordered" id="Table_proj_point" data-click-to-select="false" >
 
+                                                            </table>
+                                                        </div>
+                                                        <div class="col-md-3 col-sm-12 col-xs-12 column">
+                                                            <table data-toggle="table" class="table table-hover table-bordered" id="Table_proj_key" data-click-to-select="false" >
+                                                                <thead>
+                                                                <tr>
+                                                                    <th>
+                                                                        用户钥匙
+                                                                    </th>
+
+                                                                    <th>
+                                                                        隶属项目
+                                                                    </th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody >
+                                                                <tr>
+                                                                    <td>
+                                                                        水文观测1
+                                                                    </td>
+                                                                    <td>
+                                                                        水文观测1
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        PM2.5-1
+                                                                    </td>
+                                                                    <td>
+                                                                        PM2.5-1
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        PM2.5-2
+                                                                    </td>
+                                                                    <td>
+                                                                        PM2.5-2
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        PM2.5-3
+                                                                    </td>
+                                                                    <td>
+                                                                        PM2.5-3
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        PM2.5-4
+                                                                    </td>
+                                                                    <td>
+                                                                        PM2.5-4
+                                                                    </td>
+                                                                </tr>
+                                                                </tbody>
                                                             </table>
                                                         </div>
                                                         <!--/div-->
@@ -1965,6 +2086,205 @@
                                             </div>
 
                                         </div>
+                                        <div class="row clearfix" id="KeyHistoryView">
+                                            <div class="col-md-12 column">
+                                                <div class="col-md-4 col-sm-6 col-xs-12">
+                                                    <div class="input-group" >
+                                                        <span class="input-group-addon" id="KeyHistoryProj" style="min-width: 100px">查询区域</span>
+                                                        <select class="form-control" placeholder="归属区域" aria-describedby="basic-addon1" id="KeyHistoryProj_choice">
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-sm-6 col-xs-12">
+                                                    <div class="input-group" >
+                                                        <span class="input-group-addon" id="KeyHistoryTime" style="min-width: 100px">查询周期</span>
+                                                        <select class="form-control" placeholder="钥匙种类" aria-describedby="basic-addon1" id="KeyHistoryTime_choice">
+                                                            <option value="1">今日</option>
+                                                            <option value="7">近7天</option>
+                                                            <option value="30">近30天</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-sm-6 col-xs-12">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon" id="KeyHistoryWord" style="min-width: 100px">关键字</span>
+                                                        <input type="text" class="form-control" placeholder="查询关键字" aria-describedby="basic-addon1" id="KeyHistoryWord_Input"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 column">
+                                                <div class="col-md-12 column">
+                                                <button type="button" class="btn btn-primary" id="KeyHistoryTableFlash">查询</button>
+                                                <label  style="min-width: 20px"></label>
+                                                <label  style="min-width: 20px" id="KeyHistoryLastFlash"></label>
+                                                    </div>
+                                            </div>
+                                            <div class="col-md-12 column" id="KeyHistoryQueryResult" style="overflow:scroll;overflow-y:hidden;overflow-x:hidden">
+                                                <p></p>
+                                                <table id="KeyHistoryQueryTable" class="display" cellspacing="0" width="100%"  style="white-space: nowrap;">
+                                                </table>
+                                            </div>
+
+                                        </div>
+                                        <div class="row clearfix" id="KeyAuthView">
+                                            <div class="col-md-12 column">
+                                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                                    <div class="input-group" >
+                                                        <span class="input-group-addon" id="KeyAuthProj" style="min-width: 100px">区域</span>
+                                                        <select class="form-control" placeholder="归属区域" aria-describedby="basic-addon1" id="KeyAuthProj_choice">
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                                    <div class="input-group" >
+                                                        <span class="input-group-addon" id="KeyAuthPoint" style="min-width: 100px">站点</span>
+                                                        <select class="form-control" placeholder="站点列表" aria-describedby="basic-addon1" id="KeyAuthPoint_choice">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                                        <button type="button" class="btn btn-primary" id="KeyAuthQuery">查询授权</button>
+														<label  style="min-width: 20px"></label>
+                                                        <button type="button" class="btn btn-primary" id="KeyAuthNew">新建授权</button>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 column">
+                                                <div class="col-md-12 column">
+                                                    <div class="row clearfix">
+                                                        <table data-toggle="table" class="table table-hover" id="Table_point_key_auth" data-click-to-select="true">
+                                                            <thead>
+                                                            <tr>
+                                                                <th>
+                                                                </th>
+                                                                <th>
+                                                                    编号
+                                                                </th>
+                                                                <th>
+                                                                    钥匙
+                                                                </th>
+                                                                <th>
+                                                                    用户
+                                                                </th>
+                                                                <th>
+                                                                    授权条件
+                                                                </th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <HR class="HR-map" SIZE=3/>
+                                            <p></p>
+                                            <div class="col-md-12 column">
+                                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                                    <div class="input-group" >
+                                                        <span class="input-group-addon" id="KeyUserProj" style="min-width: 100px">区域</span>
+                                                        <select class="form-control" placeholder="归属区域" aria-describedby="basic-addon1" id="KeyUserProj_choice">
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                                    <div class="input-group" >
+                                                        <span class="input-group-addon" id="KeyUserKey" style="min-width: 100px">钥匙</span>
+                                                        <select class="form-control" placeholder="钥匙列表" aria-describedby="basic-addon1" id="KeyUserKey_choice">
+                                                        </select>
+                                                    </div>
+                                                </div>
+												<div class="col-md-4 col-sm-4 col-xs-12">
+                                                    <div class="input-group" >
+                                                        <span class="input-group-addon" id="KeyUserUser" style="min-width: 100px">变更用户</span>
+                                                        <select class="form-control" placeholder="用户列表" aria-describedby="basic-addon1" id="KeyUserUser_choice">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                                    <button type="button" class="btn btn-primary" id="KeyUserChange">变更使用人</button>
+                                                </div>
+                                            </div>
+                                            <div class="modal fade" id="newKeyAuthModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                            <h4 class="modal-title" id="newKeyAuthModalLabel">创建新授权</h4>
+                                                        </div>
+                                                        <div class="modal-body" style="min-height:520px">
+                                                            <div class="col-md-6">
+                                                                <div class="input-group">
+                                                                    <span class="input-group-addon" id="NewKeyAuthDomain" style="min-width: 100px">授权对象</span>
+                                                                    <input type="text" class="form-control" placeholder="授权对象" aria-describedby="basic-addon1" id="NewKeyAuthDomain_Input"/>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="input-group" >
+                                                                    <span class="input-group-addon" id="NewKeyAuthKey" style="min-width: 100px">选择钥匙</span>
+                                                                    <select class="form-control" placeholder="选择钥匙" aria-describedby="basic-addon1" id="NewKeyAuthKey_choice">
+
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <p></p>
+                                                                <div class="form-group " style="height:29px">
+                                                                    <div class="input-group date form_date col-md-5" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                                                                        <div class="input-group">
+                                                                            <div class="input-group-addon" style="min-width: 100px">授权截止</div>
+                                                                            <input class="form-control" size="16" type="text" value=""  placeholder="留空表示永久有效" id="NewKeyAuthEndTime_Input" style="min-width: 116px">
+                                                                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                                                        </div></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">放弃</button>
+                                                            <button type="button" class="btn btn-primary" id="newKeyAuthCommit" DomainId="">确认</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="modal fade" id="KeyAuthDelAlarm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                            <h4 class="modal-title" id="KeyAuthDelAlertModalLabel">确认删除</h4>
+                                                        </div>
+                                                        <div class="modal-body" >
+                                                            <strong>警告！</strong>您确定要删除此授权么？
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">放弃</button>
+                                                            <button type="button" class="btn btn-primary" id="delKeyAuthCommit" AuthId="">确认</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+											<div class="modal fade" id="KeyGrantAlarm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                            <h4 class="modal-title" id="KeyGrantAlertModalLabel">确认转移</h4>
+                                                        </div>
+                                                        <div class="modal-body" >
+                                                            <strong>警告！</strong>您确定要变更钥匙所有权么
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">放弃</button>
+                                                            <button type="button" class="btn btn-primary" id="KeyGrantCommit" KeyId="" UserId="">确认</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="row clearfix" id="WarningCheckView" >
                                             <div class="col-md-12 col-sm-12 col-xs-12 column" >
                                                 <div id="WCMonitorViewMap" class="baidu-maps-mini"></div>
@@ -2065,6 +2385,319 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="row clearfix" id="KeyManageView" >
+                                        <div class="col-md-6 col-sm-6 col-xs-6 column" id="KeyRightWindow1">
+                                            <ul class="pagination" id="Key_Page_control">
+                                                <li>
+                                                    <a href="#">Prev</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">1</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">2</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">3</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">4</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">5</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">Next</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-6 col-sm-6 col-xs-6" id="KeyRightWindow2">
+                                            <ul class="pagination pull-right" id="Key-item-modify">
+                                                <li>
+                                                    <a href="#" id="KeyfreshButton" data-toggle="modal"><em class="glyphicon glyphicon-refresh" aria-hidden="true"></em></a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" id="KeyNewButton" data-toggle="modal"><em class="glyphicon glyphicon-plus" aria-hidden="true"></em></a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" id="KeyDelButton" data-toggle="modal"><em class="glyphicon glyphicon-trash" aria-hidden="true"></em></a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" id="KeyModifyButton" data-toggle="modal"><em class="glyphicon glyphicon-pencil" aria-hidden="true"></em></a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" id="KeyExportButton"><em class="glyphicon glyphicon-print" aria-hidden="true"></em></a>
+                                                </li>
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="newKeyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                <h4 class="modal-title" id="newKeyModalLabel">创建新钥匙</h4>
+                                                            </div>
+                                                            <div class="modal-body" style="min-height:520px">
+                                                                <div class="col-md-6">
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-addon" id="NewKeyName" style="min-width: 100px">钥匙名</span>
+                                                                        <input type="text" class="form-control" placeholder="用户名" aria-describedby="basic-addon1" id="NewKeyName_Input"/>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="input-group" >
+                                                                        <span class="input-group-addon" id="NewKeyProj" style="min-width: 100px">归属区域</span>
+                                                                        <select class="form-control" placeholder="归属区域" aria-describedby="basic-addon1" id="NewKeyProj_choice">
+
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-12">
+                                                                    <p></p>
+                                                                    <div class="input-group" >
+                                                                        <span class="input-group-addon" id="NewKeyType" style="min-width: 100px">钥匙种类</span>
+                                                                        <select class="form-control" placeholder="钥匙种类" aria-describedby="basic-addon1" id="NewKeyType_choice">
+                                                                            <option value="R">射频卡</option>
+                                                                            <option value="B">蓝牙</option>
+                                                                            <option value="U">用户账户</option>
+                                                                            <option value="W">微信号</option>
+                                                                            <option value="I">身份证</option>
+                                                                            <option value="P">电话号码</option>
+                                                                        </select>
+
+                                                                    </div>
+                                                                    <p></p>
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-addon" id="NewKeyHardwareID" style="min-width: 100px">硬件码</span>
+                                                                        <input type="text" class="form-control" placeholder="请按照钥匙种类正确填写" aria-describedby="basic-addon1" id="NewKeyHardwareID_Input"/>
+                                                                    </div>
+                                                                    <p></p>
+                                                                    <div class="panel panel-default">
+                                                                        <div class="panel-heading">
+                                                                            <h3 class="panel-title">备注</h3>
+                                                                        </div>
+                                                                        <div class="panel-body">
+                                                                            <input type="text" id="NewKeyMemo_Input" class="form-control"  aria-describedby="basic-addon2">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">放弃</button>
+                                                                <button type="button" class="btn btn-primary" id="newKeyCommit">确认</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="modal fade" id="KeyDelAlarm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                <h4 class="modal-title" id="KeyDelAlertModalLabel">确认删除</h4>
+                                                            </div>
+                                                            <div class="modal-body" >
+                                                                <strong>警告！</strong>您确定要删除此钥匙么？
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">放弃</button>
+                                                                <button type="button" class="btn btn-primary" id="delKeyCommit">确认</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-12 col-sm-12 col-xs-12 column" id="KeyRightMainWindow">
+                                            <div class="row clearfix">
+                                                <table data-toggle="table" class="table table-hover" id="Table_key" data-click-to-select="true">
+                                                    <thead>
+                                                    <tr>
+                                                        <th data-field="state" data-radio="true"></th>
+                                                        <th>
+                                                            编号
+                                                        </th>
+                                                        <th>
+                                                            用户名
+                                                        </th>
+                                                        <th>
+                                                            分组
+                                                        </th>
+                                                        <th>
+                                                            备注
+                                                        </th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr>
+                                                        <td>
+                                                        </td>
+                                                        <td>
+                                                            1
+                                                        </td>
+                                                        <td>
+                                                            admin
+                                                        </td>
+                                                        <td>
+                                                            admin
+                                                        </td>
+                                                        <td>
+                                                            Default
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="success">
+                                                        <td>
+                                                        </td>
+                                                        <td>
+                                                            2
+                                                        </td>
+                                                        <td>
+                                                            user
+                                                        </td>
+                                                        <td>
+                                                            user
+                                                        </td>
+                                                        <td>
+                                                            留白
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="error">
+                                                        <td>
+                                                        </td>
+                                                        <td>
+                                                            3
+                                                        </td>
+                                                        <td>
+                                                            temp
+                                                        </td>
+                                                        <td>
+                                                            user
+                                                        </td>
+                                                        <td>
+                                                            Declined
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="warning">
+                                                        <td>
+                                                        </td>
+                                                        <td>
+                                                            4
+                                                            <span class="badge">★</span>
+                                                        </td>
+                                                        <td>
+                                                            laoliu
+                                                        </td>
+                                                        <td>
+                                                            user
+                                                        </td>
+                                                        <td>
+                                                            Pending
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="info">
+                                                        <td>
+                                                        </td>
+                                                        <td>
+                                                            5
+                                                        </td>
+                                                        <td>
+                                                            laozhang
+                                                        </td>
+                                                        <td>
+                                                            user
+                                                        </td>
+                                                        <td>
+                                                            Call in to confirm
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="row clearfix">
+                                                <span class="section">钥匙信息</span>
+                                                <div id="Key_card" style="min-height: 250px">
+                                                    <!--div class="panel-body"-->
+                                                    <div class="col-md-6 col-sm-12 col-xs-12 column">
+                                                        <!--div style="max-height: 210px;overflow:scroll;overflow-x:hidden" id="Label_user_detail"-->
+                                                        <div id="Label_key_detail">
+                                                            <p></p><p></p>
+                                                            <div class='col-md-6 col-sm-6 col-xs-12 column'>
+                                                                <dl>
+                                                                    <dt>用户名：</dt><dd>&nbsp&nbsp&nbsp&nbsp</dd>
+                                                                    <dt>用户类型：</dt><dd>&nbsp&nbsp&nbsp&nbsp</dd>
+                                                                    <dt>联系方式：</dt><dd>&nbsp&nbsp&nbsp&nbsp</dd>
+                                                                </dl>
+                                                            </div>
+                                                            <div class='col-md-6 col-sm-6 col-xs-12 column'>
+                                                                <dl >
+                                                                    <dt>用户昵称：</dt><dd>&nbsp&nbsp&nbsp&nbsp</dd>
+                                                                    <dt>修改日期：</dt><dd>&nbsp&nbsp&nbsp&nbsp</dd>
+                                                                    <dt>邮箱：</dt><dd>&nbsp&nbsp&nbsp&nbsp</dd>
+                                                                </dl>
+                                                            </div>
+                                                            <div class='col-md-12 col-sm-12 col-xs-12 column'>
+                                                                <dl>
+                                                                    <dt>备注：</dt><dd>&nbsp&nbsp&nbsp&nbsp</dd>
+                                                                </dl>
+                                                            </div>
+                                                            <!--p></p><p></p>
+                                                            <label style="min-width: 150px">用户名：</label><label style="min-width: 150px">用户昵称：</label>
+                                                            <p></p>
+                                                            <label style="min-width: 150px">用户类型：</label><label style="min-width: 150px">修改日期：</label>
+                                                            <p></p>
+                                                            <label style="min-width: 300px">联系方式：</label>
+                                                            <p></p>
+                                                            <label style="min-width: 300px">邮箱：</label>
+                                                            <p></p>
+                                                            <label>备注：</label-->
+                                                        </div>
+                                                    </div>
+
+                                                    <!--div style="max-height: 210px;overflow:scroll;overflow-x:hidden"-->
+                                                    <div class="col-md-6 col-sm-12 col-xs-12 column">
+                                                        <table data-toggle="table" class="table table-hover table-bordered" id="Table_key_auth" data-click-to-select="false" >
+                                                            <thead>
+                                                            <tr>
+                                                                <th>
+                                                                    已关联项目
+                                                                </th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody >
+                                                            <tr>
+                                                                <td>
+                                                                    水文观测1
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    PM2.5-1
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    PM2.5-2
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    PM2.5-3
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    PM2.5-4
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <!--/div-->
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
 
                                 </div>
                             </div>
@@ -4286,6 +4919,29 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="KeyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="KeyModalLabel">钥匙授权信息</h4>
+                </div>
+                <div class="modal-body" style="min-height:230px;max-height:500px;overflow:scroll;overflow-x:hidden">
+                    <div class="col-md-12">
+                        <div class="input-group ">
+                            <span class="input-group-addon" id="KeyAuthNumber" style="min-width: 100px">总授权数</span>
+                            <input type="text" class="form-control" placeholder="总授权数" aria-describedby="basic-addon1" id="KeyAuthNumber_Input" disabled="true"/>
+                        </div>
+                    </div>
+                    <div class="col-md-12" id="KeyAuthList">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" >关闭</button>
                 </div>
             </div>
         </div>

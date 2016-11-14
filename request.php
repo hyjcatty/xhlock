@@ -2444,6 +2444,23 @@ case "CameraHAdj":
     	);
         $jsonencode = _encode($retval);
     	echo $jsonencode; break;
+	case "KeyMod":
+    /*var map={
+        action:"KeyMod",
+        KeyCode: key.KeyCode,
+        KeyName:key.KeyName,
+		KeyProj:key.KeyProj,
+        KeyType:key.KeyType,
+        HardwareCode:key.HardwareCode,
+        Memo:key.Memo,
+        user:usr.id
+    };*/
+    	$retval=array(
+    		'status'=>'true',
+    		'msg'=>''
+    	);
+        $jsonencode = _encode($retval);
+    	echo $jsonencode; break;
     case "KeyDel":
             /*var map={
                     action:"KeyDel",

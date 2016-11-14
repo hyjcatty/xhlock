@@ -179,7 +179,28 @@ function getRelativeURL(){
     return reUrl;
 
 }
-
+function JQ_get(url,request,callback){
+    jQuery.get(url, request, function (data) {
+        log(data);
+        var result=JSON.parse(data);
+        callback(result);
+    });
+}
+function thread_sync(sync_key,thread_number,callback){
+    var Intervalhandle = 0;
+    var pending = function(Intervalhandle,callback){
+        if(sync_key!=threadnumber){
+            return;
+        }else{
+            sync_key=0;
+            clearInterval(Intervalhandle);
+            callback();
+        }
+    };
+    Intervalhandle= setInterval(function() {
+        pending(Intervalhandle, callback);
+    }, 500);
+}
 
 
 

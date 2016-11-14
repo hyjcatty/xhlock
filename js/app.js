@@ -430,6 +430,22 @@ function get_user_information(){
         action:"UserInfo",
         session: session
     };
+	var get_user_information_callback = function(result){
+		var ret = result.status;
+        if(ret == "false"){
+            show_alarm_module(true,"获取用户失败，请联系管理员");
+        }else{
+            usr = result.ret;
+            get_user_message();
+            get_user_image();
+            //hyj add in 20160926 for server very slow
+            get_monitor_list();
+            nav_check();
+        }
+	};
+	JQ_get(request_head,map,get_user_information_callback);
+
+/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -444,7 +460,7 @@ function get_user_information(){
             get_monitor_list();
             nav_check();
         }
-    });
+    });*/
 }
 
 
@@ -1576,6 +1592,15 @@ function get_project_pg_list(){
         action:"ProjectPGList",
         user:usr.id
     };
+	var get_project_pg_list_callback = function(result){
+		if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        project_pg_list = result.ret;
+	};
+	JQ_get(request_head,map,get_project_pg_list_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -1584,7 +1609,7 @@ function get_project_pg_list(){
             return;
         }
         project_pg_list = result.ret;
-    });
+    });*/
 }
 function get_user_table(start,length){
     var map={
@@ -1592,6 +1617,21 @@ function get_user_table(start,length){
         startseq: start,
         length:length
     };
+	var get_user_table_callback=function(result){
+		if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        user_table = result.ret;
+
+        user_start = parseInt(result.start);
+        user_total = parseInt(result.total);
+
+        //HYj add for server slow
+        draw_user_table_head();
+	};
+	JQ_get(request_head,map,get_user_table_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -1606,13 +1646,25 @@ function get_user_table(start,length){
 
         //HYj add for server slow
         draw_user_table_head();
-    });
+    });*/
 }
 function del_user(id){
     var map={
         action:"UserDel",
         id: id
     };
+	var del_user_callback = function(result){
+		var ret = result.status;
+        if(ret == "true"){
+            show_alarm_module(false,"删除成功！");
+            clear_user_detail_panel();
+            user_intialize(0);
+        }else{
+            show_alarm_module(true,"删除失败！"+result.msg);
+        }
+	};
+	JQ_get(request_head,map,del_user_callback);
+		/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -1624,7 +1676,7 @@ function del_user(id){
         }else{
             show_alarm_module(true,"删除失败！"+result.msg);
         }
-    });
+    });*/
     $("#UserDelAlarm").modal('hide');
 
 }
@@ -1642,6 +1694,19 @@ function new_user(user,auth){
     };
     //console.log(map);
     //console.log(JSON.stringify(map));
+	var new_user_callback = function(result){
+		var ret = result.status;
+        if(ret == "true"){
+            show_alarm_module(false,"创建成功！");
+            $('#newUserModal').modal('hide');
+            clear_user_detail_panel();
+            user_intialize(0);
+        }else{
+            show_alarm_module(true,"创建失败！"+result.msg);
+        }
+	};
+	JQ_get(request_head,map,new_user_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -1654,7 +1719,7 @@ function new_user(user,auth){
         }else{
             show_alarm_module(true,"创建失败！"+result.msg);
         }
-    });
+    });*/
 }
 function modify_user(user,auth){
     var map={
@@ -1669,6 +1734,19 @@ function modify_user(user,auth){
         memo: user.memo,
         auth: auth
     };
+	var modify_user_callback = function(result){
+		var ret = result.status;
+        if(ret == "true"){
+            show_alarm_module(false,"修改成功！");
+            $('#newUserModal').modal('hide');
+            clear_user_detail_panel();
+            user_intialize(0);
+        }else{
+            show_alarm_module(true,"修改失败！"+result.msg);
+        }
+	};
+	JQ_get(request_head,map,modify_user_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -1681,7 +1759,7 @@ function modify_user(user,auth){
         }else{
             show_alarm_module(true,"修改失败！"+result.msg);
         }
-    });
+    });*/
 }
 
 
@@ -1691,6 +1769,17 @@ function get_user_proj(user){
         action:"UserProj",
         userid: user
     };
+	var get_user_proj_callback = function(result){
+		if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        user_selected_auth = result.ret;
+        //HYJ add for server slow;
+        draw_user_detail_proj_table();
+	};
+	JQ_get(request_head,map,get_user_proj_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -1701,7 +1790,7 @@ function get_user_proj(user){
         user_selected_auth = result.ret;
         //HYJ add for server slow;
         draw_user_detail_proj_table();
-    });
+    });*/
 }
 function get_user_key(user){
 
@@ -1709,6 +1798,17 @@ function get_user_key(user){
         action:"UserKey",
         userid: user
     };
+	var get_user_key_callback = function(result){
+		if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        user_selected_key = result.ret;
+        //HYJ add for server slow;
+        draw_user_detail_key_table();
+	};
+	JQ_get(request_head,map,get_user_key_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -1719,7 +1819,7 @@ function get_user_key(user){
         user_selected_key = result.ret;
         //HYJ add for server slow;
         draw_user_detail_key_table();
-    });
+    });*/
 }
 function user_intialize(start) {
     user_initial = true;
@@ -2141,6 +2241,15 @@ function get_project_list(){
         action:"ProjectList",
         user:usr.id
     };
+	var get_project_list_callback = function(result){
+		if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        project_list = result.ret;
+	};
+	JQ_get(request_head,map,get_project_list_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -2149,7 +2258,7 @@ function get_project_list(){
             return;
         }
         project_list = result.ret;
-    });
+    });*/
 }
 function get_pg_table(start,length){
     var map={
@@ -2158,6 +2267,20 @@ function get_pg_table(start,length){
         length:length,
         user:usr.id
     };
+	var get_pg_table_callback = function(result){
+		if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        pg_table = result.ret;
+
+        pg_start = parseInt(result.start);
+        pg_total = parseInt(result.total);
+        //HYJ add for server slow
+        draw_pg_table_head();
+	};
+	JQ_get(request_head,map,get_pg_table_callback);
+		/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -2171,7 +2294,7 @@ function get_pg_table(start,length){
         pg_total = parseInt(result.total);
         //HYJ add for server slow
         draw_pg_table_head();
-    });
+    });*/
 }
 function del_pg(id){
     var map={
@@ -2179,6 +2302,20 @@ function del_pg(id){
         id: id,
         user:usr.id
     };
+
+
+	var del_pg_callback = function(result){
+		var ret = result.status;
+        if(ret == "true"){
+            show_alarm_module(false,"删除成功！");
+            clear_pg_detail_panel();
+            pg_intialize(0);
+        }else{
+            show_alarm_module(true,"删除失败！"+result.msg);
+        }
+	};
+	JQ_get(request_head,map,del_pg_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -2190,7 +2327,7 @@ function del_pg(id){
         }else{
             show_alarm_module(true,"删除失败！"+result.msg);
         }
-    });
+    });*/
     $("#PGDelAlarm").modal('hide');
 
 }
@@ -2207,6 +2344,19 @@ function new_pg(pg,projlist){
         Projlist: projlist,
         user:usr.id
     };
+	var new_pg_callback = function(result){
+		var ret = result.status;
+        if(ret == "true"){
+            show_alarm_module(false,"创建成功！");
+            $('#newPGModal').modal('hide');
+            clear_pg_detail_panel();
+            pg_intialize(0);
+        }else{
+            show_alarm_module(true,"创建失败！"+result.msg);
+        }
+	};
+	JQ_get(request_head,map,new_pg_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -2219,7 +2369,7 @@ function new_pg(pg,projlist){
         }else{
             show_alarm_module(true,"创建失败！"+result.msg);
         }
-    });
+    });*/
 }
 function modify_pg(pg,projlist){
     var map={
@@ -2234,6 +2384,19 @@ function modify_pg(pg,projlist){
         Projlist: projlist,
         user:usr.id
     };
+	var modify_pg_callback = function(result){
+		var ret = result.status;
+        if(ret == "true"){
+            show_alarm_module(false,"修改成功！");
+            $('#newPGModal').modal('hide');
+            clear_pg_detail_panel();
+            pg_intialize(0);
+        }else{
+            show_alarm_module(true,"修改失败！"+result.msg);
+        }
+	};
+	JQ_get(request_head,map,modify_pg_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -2246,7 +2409,7 @@ function modify_pg(pg,projlist){
         }else{
             show_alarm_module(true,"修改失败！"+result.msg);
         }
-    });
+    });*/
 }
 
 
@@ -2256,6 +2419,17 @@ function get_pg_proj(pgid){
         action:"PGProj",
         id: pgid
     };
+	var get_pg_proj_callback = function(result){
+		if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        pg_selected_proj = result.ret;
+        // HYJ add for server slow
+        draw_pg_detail_panel();
+	};
+	JQ_get(request_head,map,get_pg_proj_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -2266,7 +2440,7 @@ function get_pg_proj(pgid){
         pg_selected_proj = result.ret;
         // HYJ add for server slow
         draw_pg_detail_panel();
-    });
+    });*/
 }
 function pg_intialize(start) {
 
@@ -2662,6 +2836,20 @@ function get_key_table(start,length){
         length:length,
         user:usr.id
     };
+	var get_key_table_callback = function(result){
+		if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        key_table = result.ret;
+
+        key_start = parseInt(result.start);
+        key_total = parseInt(result.total);
+        //HYJ add for server slow
+        draw_key_table_head();
+	};
+	JQ_get(request_head,map,get_key_table_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -2675,14 +2863,26 @@ function get_key_table(start,length){
         key_total = parseInt(result.total);
         //HYJ add for server slow
         draw_key_table_head();
-    });
+    });*/
 }
 function del_key(id){
     var map={
-        action:"keyDel",
+        action:"KeyDel",
         id: id,
         user:usr.id
     };
+	var del_key_callback = function(result){
+		var ret = result.status;
+        if(ret == "true"){
+            show_alarm_module(false,"删除成功！");
+            clear_key_detail_panel();
+            key_intialize(0);
+        }else{
+            show_alarm_module(true,"删除失败！"+result.msg);
+        }
+	};
+	JQ_get(request_head,map,del_key_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -2694,7 +2894,7 @@ function del_key(id){
         }else{
             show_alarm_module(true,"删除失败！"+result.msg);
         }
-    });
+    });*/
     $("#KeyDelAlarm").modal('hide');
 
 }
@@ -2710,6 +2910,19 @@ function new_key(key){
         Memo:key.Memo,
         user:usr.id
     };
+	var new_key_callback = function(result){
+		var ret = result.status;
+        if(ret == "true"){
+            show_alarm_module(false,"创建成功！");
+            $('#newKeyModal').modal('hide');
+            clear_key_detail_panel();
+            key_intialize(0);
+        }else{
+            show_alarm_module(true,"创建失败！"+result.msg);
+        }
+	};
+	JQ_get(request_head,map,new_key_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -2722,7 +2935,7 @@ function new_key(key){
         }else{
             show_alarm_module(true,"创建失败！"+result.msg);
         }
-    });
+    });*/
 }
 function modify_key(key){
     var map={
@@ -2735,6 +2948,19 @@ function modify_key(key){
         Memo:key.Memo,
         user:usr.id
     };
+	var modify_key_callback = function(result){
+		var ret = result.status;
+        if(ret == "true"){
+            show_alarm_module(false,"修改成功！");
+            $('#newKeyModal').modal('hide');
+            clear_key_detail_panel();
+            key_intialize(0);
+        }else{
+            show_alarm_module(true,"修改失败！"+result.msg);
+        }
+	};
+	JQ_get(request_head,map,modify_key_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -2747,7 +2973,7 @@ function modify_key(key){
         }else{
             show_alarm_module(true,"修改失败！"+result.msg);
         }
-    });
+    });*/
 }
 
 
@@ -2757,6 +2983,17 @@ function get_key_auth(keyid){
         action:"KeyAuthlist",
         KeyId: keyid
     };
+	var get_key_auth_callback = function(result){
+		if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        key_selected_auth = result.ret;
+        //hyj add for server slow.
+		draw_key_detail_auth_table();
+	};
+	JQ_get(request_head,map,get_key_auth_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -2767,7 +3004,7 @@ function get_key_auth(keyid){
         key_selected_auth = result.ret;
         //hyj add for server slow.
 		draw_key_detail_auth_table();
-    });
+    });*/
 }
 function key_intialize(start) {
 
@@ -3082,6 +3319,20 @@ function get_proj_table(start,length){
         length:length,
         user:usr.id
     };
+	var get_proj_table_callback = function(result){
+		if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        project_table = result.ret;
+
+        project_start = parseInt(result.start);
+        project_total = parseInt(result.total);
+        //HYJ add for server slow
+        draw_proj_table_head();
+	};
+	JQ_get(request_head,map,get_proj_table_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -3096,7 +3347,7 @@ function get_proj_table(start,length){
         //HYJ add for server slow
         draw_proj_table_head();
 
-    });
+    });*/
 }
 function del_proj(ProjCode){
     var map={
@@ -3104,6 +3355,18 @@ function del_proj(ProjCode){
         ProjCode: ProjCode,
         user:usr.id
     };
+	var del_proj_callback = function(result){
+		var ret = result.status;
+        if(ret == "true"){
+            show_alarm_module(false,"删除成功！");
+            clear_proj_detail_panel();
+            proj_intialize(0);
+        }else{
+            show_alarm_module(true,"删除失败！"+result.msg);
+        }
+	};
+	JQ_get(request_head,map,del_proj_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -3115,7 +3378,7 @@ function del_proj(ProjCode){
         }else{
             show_alarm_module(true,"删除失败！"+result.msg);
         }
-    });
+    });*/
     $("#ProjDelAlarm").modal('hide');
 
 }
@@ -3132,6 +3395,19 @@ function new_proj(project){
         Stage:project.Stage,
         user:usr.id
     };
+	var new_proj_callback = function(result){
+		var ret = result.status;
+        if(ret == "true"){
+            show_alarm_module(false,"创建成功！");
+            $('#newProjModal').modal('hide');
+            clear_proj_detail_panel();
+            proj_intialize(0);
+        }else{
+            show_alarm_module(true,"创建失败！"+result.msg);
+        }
+	};
+	JQ_get(request_head,map,new_proj_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -3144,7 +3420,7 @@ function new_proj(project){
         }else{
             show_alarm_module(true,"创建失败！"+result.msg);
         }
-    });
+    });*/
 }
 function modify_proj(project){
     var map={
@@ -3159,6 +3435,19 @@ function modify_proj(project){
         Stage:project.Stage,
         user:usr.id
     };
+	var modify_proj_callback = function(result){
+		var ret = result.status;
+        if(ret == "true"){
+            show_alarm_module(false,"修改成功！");
+            $('#newProjModal').modal('hide');
+            clear_proj_detail_panel();
+            proj_intialize(0);
+        }else{
+            show_alarm_module(true,"修改失败！"+result.msg);
+        }
+	};
+	JQ_get(request_head,map,modify_proj_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -3171,7 +3460,7 @@ function modify_proj(project){
         }else{
             show_alarm_module(true,"修改失败！"+result.msg);
         }
-    });
+    });*/
 }
 
 
@@ -3181,6 +3470,18 @@ function get_proj_point(ProjCode){
         action:"PointProj",
         ProjCode: ProjCode
     };
+	var get_proj_point_callback = function(result){
+		if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        project_selected_point = result.ret;
+        //HYJ add for server slow;
+
+        draw_proj_detail_point_table();
+	};
+	JQ_get(request_head,map,get_proj_point_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -3192,13 +3493,24 @@ function get_proj_point(ProjCode){
         //HYJ add for server slow;
 
         draw_proj_detail_point_table();
-    });
+    });*/
 }
 function get_proj_key(ProjCode){
     var map={
         action:"ProjKey",
         ProjCode: ProjCode
     };
+	var get_proj_key_callback = function(result){
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        project_selected_key = result.ret;
+        //HYJ add for server slow;
+        draw_proj_detail_key_table();
+	};
+	JQ_get(request_head,map,get_proj_key_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -3209,7 +3521,7 @@ function get_proj_key(ProjCode){
         project_selected_key = result.ret;
         //HYJ add for server slow;
         draw_proj_detail_key_table();
-    });
+    });*/
 }
 function proj_intialize(start) {
     project_initial = true;
@@ -3601,6 +3913,17 @@ function get_version_list(){
     var map={
         action:"GetVersionList"
     };
+    get_version_list_callback = function(result){
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        software_version_list = result.ret;
+        //HYJ add for server slow, because this should waiting for 2 request, and It is ugly to add a 2 flag thread, so I add a timeout after 1 message is returned.
+        window.setTimeout(draw_parameter_page, wait_time_middle);
+    };
+    JQ_get(request_head,map,get_version_list_callback);
+    /*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -3611,7 +3934,7 @@ function get_version_list(){
         software_version_list = result.ret;
         //HYJ add for server slow, because this should waiting for 2 request, and It is ugly to add a 2 flag thread, so I add a timeout after 1 message is returned.
         window.setTimeout(draw_parameter_page, wait_time_middle);
-    });
+    });*/
 }
 
 function get_projdev_version(ProjCode){
@@ -3619,6 +3942,23 @@ function get_projdev_version(ProjCode){
         action:"GetProjDevVersion",
         ProjCode: ProjCode
     };
+    var get_projdev_version_callback = function(result){
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        var projdev = result.ret;
+        $("#duallistboxDevUpdate").empty();
+        var txt = "";
+        for(var i =0;i<projdev.length;i++){
+            txt = "<option value='"+projdev[i].DevCode+"'";
+            txt = txt +">"+projdev[i].DevCode+projdev[i].ProjName+projdev[i].version+"</option>";
+            $("#duallistboxDevUpdate").append(txt);
+        }
+        $("#duallistboxDevUpdate").bootstrapDualListbox('refresh', true);
+    };
+    JQ_get(request_head,map,get_projdev_version_callback);
+    /*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -3635,8 +3975,7 @@ function get_projdev_version(ProjCode){
             $("#duallistboxDevUpdate").append(txt);
         }
         $("#duallistboxDevUpdate").bootstrapDualListbox('refresh', true);
-
-    });
+    });*/
 }
 function update_version(){
     var update_list = get_update_dev_list();
@@ -3651,6 +3990,15 @@ function update_version(){
         list: update_list,
         version: update_version
     };
+    var update_version_callback = function (result){
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        show_alarm_module(false,"设置成功，设备会在下个更新点更新");
+    };
+    JQ_get(request_head,map,update_version_callback);
+    /*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -3659,7 +4007,7 @@ function update_version(){
             return;
         }
         show_alarm_module(false,"设置成功，设备会在下个更新点更新");
-    });
+    });*/
 }
 function parameter_initialize(){
     parameter_initial = true;
@@ -3707,6 +4055,20 @@ function get_point_table(start,length){
         length:length,
         user:usr.id
     };
+    var get_point_table_callback= function(result){
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        point_table = result.ret;
+
+        point_start = parseInt(result.start);
+        point_total = parseInt(result.total);
+        //HYJ add for server slow
+        draw_point_table_head();
+    };
+    JQ_get(request_head,map,get_point_table_callback);
+    /*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -3720,7 +4082,7 @@ function get_point_table(start,length){
         point_total = parseInt(result.total);
         //HYJ add for server slow
         draw_point_table_head();
-    });
+    });*/
 }
 function del_point(StatCode){
     var map={
@@ -3728,6 +4090,19 @@ function del_point(StatCode){
         StatCode: StatCode,
         user:usr.id
     };
+
+    var del_point_callback=function(result){
+        var ret = result.status;
+        if(ret == "true"){
+            show_alarm_module(false,"删除成功！");
+            clear_point_detail_panel();
+            point_intialize(0);
+        }else{
+            show_alarm_module(true,"删除失败！"+result.msg);
+        }
+    };
+    JQ_get(request_head,map,del_point_callback);
+    /*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -3739,7 +4114,7 @@ function del_point(StatCode){
         }else{
             show_alarm_module(true,"删除失败！"+result.msg);
         }
-    });
+    });*/
     $("#PointDelAlarm").modal('hide');
 
 }
@@ -3762,6 +4137,19 @@ function new_point(point){
         Stage:point.Stage,
         user:usr.id
     };
+    var new_point_callback=function(result){
+        var ret = result.status;
+        if(ret == "true"){
+            show_alarm_module(false,"创建成功！");
+            $('#newPointModal').modal('hide');
+            clear_point_detail_panel();
+            point_intialize(0);
+        }else{
+            show_alarm_module(true,"创建失败！"+result.msg);
+        }
+    };
+    JQ_get(request_head,map,new_point_callback);
+    /*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -3774,7 +4162,7 @@ function new_point(point){
         }else{
             show_alarm_module(true,"创建失败！"+result.msg);
         }
-    });
+    });*/
 }
 function modify_point(point){
     var map={
@@ -3795,6 +4183,19 @@ function modify_point(point){
         Stage:point.Stage,
         user:usr.id
     };
+    var modify_point_callback = function(result){
+        var ret = result.status;
+        if(ret == "true"){
+            show_alarm_module(false,"修改成功！");
+            $('#newPointModal').modal('hide');
+            clear_point_detail_panel();
+            point_intialize(0);
+        }else{
+            show_alarm_module(true,"修改失败！"+result.msg);
+        }
+    };
+    JQ_get(request_head,map,modify_point_callback);
+    /*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -3807,7 +4208,7 @@ function modify_point(point){
         }else{
             show_alarm_module(true,"修改失败！"+result.msg);
         }
-    });
+    });*/
 }
 
 
@@ -3817,6 +4218,17 @@ function get_point_device(StatCode){
         action:"PointDev",
         StatCode: StatCode
     };
+    var get_point_device_callback = function(result){
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        point_selected_device = result.ret;
+        //HYJ add for server slow;
+        draw_point_detail_panel();
+    };
+    JQ_get(request_head,map,get_point_device_callback);
+    /*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -3827,7 +4239,7 @@ function get_point_device(StatCode){
         point_selected_device = result.ret;
         //HYJ add for server slow;
         draw_point_detail_panel();
-    });
+    });*/
 }
 function point_intialize(start) {
     point_initial = true;
@@ -4360,6 +4772,15 @@ function get_proj_point_list(){
     var map={
         action:"ProjPoint"
     };
+	var get_proj_point_list_callback = function(result){
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        point_list = result.ret;
+	};
+	JQ_get(request_head,map,get_proj_point_list_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -4369,7 +4790,7 @@ function get_proj_point_list(){
         }
         point_list = result.ret;
 
-    });
+    });*/
 }
 function get_dev_table(start,length){
     var map={
@@ -4378,6 +4799,21 @@ function get_dev_table(start,length){
         length:length,
         user:usr.id
     };
+	var get_dev_table_callback = function(result){
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        device_table = result.ret;
+
+        device_start = parseInt(result.start);
+        device_total = parseInt(result.total);
+
+        //HYJ add for server slow, this will wait 3 message return.
+        window.setTimeout(draw_dev_table_head, wait_time_middle);
+	};
+	JQ_get(request_head,map,get_dev_table_callback);
+/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -4392,7 +4828,7 @@ function get_dev_table(start,length){
 
         //HYJ add for server slow, this will wait 3 message return.
         window.setTimeout(draw_dev_table_head, wait_time_middle);
-    });
+    });*/
 }
 function del_dev(DevCode){
     var map={
@@ -4400,6 +4836,18 @@ function del_dev(DevCode){
         DevCode: DevCode,
         user:usr.id
     };
+	var del_dev_callback = function(result){
+        var ret = result.status;
+        if(ret == "true"){
+            show_alarm_module(false,"删除成功！");
+            clear_dev_detail_panel();
+            dev_intialize(0);
+        }else{
+            show_alarm_module(true,"删除失败！"+result.msg);
+        }
+	};
+	JQ_get(request_head,map,del_dev_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -4411,7 +4859,7 @@ function del_dev(DevCode){
         }else{
             show_alarm_module(true,"删除失败！"+result.msg);
         }
-    });
+    });*/
     $("#DevDelAlarm").modal('hide');
 
 }
@@ -4427,6 +4875,19 @@ function new_dev(device){
         VideoURL:device.VideoURL,
         user:usr.id
     };
+	var new_dev_callback = function(result){
+        var ret = result.status;
+        if(ret == "true"){
+            show_alarm_module(false,"创建成功！");
+            $('#newDevModal').modal('hide');
+            clear_dev_detail_panel();
+            dev_intialize(0);
+        }else{
+            show_alarm_module(true,"创建失败！"+result.msg);
+        }
+	};
+	JQ_get(request_head,map,new_dev_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -4439,7 +4900,7 @@ function new_dev(device){
         }else{
             show_alarm_module(true,"创建失败！"+result.msg);
         }
-    });
+    });*/
 }
 function modify_dev(device){
     var map={
@@ -4453,6 +4914,19 @@ function modify_dev(device){
         VideoURL:device.VideoURL,
         user:usr.id
     };
+	var modify_dev_callback = function(result){
+        var ret = result.status;
+        if(ret == "true"){
+            show_alarm_module(false,"修改成功！");
+            $('#newDevModal').modal('hide');
+            clear_dev_detail_panel();
+            dev_intialize(0);
+        }else{
+            show_alarm_module(true,"修改失败！"+result.msg);
+        }
+	};
+	JQ_get(request_head,map,modify_dev_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -4465,7 +4939,7 @@ function modify_dev(device){
         }else{
             show_alarm_module(true,"修改失败！"+result.msg);
         }
-    });
+    });*/
 }
 
 
@@ -4913,6 +5387,15 @@ function get_monitor_list(){
         id: usr.id
     };
     //console.log(map);
+	var get_monitor_list_callback = function(result){
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        monitor_map_list = result.ret;
+	};
+	JQ_get(request_head,map,get_monitor_list_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -4923,7 +5406,7 @@ function get_monitor_list(){
         monitor_map_list = result.ret;
 
         //console.log(monitor_map_list);
-    });
+    });*/
 }
 function get_monitor_warning_on_map(){
     if(monitor_selected === null||monitor_map_handle===null){
@@ -4933,6 +5416,48 @@ function get_monitor_warning_on_map(){
             action:"DevAlarm",
             StatCode: monitor_selected.StatCode
         };
+		var get_monitor_warning_on_map_callback = function(result){
+			if(result.status == "false"){
+                show_expiredModule();
+                return;
+            }
+            var ret = result.ret;
+            var txt = "";
+            if(ret == "false"){
+                txt= "<Strong>获取告警失败</Strong>";
+            }else{
+                txt = "<div id ='Element_card_floating' align='center' ><p style='font-size:14px;font-weight: bold' >"+"站点名称："+monitor_selected.StatName+"</p>"+
+                    "<HR style='FILTER: alpha(opacity=100,finishopacity=0,style=3)' width='80%' color=#987cb9 SIZE=3/>" +
+                    "<div style='font-size:10px; min-height: 350px; min-width:420px' >" ;
+                txt = txt + " <div class='col-md-6 column'>";
+                for(var i=0;i<ret.length;i++){
+                    var nickname = ret[i].AlarmEName;
+                    txt = txt + "<img src='./svg/icon/"+ret[i].AlarmEName+".svg' style='width:36px;hight:36px'></img><label style='max-width: 150px;min-width: 150px'>&nbsp&nbsp&nbsp&nbsp"+ret[i].AlarmName+":";
+                    var value = parseInt(ret[i].AlarmValue);
+                    var warning = ret[i].WarningTarget;
+
+                    if(warning == "true"){
+                        txt = txt +"<Strong style='color:red'>"+value+"</Strong>"+ret[i].AlarmUnit+"</label>";
+                    }else{
+                        txt = txt +"<Strong>"+value+"</Strong>"+ret[i].AlarmUnit+"</label>";
+                    }
+                    //txt = txt +"<p></p>";
+                    txt = txt +"<HR style='FILTER: alpha(opacity=100,finishopacity=0,style=3)' width='80%' color=#987cb9 SIZE=3/>" ;
+                    if(i==ret.length/2-1){
+                        txt = txt +"</div><div class='col-md-6 column'>";
+                    }
+                }
+                txt = txt+"</div></div>";
+            }
+            if(monitor_map_handle!==null){
+                monitor_map_handle.setContent(txt);
+
+            }
+            $("#VideoStatCode_Input").val(monitor_selected.StatName);
+            video_selection_change();
+		};
+		JQ_get(request_head,map,get_monitor_warning_on_map_callback);
+		/*
         jQuery.get(request_head, map, function (data) {
             log(data);
             var result=JSON.parse(data);
@@ -4974,14 +5499,14 @@ function get_monitor_warning_on_map(){
             }
             $("#VideoStatCode_Input").val(monitor_selected.StatName);
             video_selection_change();
-            /*
-            $("#VCRStatus_choice").empty();
-            txt = "";
-            for(var i =0;i<result.vcr.length;i++){
-                txt = txt +"<option value='"+result.vcr[i].vcraddress+"'>"+result.vcr[i].vcrname+"</option>"
-            }
-            $("#VCRStatus_choice").append(txt);*/
-        });
+            
+            //$("#VCRStatus_choice").empty();
+            //txt = "";
+            //for(var i =0;i<result.vcr.length;i++){
+            //    txt = txt +"<option value='"+result.vcr[i].vcraddress+"'>"+result.vcr[i].vcrname+"</option>"
+            //}
+            //$("#VCRStatus_choice").append(txt);
+        });*/
     }
 
 }
@@ -5084,6 +5609,21 @@ function get_video(StatCode,date,hour){
         hour:hour
     };
     //console.log(map);
+	var get_video_callback = function(result){
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        var VideoList = result.ret;
+        $("#VCRStatus_choice").empty();
+        var txt="";
+        for( var i=0;i<VideoList.length;i++){
+            txt = txt +"<option value='"+VideoList[i].id+"'>"+VideoList[i].attr+"</option>";
+        }
+        $("#VCRStatus_choice").append(txt);
+	};
+	JQ_get(request_head,map,get_video_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -5099,7 +5639,7 @@ function get_video(StatCode,date,hour){
         }
         $("#VCRStatus_choice").append(txt);
         //console.log(monitor_map_list);
-    });
+    });*/
 }
 function video_Module_selection_change(){
     //console.log($("#Video_query_Input").val());
@@ -5117,6 +5657,21 @@ function get_Module_video(StatCode,date,hour){
         hour:hour
     };
     //console.log(map);
+	var get_Module_video_callback = function(result){
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        var VideoList = result.ret;
+        $("#ModuleVCRStatus_choice").empty();
+        var txt="";
+        for( var i=0;i<VideoList.length;i++){
+            txt = txt +"<option value='"+VideoList[i].id+"'>"+VideoList[i].attr+"</option>";
+        }
+        $("#ModuleVCRStatus_choice").append(txt);
+	};
+	JQ_get(request_head,map,get_Module_video_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -5132,7 +5687,7 @@ function get_Module_video(StatCode,date,hour){
         }
         $("#ModuleVCRStatus_choice").append(txt);
         //console.log(monitor_map_list);
-    });
+    });*/
 }
 //warning_table
 function initialize_warning_table(){
@@ -5258,7 +5813,24 @@ function query_warning(){
             action:"DevAlarm",
             StatCode: $("#Monitor_table_cell"+i).attr('StatCode')
         };
-		
+		var query_warning_callback = function(result){
+			var txt = "";
+			var StatCode = result.StatCode;
+            if(result.status == "false"){
+                txt = "<Strong style='color:red'>未找到对应监控信息</Strong>";
+            }else{
+				txt = build_monitor_message(result.ret);
+			}
+			for(var i=0;i<(table_row*2);i++){
+				if($("#Monitor_table_cell"+i).attr('StatCode') == StatCode){
+                    $("#Monitor_table_cell"+i).empty();
+					$("#Monitor_table_cell"+i).append(txt);
+					break;
+				}
+			}
+		};
+		JQ_get(request_head,map,query_warning_callback);
+		/*
         jQuery.get(request_head, map, function (data) {
             log(data);
             var result=JSON.parse(data);
@@ -5277,7 +5849,7 @@ function query_warning(){
 				}
 			}
             
-        });
+        });*/
 	};
 	for(var i=0;i<(table_row*2);i++){
 		if($("#Monitor_table_cell"+i).attr('StatCode') === null) break;
@@ -5437,6 +6009,67 @@ function query_open_lock_history(){
         condition:condition,
         id:usr.id
     };
+	var query_open_lock_history_callback = function(result){
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        var Last_update_date=(new Date()).Format("yyyy-MM-dd_hhmmss");
+        $("#KeyHistoryLastFlash").empty();
+        $("#KeyHistoryLastFlash").append("最后刷新时间："+Last_update_date);
+        var ColumnName = result.ColumnName;
+        var TableData = result.TableData;
+        var txt = "<thead> <tr>";
+        var i;
+        for( i=0;i<ColumnName.length;i++){
+            txt = txt +"<th>"+ColumnName[i]+"</th>";
+        }
+        //txt = txt +"<th></th></tr></thead>";
+        txt = txt +"</tr></thead>";
+        txt = txt +"<tbody>";
+        for( i=0;i<TableData.length;i++){
+            txt = txt +"<tr>";
+            //txt = txt +"<td><ul class='pagination'> <li><a href='#' class = 'video_btn' StateCode='"+TableData[i][0]+"' ><em class='glyphicon glyphicon-play ' aria-hidden='true' ></em></a> </li></ul></td>";
+            //txt = txt +"<td><button type='button' class='btn btn-default lock_btn' StateCode='"+TableData[i][0]+"' ><em class='glyphicon glyphicon-lock ' aria-hidden='true' ></em></button></td><td><button type='button' class='btn btn-default video_btn' StateCode='"+TableData[i][0]+"' ><em class='glyphicon glyphicon-play ' aria-hidden='true' ></em></button></td>";
+            //console.log("StateCode="+TableData[i][0]);
+            for(var j=0;j<TableData[i].length;j++){
+                txt = txt +"<td>"+TableData[i][j]+"</td>";
+            }
+            //txt = txt + "<td><button type='button' class='btn btn-default video_btn' StateCode='"+TableData[i][0]+"' >视频</button></td>";
+            txt = txt +"</tr>";
+        }
+        txt = txt+"</tbody>";
+        $("#KeyHistoryQueryTable").empty();
+        $("#KeyHistoryQueryTable").append(txt);
+        if(if_key_history_table_initialize) $("#KeyHistoryQueryTable").DataTable().destroy();
+
+        //console.log(monitor_map_list);
+
+        var show_table  = $("#KeyHistoryQueryTable").DataTable( {
+            //dom: 'T<"clear">lfrtip',
+            "scrollY": false,
+            "scrollCollapse": true,
+
+            "scrollX": true,
+            "searching": false,
+            "autoWidth": true,
+            "lengthChange":false,
+            //bSort: false,
+            //aoColumns: [ { sWidth: "45%" }, { sWidth: "45%" }, { sWidth: "10%", bSearchable: false, bSortable: false } ],
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'excel',
+                    text: '导出到excel',
+                    filename: "HistoryData"+Last_update_date
+                }
+            ]
+
+        } );
+        if_key_history_table_initialize = true;
+	};
+	JQ_get(request_head,map,query_open_lock_history_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -5498,7 +6131,7 @@ function query_open_lock_history(){
         } );
         if_key_history_table_initialize = true;
 
-    });
+    });*/
 }
 
 //Alarm
@@ -5506,6 +6139,15 @@ function get_alarm_type_list(){
     var map={
         action:"AlarmType"
     };
+	var get_alarm_type_list_callback = function(result){
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        alarm_type_list= result.typelist;
+	};
+	JQ_get(request_head,map,get_alarm_type_list_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -5514,7 +6156,7 @@ function get_alarm_type_list(){
             return;
         }
         alarm_type_list= result.typelist;
-    });
+    });*/
 }
 function query_alarm(date,type,name){
 
@@ -5525,9 +6167,7 @@ function query_alarm(date,type,name){
         date: date,
         type:type
     };
-    jQuery.get(request_head, map, function (data) {
-        log(data);
-        var result=JSON.parse(data);
+	var query_alarm_callback = function(result){
         if(result.status == "false"){
             show_expiredModule();
             return;
@@ -5726,7 +6366,211 @@ function query_alarm(date,type,name){
 
         //HYJ add for server slow
         show_table_tags();
-    });
+	};
+	JQ_get(request_head,map,query_alarm_callback);
+/*
+    jQuery.get(request_head, map, function (data) {
+        log(data);
+        var result=JSON.parse(data);
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        //var ret = result.status;
+        //if(ret == "false"){
+        //    show_alarm_module(true,"获取详细日志信息失败！");
+        //    return;
+        //}
+        var StatCode = result.StatCode;
+        var date = result.date;
+        var AlarmName = result.AlarmName;
+        var AlarmUnit = result.AlarmUnit;
+        var WarningTarget = result.WarningTarget;
+        var minute_alarm = result.minute_alarm;
+        var hour_alarm = result.hour_alarm;
+        var day_alarm = result.day_alarm;
+        var minute_head = result.minute_head;
+        var hour_head = result.hour_head;
+        var day_head = result.day_head;
+
+
+        //console.log(("#"+type+"_canvas_day"));
+        //console.log(("#"+type+"_canvas_week"));
+        //console.log(("#"+type+"_canvas_month"));
+        $("#Warning_"+type+"_day").css("display","block");
+        var max = minute_head.length-1;
+        if(max > 120) max = 120;
+
+        $("#"+type+"_canvas_day").highcharts({
+
+            chart: {
+                type: 'areaspline',
+                zoomType: 'x'
+            },
+            title: {
+                text: name+' 分钟值日志，日期：'+date
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'left',
+                verticalAlign: 'top',
+                x: 150,
+                y: 100,
+                floating: true,
+                borderWidth: 1,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+            },
+            xAxis: {
+                categories:minute_head ,
+                max: max
+            },
+
+            scrollbar: {
+
+                enabled: true
+
+            },
+            yAxis: {
+                title: {
+                    text: name
+                }
+            },
+            tooltip: {
+                shared: true,
+                valueSuffix: AlarmUnit
+            },
+            credits: {
+                enabled: false
+            },
+            plotOptions: {
+                areaspline: {
+                    fillOpacity: 0.5
+                }
+            },
+            series: [{
+                name: alarm_selected.StatName,
+                data: minute_alarm,
+                turboThreshold: 1500       //设置最大数据量1500个
+            }]
+        });
+        $("#Warning_"+type+"_day").css("display","none");
+        $("#Warning_"+type+"_week").css("display","block");
+        max = hour_head.length-1;
+        if(max > 120) max = 120;
+        $("#"+type+"_canvas_week").highcharts({
+
+            chart: {
+                type: 'areaspline',
+                zoomType: 'x'
+            },
+            title: {
+                text: name+' 小时平均值日志，周期： '+date+' 为截至的7天 '
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'left',
+                verticalAlign: 'top',
+                x: 150,
+                y: 100,
+                floating: true,
+                borderWidth: 1,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+            },
+            xAxis: {
+                categories: hour_head,
+                max: max
+            },
+
+            scrollbar: {
+
+                enabled: true
+
+            },
+            yAxis: {
+                title: {
+                    text: name
+                }
+            },
+            tooltip: {
+                shared: true,
+                valueSuffix: AlarmUnit
+            },
+            credits: {
+                enabled: false
+            },
+            plotOptions: {
+                areaspline: {
+                    fillOpacity: 0.5
+                }
+            },
+            series: [{
+                name: alarm_selected.StatName,
+                data: hour_alarm,
+                turboThreshold: 1500       //设置最大数据量1500个
+            }]
+        });
+        $("#Warning_"+type+"_week").css("display","none");
+        $("#Warning_"+type+"_month").css("display","block");
+        max = day_head.length-1;
+        if(max > 30) max = 30;
+        $("#"+type+"_canvas_month").highcharts({
+
+            chart: {
+                type: 'areaspline',
+                zoomType: 'x'
+            },
+            title: {
+                text: name+' 日平均值日志，周期： '+date+' 为截至的30天 '
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'left',
+                verticalAlign: 'top',
+                x: 150,
+                y: 100,
+                floating: true,
+                borderWidth: 1,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+            },
+            xAxis: {
+                categories: day_head,
+                max: max
+            },
+
+            scrollbar: {
+
+                enabled: true
+
+            },
+            yAxis: {
+                title: {
+                    text: name
+                }
+            },
+            tooltip: {
+                shared: true,
+                valueSuffix: AlarmUnit
+            },
+            credits: {
+                enabled: false
+            },
+            plotOptions: {
+                areaspline: {
+                    fillOpacity: 0.5
+                }
+            },
+            series: [{
+                name: alarm_selected.StatName,
+                data: day_alarm,
+                turboThreshold: 1500       //设置最大数据量1500个
+
+            }]
+        });
+        $("#Warning_"+type+"_month").css("display","none");
+
+        //HYJ add for server slow
+        show_table_tags();
+    });*/
 }
 function initializeAlarmMap(){
     get_project_list();
@@ -5930,9 +6774,7 @@ function Data_export_Normal(title,tablename,condition,filter){
         Condition: condition,
         Filter: filter
     };
-    jQuery.get(request_head, map, function (data) {
-        log(data);
-        var result=JSON.parse(data);
+	var Data_export_Normal_callback = function(result){
         if(result.status == "false"){
             show_expiredModule();
             return;
@@ -5945,12 +6787,12 @@ function Data_export_Normal(title,tablename,condition,filter){
             txt = txt +"<th>"+ColumnName[i]+"</th>";
         }
         txt = txt +"</tr></thead>";
-        /*
-        txt = txt +"<tfoot><tr>";
-        for(var i=0;i<ColumnName.length;i++){
-            txt = txt +"<th>"+ColumnName[i]+"</th>";
-        }
-        txt = txt +"</tr></tfoot>";*/
+        
+        //txt = txt +"<tfoot><tr>";
+        //for(var i=0;i<ColumnName.length;i++){
+        //    txt = txt +"<th>"+ColumnName[i]+"</th>";
+        //}
+        //txt = txt +"</tr></tfoot>";
         txt = txt +"<tbody>";
         for( i=0;i<TableData.length;i++){
             txt = txt +"<tr>";
@@ -5989,7 +6831,69 @@ function Data_export_Normal(title,tablename,condition,filter){
         if_table_initialize = true;
         modal_middle($('#TableExportModule'));
         $('#TableExportModule').modal('show');
-    });
+	};
+	JQ_get(request_head,map,Data_export_Normal_callback);
+	/*
+    jQuery.get(request_head, map, function (data) {
+        log(data);
+        var result=JSON.parse(data);
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        ColumnName = result.ColumnName;
+        TableData = result.TableData;
+        var txt = "<thead> <tr>";
+		var i;
+        for( i=0;i<ColumnName.length;i++){
+            txt = txt +"<th>"+ColumnName[i]+"</th>";
+        }
+        txt = txt +"</tr></thead>";
+        
+        //txt = txt +"<tfoot><tr>";
+        //for(var i=0;i<ColumnName.length;i++){
+        //    txt = txt +"<th>"+ColumnName[i]+"</th>";
+        //}
+        //txt = txt +"</tr></tfoot>";
+        txt = txt +"<tbody>";
+        for( i=0;i<TableData.length;i++){
+            txt = txt +"<tr>";
+            for(var j=0;j<TableData[i].length;j++){
+                txt = txt +"<td>"+TableData[i][j]+"</td>";
+            }
+            txt = txt +"</tr>";
+        }
+        txt = txt+"</tbody>";
+        $("#ExportTable").append(txt);
+        if(if_table_initialize) $("#ExportTable").DataTable().destroy();
+
+        //console.log(monitor_map_list);
+
+        var show_table  = $("#ExportTable").DataTable( {
+            //dom: 'T<"clear">lfrtip',
+            "scrollY": 200,
+            "scrollCollapse": true,
+
+            "scrollX": true,
+            "searching": false,
+            "autoWidth": true,
+            "lengthChange":false,
+            //bSort: false,
+            //aoColumns: [ { sWidth: "45%" }, { sWidth: "45%" }, { sWidth: "10%", bSearchable: false, bSortable: false } ],
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'excel',
+                    text: '导出到excel',
+                    filename: title+(new Date()).Format("yyyy-MM-dd_hhmmss")
+                }
+            ]
+
+        } );
+        if_table_initialize = true;
+        modal_middle($('#TableExportModule'));
+        $('#TableExportModule').modal('show');
+    });*/
 
 
 
@@ -6068,10 +6972,8 @@ function submit_alarm_query(){
         Condition: condition,
         Filter: []//new Array()
     };
-    jQuery.get(request_head, map, function (data) {
-        log(data);
-        var result=JSON.parse(data);
-        if(result.status == "false"){
+	var submit_alarm_query_callback = function(result){
+if(result.status == "false"){
             show_expiredModule();
             return;
         }
@@ -6084,12 +6986,6 @@ function submit_alarm_query(){
             txt = txt +"<th>"+ColumnName[i]+"</th>";
         }
         txt = txt +"</tr></thead>";
-        /*
-         txt = txt +"<tfoot><tr>";
-         for(var i=0;i<ColumnName.length;i++){
-         txt = txt +"<th>"+ColumnName[i]+"</th>";
-         }
-         txt = txt +"</tr></tfoot>";*/
         txt = txt +"<tbody>";
         for( i=0;i<TableData.length;i++){
             txt = txt +"<tr>";
@@ -6128,7 +7024,64 @@ function submit_alarm_query(){
         if_table_initialize = true;
         modal_middle($('#TableExportModule'));
         $('#TableExportModule').modal('show');
-    });
+	};
+	JQ_get(request_head,map,submit_alarm_query_callback);
+	/*
+    jQuery.get(request_head, map, function (data) {
+        log(data);
+        var result=JSON.parse(data);
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        ColumnName = result.ColumnName;
+        TableData = result.TableData;
+		$("#ExportTable").empty();
+        var txt = "<thead> <tr>";
+		var i;
+        for( i=0;i<ColumnName.length;i++){
+            txt = txt +"<th>"+ColumnName[i]+"</th>";
+        }
+        txt = txt +"</tr></thead>";
+        txt = txt +"<tbody>";
+        for( i=0;i<TableData.length;i++){
+            txt = txt +"<tr>";
+            for(var j=0;j<TableData[i].length;j++){
+                txt = txt +"<td>"+TableData[i][j]+"</td>";
+            }
+            txt = txt +"</tr>";
+        }
+        txt = txt+"</tbody>";
+        $("#ExportTable").append(txt);
+        if(if_table_initialize) $("#ExportTable").DataTable().destroy();
+
+        //console.log(monitor_map_list);
+
+        var show_table  = $("#ExportTable").DataTable( {
+            //dom: 'T<"clear">lfrtip',
+            "scrollY": 200,
+            "scrollCollapse": true,
+
+            "scrollX": true,
+            "searching": false,
+            "autoWidth": true,
+            "lengthChange":false,
+            //bSort: false,
+            //aoColumns: [ { sWidth: "45%" }, { sWidth: "45%" }, { sWidth: "10%", bSearchable: false, bSortable: false } ],
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'excel',
+                    text: '导出到excel',
+                    filename: "日志数据导出"+$("#QueryStatCode_choice").text()+(new Date()).Format("yyyy-MM-dd_hhmmss")
+                }
+            ]
+
+        } );
+        if_table_initialize = true;
+        modal_middle($('#TableExportModule'));
+        $('#TableExportModule').modal('show');
+    });*/
 }
 
 //Sensor Manager
@@ -6136,6 +7089,15 @@ function get_sensor_list(){
     var map={
         action:"SensorList"
     };
+	var get_sensor_list_callback = function(result){
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        sensor_list= result.SensorList;
+	};
+	JQ_get(request_head,map,get_sensor_list_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -6144,7 +7106,7 @@ function get_sensor_list(){
             return;
         }
         sensor_list= result.SensorList;
-    });
+    });*/
 }
 
 function get_device_sensor(DevCode){
@@ -6152,6 +7114,17 @@ function get_device_sensor(DevCode){
         action:"DevSensor",
         DevCode: DevCode
     };
+	var get_device_sensor_callback = function(result){
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        device_selected_sensor = result.ret;
+        //hyj add for server slow.
+        draw_dev_detail_panel();
+	};
+	JQ_get(request_head,map,get_device_sensor_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -6162,7 +7135,7 @@ function get_device_sensor(DevCode){
         device_selected_sensor = result.ret;
         //hyj add for server slow.
         draw_dev_detail_panel();
-    });
+    });*/
 }
 function get_sensor_name(sensorid){
     var ret = "未知传感器";
@@ -6224,6 +7197,18 @@ function submit_sensor_module(){
         status:$("#SensorStatus_choice").val(),
         ParaList :paramlist
     };
+	var submit_sensor_module_callback = function(result){
+        var ret = result.status;
+        if(ret == "true"){
+            show_alarm_module(false,"传感器修改成功！");
+            $('#SensorModal').modal('hide');
+            Initialize_dev_detail();
+        }else{
+            show_alarm_module(true,"传感器修改失败！"+result.msg);
+        }
+	};
+	JQ_get(request_head,map,submit_sensor_module_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -6235,13 +7220,24 @@ function submit_sensor_module(){
         }else{
             show_alarm_module(true,"传感器修改失败！"+result.msg);
         }
-    });
+    });*/
 }
 function get_key_auth_list(KeyId){
     var map={
         action:"KeyAuthlist",
         KeyId: KeyId
     };
+	var get_key_auth_list_callback = function(result){
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        select_key_auth = result.ret;
+        //hyj add for server slow.
+        show_key_auth_module();
+	};
+	JQ_get(request_head,map,get_key_auth_list_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -6252,7 +7248,7 @@ function get_key_auth_list(KeyId){
         select_key_auth = result.ret;
         //hyj add for server slow.
         show_key_auth_module();
-    });
+    });*/
 }
 function show_key_auth_module(){
     if(null === select_key_auth) {
@@ -6279,6 +7275,17 @@ function get_user_message(){
         action: "GetUserMsg",
         id: usr.id
     };
+	var get_user_message_callback = function(result){
+        var ret = result.status;
+        if(ret == "true"){
+            usr_msg = result.msg;
+            usr_ifdev = result.ifdev;
+        }else{
+            show_alarm_module(true,"获取用户信息失败，请重新登录！"+result.msg);
+        }
+	};
+	JQ_get(request_head,map,get_user_message_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -6289,13 +7296,24 @@ function get_user_message(){
         }else{
             show_alarm_module(true,"获取用户信息失败，请重新登录！"+result.msg);
         }
-    });
+    });*/
 }
 function get_user_image(){
     var map = {
         action: "GetUserImg",
         id: usr.id
     };
+	var get_user_image_callback = function(result){
+        var ret = result.status;
+        if(ret == "true"){
+            usr_img = result.img;
+            reflash_usr_img_table();
+        }else{
+            show_alarm_module(true,"获取用户信息失败，请重新登录！"+result.msg);
+        }
+	};
+	JQ_get(request_head,map,get_user_image_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -6306,13 +7324,24 @@ function get_user_image(){
         }else{
             show_alarm_module(true,"获取用户信息失败，请重新登录！"+result.msg);
         }
-    });
+    });*/
 }
 function clear_user_image(){
     var map = {
         action: "ClearUserImg",
         id: usr.id
     };
+	var clear_user_image_callback = function(result){
+        var ret = result.status;
+        if(ret == "true"){
+            usr_img = [];//new Array();
+            reflash_usr_img_table();
+        }else{
+            show_alarm_module(true,"获取用户信息失败，请重新登录！"+result.msg);
+        }
+	};
+	JQ_get(request_head,map,clear_user_image_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -6323,7 +7352,7 @@ function clear_user_image(){
         }else{
             show_alarm_module(true,"获取用户信息失败，请重新登录！"+result.msg);
         }
-    });
+    });*/
 }
 function set_user_message(msg,ifdev){
     var map = {
@@ -6332,6 +7361,16 @@ function set_user_message(msg,ifdev){
         msg: msg,
         ifdev: ifdev
     };
+	var set_user_message_callback = function(result){
+        var ret = result.status;
+        if(ret == "true"){
+            show_alarm_module(true,"屏保欢迎语设置成功！"+result.msg);
+        }else{
+            show_alarm_module(true,"获取用户信息失败，请重新登录！"+result.msg);
+        }
+	};
+	JQ_get(request_head,map,set_user_message_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -6341,7 +7380,7 @@ function set_user_message(msg,ifdev){
         }else{
             show_alarm_module(true,"获取用户信息失败，请重新登录！"+result.msg);
         }
-    });
+    });*/
 }
 function show_usr_msg_module(){
     $("#UsrMsg_Input").val(usr_msg);
@@ -6372,6 +7411,17 @@ function user_message_update(){
         msg: $("#UsrMsg_Input").val(),
         ifdev: $("#UsrDev_choice").val()
     };
+	var user_message_update_callback = function(result){
+        var ret = result.status;
+        if(ret == "true"){
+            $('#UsrMsgModal').modal('hide');
+            show_alarm_module(true,"屏保欢迎语设置成功！"+result.msg);
+        }else{
+            show_alarm_module(true,"获取用户信息失败，请重新登录！"+result.msg);
+        }
+	};
+	JQ_get(request_head,map,user_message_update_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -6382,7 +7432,7 @@ function user_message_update(){
         }else{
             show_alarm_module(true,"获取用户信息失败，请重新登录！"+result.msg);
         }
-    });
+    });*/
 }
 
 function change_camera_status(hvalue,vvalue,url){
@@ -6396,6 +7446,17 @@ function get_camera_unit(){
     var map = {
         action: "GetCameraUnit"
     };
+	var get_camera_unit_callback = function(result){
+        var ret = result.status;
+        if(ret == "true"){
+            camera_unit_h = result.ret.h;
+            camera_unit_v = result.ret.v;
+        }else{
+            show_alarm_module(true,"获取摄像头基本单位，请重新登录！"+result.msg);
+        }
+	};
+	JQ_get(request_head,map,get_camera_unit_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -6406,7 +7467,7 @@ function get_camera_unit(){
         }else{
             show_alarm_module(true,"获取摄像头基本单位，请重新登录！"+result.msg);
         }
-    });
+    });*/
 }
 
 function get_camera_status(statcode){
@@ -6415,6 +7476,16 @@ function get_camera_status(statcode){
         StatCode:statcode,
         id: usr.id
     };
+	var get_camera_status_callback = function(result){
+        var ret = result.status;
+        if(ret == "true"){
+            change_camera_status(result.ret.h,result.ret.v,result.ret.url);
+        }else{
+            show_alarm_module(true,"获取摄像头基本单位，请重新登录！"+result.msg);
+        }
+	};
+	JQ_get(request_head,map,get_camera_status_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -6424,7 +7495,7 @@ function get_camera_status(statcode){
         }else{
             show_alarm_module(true,"获取摄像头基本单位，请重新登录！"+result.msg);
         }
-    });
+    });*/
 }
 
 function move_camera(statcode,vorh,value){
@@ -6444,6 +7515,16 @@ function move_camera(statcode,vorh,value){
             adj: value
         };
     }
+	var move_camera_callback = function(result){
+        var ret = result.status;
+        if(ret == "true"){
+            change_camera_status(result.ret.h,result.ret.v,result.ret.url);
+        }else{
+            show_alarm_module(true,"获取摄像头基本单位，请重新登录！"+result.msg);
+        }
+	};
+	JQ_get(request_head,map,move_camera_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -6453,7 +7534,7 @@ function move_camera(statcode,vorh,value){
         }else{
             show_alarm_module(true,"获取摄像头基本单位，请重新登录！"+result.msg);
         }
-    });
+    });*/
 }
 function show_cameraModule(Statcode){
     modal_middle($('#VideoSelectionModule'));
@@ -6483,7 +7564,22 @@ function openlock(statcode){
             StatCode:statcode,
             id: usr.id
         };
+	var openlock_callback = function(result){
+        var ret = result.status;
+        if(ret == "true"){
+            var auth = result.auth;
+            if(auth == "true"){
+                show_alarm_module(false,"已向下位机发送开锁请求，请稍后刷新！");
+            }else{
+                show_alarm_module(true,"无效授权！"+result.msg);
+            }
 
+        }else{
+            show_alarm_module(true,"开锁请求失败，请重新登录！"+result.msg);
+        }
+	};
+	JQ_get(request_head,map,openlock_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -6499,13 +7595,22 @@ function openlock(statcode){
         }else{
             show_alarm_module(true,"开锁请求失败，请重新登录！"+result.msg);
         }
-    });
+    });*/
 }
 //Key auth view
 function get_proj_key_list(){
     var map={
         action:"ProjKeyList"
     };
+	var get_proj_key_list_callback = function(result){
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        key_list = result.ret;
+	};
+	JQ_get(request_head,map,get_proj_key_list_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -6515,12 +7620,21 @@ function get_proj_key_list(){
         }
         key_list = result.ret;
 
-    });
+    });*/
 }
 function get_proj_user_list(){
     var map={
         action:"ProjUserList"
     };
+	var get_proj_user_list_callback = function(result){
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        proj_user_list = result.ret;
+	};
+	JQ_get(request_head,map,get_proj_user_list_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -6530,7 +7644,7 @@ function get_proj_user_list(){
         }
         proj_user_list = result.ret;
 
-    });
+    });*/
 }
 function build_key_auth_proj_choice(){
     if(project_list === null) return;
@@ -6614,6 +7728,28 @@ function get_domain_auth_list(DomainCode){
         action:"DomainAuthlist",
         DomainCode:DomainCode
     };
+	var get_domain_auth_list_callback = function(result){
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        var domain_auth_list = result.ret;
+        var txt = "<thead><tr><th></th><th>编号</th><th>钥匙</th><th>用户</th><th>授权条件</th></tr></thead><tbody>";
+        $("#Table_point_key_auth").empty();
+        for(var i=0;i<domain_auth_list.length;i++){
+            txt= txt+"<tr> <td><button type='button' class='btn btn-default Auth_del_btn' AuthId='"+domain_auth_list[i].AuthId+"' ><em class='glyphicon glyphicon-trash ' aria-hidden='true' ></em></button></td>";
+            txt = txt +"<td>"+domain_auth_list[i].AuthId+"</td><td>"+domain_auth_list[i].KeyName+"</td><td>"+domain_auth_list[i].UserName+"</td><td>"+domain_auth_list[i].AuthWay+"</td></tr>";
+        }
+        txt = txt+"</tbody>";
+        $("#Table_point_key_auth").append(txt);
+
+		$(".Auth_del_btn").on('click',function(){
+			touchcookie();
+			show_auth_delete_module($(this).attr("AuthId"));
+		});
+	};
+	JQ_get(request_head,map,get_domain_auth_list_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -6636,7 +7772,7 @@ function get_domain_auth_list(DomainCode){
 			show_auth_delete_module($(this).attr("AuthId"));
 		});
 
-    });
+    });*/
 }
 
 function show_auth_delete_module(authid){
@@ -6654,6 +7790,17 @@ function key_auth_delete(authid){
         AuthId:authid,
 		id: usr.id
     };
+	var key_auth_delete_callback = function(result){
+        		var ret = result.status;
+        if(ret == "true"){
+            show_alarm_module(false,"删除成功！");
+			get_domain_auth_list($("#KeyAuthPoint_choice").val());
+        }else{
+            show_alarm_module(true,"修改失败！"+result.msg);
+        }
+	};
+	JQ_get(request_head,map,key_auth_delete_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -6666,7 +7813,7 @@ function key_auth_delete(authid){
         }
         
 
-    });
+    });*/
 }
 function show_auth_new_module(projcode,domainid,domainname){
 	$("#newKeyAuthCommit").attr("DomainId",domainid);
@@ -6684,6 +7831,17 @@ function new_key_auth(auth){
         Auth:auth,
         id: usr.id
     };
+	var new_key_auth_callback = function(result){
+        var ret = result.status;
+        if(ret == "true"){
+            show_alarm_module(false,"新建成功！");
+            get_domain_auth_list($("#KeyAuthPoint_choice").val());
+        }else{
+            show_alarm_module(true,"新建失败！"+result.msg);
+        }
+	};
+	JQ_get(request_head,map,new_key_auth_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -6695,7 +7853,7 @@ function new_key_auth(auth){
             show_alarm_module(true,"新建失败！"+result.msg);
         }
 
-    });
+    });*/
 }
 function click_new_key_auch_commit(){
     var DomainId= $("#newKeyAuthCommit").attr("DomainId");
@@ -6741,6 +7899,19 @@ function click_key_grant_commit(keyid,userid){
 		UserId:userid,
         id: usr.id
     };
+	var click_key_grant_commit_callback = function(result){
+        var ret = result.status;
+        if(ret == "true"){
+            show_alarm_module(false,"变更成功！");
+            get_domain_auth_list($("#KeyAuthPoint_choice").val());
+			get_proj_key_list();
+            window.setTimeout(build_key_auth_proj_choice, wait_time_middle);
+        }else{
+            show_alarm_module(true,"变更失败！"+result.msg);
+        }
+	};
+	JQ_get(request_head,map,click_key_grant_commit_callback);
+	/*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -6754,5 +7925,5 @@ function click_key_grant_commit(keyid,userid){
             show_alarm_module(true,"变更失败！"+result.msg);
         }
 
-    });
+    });*/
 }

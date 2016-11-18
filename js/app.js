@@ -2038,7 +2038,7 @@ function draw_user_detail_proj_table(){
 }
 function draw_user_detail_key_table(){
     $("#Table_user_key").empty();
-    txt ="<thead> <tr> <th>钥匙名称 </th> <th>归属区域 </th></tr> </thead> <tbody >";
+    txt ="<thead> <tr> <th>钥匙名称 </th> <th>归属项目 </th></tr> </thead> <tbody >";
     for(var i=0;i<user_selected_key.length;i++){
         txt = txt + "<tr id='"+user_selected_key[i].id+"' class='keyrow'> <td>"+ user_selected_key[i].name+"</td> <td>"+ user_selected_key[i].domain+"</td></tr>";
     }
@@ -7671,7 +7671,7 @@ function update_key_auth_proj_stat_choice(projcode,projname){
 		if(point_list[i].ProjCode == projcode){
         txt = txt +"<option value="+point_list[i].id+">"+point_list[i].name+"</option>";}
     }
-	txt = "<option value="+projcode+">"+projname+":全区域</option>"+txt;
+	txt = "<option value="+projcode+">"+projname+":全项目</option>"+txt;
 
 	$("#KeyAuthPoint_choice").append(txt);
 }

@@ -1257,7 +1257,7 @@ $(document).ready(function() {
     $("#delKeyCommit").on('click',function(){
         //发送请求并且告知成功失败
         //刷新表格
-        del_key(key_selected.KeyID);
+        del_key(key_selected.KeyCode);
         touchcookie();
     });
     $("#newKeyCommit").on('click',function(){
@@ -7858,7 +7858,7 @@ function new_key_auth(auth){
 function click_new_key_auch_commit(){
     var DomainId= $("#newKeyAuthCommit").attr("DomainId");
     var KeyId=$("#NewKeyAuthKey_choice").val();
-    var authway = $("#NewKeyAuthKey_choice").val();
+    var authway = $("#NewKeyAuthEndTime_Input").val();
     if(authway === "") authway = "always";
     var map = {
         DomainId: DomainId,

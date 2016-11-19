@@ -5433,7 +5433,7 @@ function get_monitor_warning_on_map(){
                 for(var i=0;i<ret.length;i++){
                     var nickname = ret[i].AlarmEName;
                     txt = txt + "<img src='./svg/icon/"+ret[i].AlarmEName+".svg' style='width:36px;hight:36px'></img><label style='max-width: 150px;min-width: 150px'>&nbsp&nbsp&nbsp&nbsp"+ret[i].AlarmName+":";
-                    var value = parseInt(ret[i].AlarmValue);
+                    var value = ret[i].AlarmValue;//parseInt(ret[i].AlarmValue);
                     var warning = ret[i].WarningTarget;
 
                     if(warning == "true"){

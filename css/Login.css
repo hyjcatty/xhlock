@@ -2,10 +2,9 @@ body {
     padding-top: 0px;
     padding-bottom: 40px;
     background-size:100%;
-    background: url('../svg/backrounddark.jpg');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size:100% 100%;
+    background: url('../svg/big_backround.svg');
+    //background-image: url('../svg/big_backround.svg');
+    background-repeat:no-repeat;
 }/*
 .nav li {
     padding-top: 5px;
@@ -14,7 +13,7 @@ body {
     padding: 9px 0;
 }*/
 .logo-header{
-    position:absolute;
+    position:relative;
     margin-top:0px;
     height:110px;
 }
@@ -22,7 +21,6 @@ body {
     position:relative;
     top:0px;
     height:100px;
-    z-index: 0
 }
 .leaderboard {
     padding: 60px;

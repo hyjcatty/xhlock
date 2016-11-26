@@ -4,10 +4,6 @@
 var basic_address = getRelativeURL()+"/";
 var request_head= basic_address+"request.php";
 var jump_url = basic_address+"jump.php";
-var winHeight=800;
-var winWidth=800;
-var logoHeight=100;
-var headHeight=100;
 function getsec(str)
 {
     var str1=Number(str.substring(1,str.length));
@@ -51,8 +47,6 @@ function jump(str){
     window.location="http://"+window.location.host+jump_url+"?session="+str;
 }
 $(document).ready(function() {
-    get_size();
-
     var basic_min_height = parseInt(($(".leaderboard").css("padding-top")).replace(/[^0-9]/ig,""));
     if((window.screen.availHeight -600)/2>basic_min_height) basic_min_height = (window.screen.availHeight -600)/2;
     $(".leaderboard").css("padding-top",basic_min_height+"px");
@@ -65,23 +59,6 @@ $(document).ready(function() {
             name:$("#Username_Input").val(),
             password:$("#Password_Input").val()
         };
-        var callback=function(result){
-            if(result.status!="true"){
-                $("#UserAlertModalLabel").text = "警告";
-                $("#UserAlertModalContent").empty();
-                $("#UserAlertModalContent").append("<strong>警告！</strong>"+result.text);
-                modal_middle($('#UserAlarm'));
-                $('#UserAlarm').modal('show') ;
-            }else{
-                setCookie("Environmental.inspection.session",result.key,"m10");
-                jump(result.key);
-            }
-        };
-        JQ_get(request_head,map,callback);
-
-
-
-        /*
         jQuery.get(request_head, map, function (data) {
             var result=JSON.parse(data);
             if(result.status!="true"){
@@ -95,7 +72,7 @@ $(document).ready(function() {
                 jump(result.key);
             }
 
-        });*/
+        });
 
     });
 });
@@ -124,35 +101,4 @@ function modal_middle(modal){
         var _modal = $(modal).find(".modal-dialog");
         _modal.animate({'margin-top': parseInt(($(window).height() - _modal.height())/2)}, 300 );
     },200);
-}
-
-function get_size(){
-    if (window.innerWidth)
-        winWidth = window.innerWidth;
-    else if ((document.body) && (document.body.clientWidth))
-        winWidth = document.body.clientWidth;
-    if (window.innerHeight)
-        winHeight = window.innerHeight;
-    else if ((document.body) && (document.body.clientHeight))
-        winHeight = document.body.clientHeight;
-    if (document.documentElement && document.documentElement.clientHeight && document.documentElement.clientWidth)
-    {
-        winHeight = document.documentElement.clientHeight;
-        winWidth = document.documentElement.clientWidth;
-    }
-    console.log("winWidth = "+winWidth);
-    console.log("winHeight= "+winHeight);
-    var tempheight = winHeight;
-    if(winHeight>winWidth) tempheight = winWidth;
-    logoHeight=parseInt(tempheight/5);
-    headHeight=parseInt(tempheight/5);
-    $("#logo").css("height",logoHeight);
-    $("#webhead").css("height",logoHeight);
-    $("body").css("height",winHeight);
-    var module_height = parseInt((winHeight-180)/2)-64;
-    $("#kuang").css("margin-top",module_height);
-    if(winHeight>winWidth){
-        $("#webhead").css("margin-top",logoHeight);
-    }
-
 }

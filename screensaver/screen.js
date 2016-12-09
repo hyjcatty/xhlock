@@ -82,25 +82,33 @@ function initialize(){
 }
 
 function get_user_image(){
+	var body={id: usr};
     var map = {
         action: "GetUserImg",
-        id: usr
+        body:body,
+		type:"query",
+		user:usr
     };
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
         var ret = result.status;
         if(ret == "true"){
-            usr_img = result.img;
+            usr_img = result.ret;
         }
     });
 }
 
 function show_user_message(){
+	var body={
+		id: usr,
+        StatCode: StatCode
+	};
     var map = {
         action: "ShowUserMsg",
-        id: usr,
-        StatCode: StatCode
+        body:body,
+		type:"query",
+		user:usr
     };
     jQuery.get(request_head, map, function (data) {
         log(data);

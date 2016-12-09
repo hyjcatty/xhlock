@@ -13,7 +13,7 @@ var clean = require('gulp-clean');
 var htmlmin = require('gulp-htmlmin');
 var option = {
 
-    buildPath: "./dist"
+    buildPath: "../www/dist"
 }
 var option_html = {
     collapseWhitespace:true,

@@ -182,7 +182,6 @@ function getRelativeURL(){
 
 
 
-
 /*
 exports.date_compare_today=date_compare_today;
 exports.date_compare=date_compare;

@@ -38,9 +38,14 @@
     });
     function require_VCR(){
         if(responsed) return;
+		var body = {
+			videoid: videoid
+		};
         var map = {
             action: "GetVideo",
-            id: videoid
+            body: body;
+			type:"query",
+			user:"null"
         };
         jQuery.get(request_head, map, function (data) {
             log(data);
@@ -51,7 +56,7 @@
                 $("#notepad").empty();
                 $("#notepad").append("获取视频失败，请检查设备的因特网链接是否顺畅。")
             }else{
-                var url = result.url;
+                var url = result.ret;
                 var txt = $("#notepad").text();
                 if(url == "downloading"){
                     txt = txt+".";

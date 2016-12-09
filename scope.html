@@ -2,7 +2,7 @@
 <html>
 <head lang="en">
     <meta charset="utf-8">
-    <title>环境监测系统</title>
+    <title>光交箱智能管理系统</title>
     <!-- Bootstrap core CSS -->
     <link href="./resource/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -16,7 +16,7 @@
     <!--link href="./css/dataTables.tableTools.min.css" rel="stylesheet"-->
 
     <link href="./resource/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
-    <link href="./resource/css/custom.min.css" rel="stylesheet">
+    <link href="./resource/css/custom.css" rel="stylesheet">
     <link href="./css/nprogress.css" rel="stylesheet">
     <link href="./css/scope.css" rel="stylesheet">
     <link href="./css/style.css" rel="stylesheet">
@@ -52,7 +52,7 @@
             <div class="col-md-3 left_col">
                 <div class="left_col scroll-view">
                     <div class="navbar nav_title" style="border: 0;">
-                        <a href="#" class="site_title"><i class="fa fa-leaf"></i> <span>爱启环境</span></a>
+                        <a href="#" class="site_title"><!--i class="fa fa-leaf"></i--> <i><img src="./svg/logoonly.png" width="32" height="32"></i><span>FOHA</span> </a>
                     </div>
 
                     <div class="clearfix"></div>
@@ -66,25 +66,33 @@
                         <div class="menu_section">
                             <h3>功能列表</h3>
                             <ul class="nav side-menu">
-                                <li><a><i class="fa fa-home"></i> 系统设置 <span class="fa fa-chevron-down"></span></a>
+                                <li><a><i class="fa fa-home"></i> 系统管理 <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        <li><a href="#" id="UserManage">用户设置</a></li>
-                                        <li><a href="#" id="PGManage">项目组管理</a></li>
-                                        <li><a href="#" id="ProjManage">项目信息</a></li>
+                                        <li><a href="#" id="UserManage">用户管理</a></li>
                                         <li><a href="#" id="ParaManage">参数管理</a></li>
+                                        <li><a href="#" id="InstControl">数据管理</a></li>
                                     </ul>
                                 </li>
                                 <li><a><i class="fa fa-edit"></i> 项目管理 <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        <li><a href="#" id="MPManage">测量点管理</a></li>
-                                        <li><a href="#" id="DevManage">设备管理</a></li>
+                                        <li><a href="#" id="PGManage">项目组信息</a></li>
+                                        <li><a href="#" id="ProjManage">项目信息</a></li>
+                                        <li><a href="#" id="MPManage">站点信息</a></li>
+                                        <li><a href="#" id="DevManage">设备信息</a></li>
                                     </ul>
                                 </li>
-                                <li><a><i class="fa fa-bar-chart-o"></i> 测量管理 <span class="fa fa-chevron-down"></span></a>
+                                <li><a><i class="fa fa-key"></i> 钥匙管理 <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        <li><a href="#" id="MPMonitor">地图监控</a></li>
-                                        <li><a href="#" id="MPStaticMonitorTable">监测点聚合</a></li>
-                                        <li><a href="#" id="MPMonitorCard">监测点列块</a></li>
+                                        <li><a href="#" id="KeyManage">钥匙信息</a></li>
+                                        <li><a href="#" id="KeyAuth">钥匙授权</a></li>
+                                        <li><a href="#" id="KeyHistory">开锁历史</a></li>
+                                    </ul>
+                                </li>
+                                <li><a><i class="fa fa-bar-chart-o"></i> 监控管理 <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="#" id="MPMonitor">站点地图</a></li>
+                                        <li><a href="#" id="MPStaticMonitorTable">站点列表</a></li>
+                                        <!--li><a href="#" id="MPMonitorCard">站点列块</a></li-->
                                     </ul>
                                 </li>
                                 <li><a><i class="fa fa-exclamation-circle"></i> 告警管理 <span class="fa fa-chevron-down"></span></a>
@@ -93,17 +101,17 @@
                                         <li><a href="#" id="WarningHandle">告警处理</a></li>
                                     </ul>
                                 </li>
-                                <li><a><i class="fa fa-tachometer"></i> 仪器操作 <span class="fa fa-chevron-down"></span></a>
+                                <li><a><i class="fa fa-pencil"></i> 工单管理 <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        <li><a href="#" id="InstConf">参数设置</a></li>
-                                        <li><a href="#" id="InstRead">瞬时读数</a></li>
-                                        <li><a href="#" id="InstDesign">软件设计</a></li>
+                                        <li><a href="#" id="InstConf">施工单管理</a></li>
+                                        <li><a href="#" id="InstRead">巡检单管理</a></li>
+                                        <!--li><a href="#" id="InstDesign">软件设计</a></li>
                                         <li><a href="#" id="InstControl">远程操控</a></li>
                                         <li><a href="#" id="InstSnapshot">抓图拍图</a></li>
-                                        <li><a href="#" id="InstVideo">视频浏览</a></li>
+                                        <li><a href="#" id="InstVideo">视频浏览</a></li-->
                                     </ul>
                                 </li>
-                                <li><a><i class="fa fa-flag-checkered"></i>性能管理 <span class="fa fa-chevron-down"></span></a>
+                                <!--li><a><i class="fa fa-flag-checkered"></i>性能管理 <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="#" id="AuditTarget">业务指标</a></li>
                                         <li><a href="#" id="AuditStability">稳定性统计</a></li>
@@ -126,7 +134,7 @@
                                         <li><a href="#" id="ADConf">广告信息设置</a></li>
                                         <li><a href="#" id="WEBConf">门户信息设置</a></li>
                                     </ul>
-                                </li>
+                                </li-->
                             </ul>
                         </div>
 
@@ -155,7 +163,7 @@
                                     <span class=" fa fa-angle-down"></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-usermenu pull-right">
-                                    <li id="menu_user_profile"><a href="#"> 屏保配置</a></li>
+                                    <li id="menu_user_profile" style="display:none"><a href="#"> 屏保配置</a></li>
                                     <li id="menu_logout"><a href="#" ><i class="fa fa-sign-out pull-right"></i>登出</a></li>
                                 </ul>
                             </li>
@@ -274,8 +282,11 @@
                                                                         <div class="input-group" >
                                                                             <span class="input-group-addon" id="NewUserType" style="min-width: 100px">用户分组</span>
                                                                             <select class="form-control" placeholder="用户分组" aria-describedby="basic-addon1" id="NewUserType_choice">
-                                                                                <option value="false">用户</option>
-                                                                                <option value="true">管理员</option>
+                                                                                <option value="4">巡检员</option>
+                                                                                <option value="3">三级用户</option>
+                                                                                <option value="2">二级用户</option>
+                                                                                <option value="1">高级用户</option>
+                                                                                <option value="0">管理员</option>
                                                                             </select>
 
                                                                         </div>
@@ -480,7 +491,7 @@
                                                         </div>
 
                                                         <!--div style="max-height: 210px;overflow:scroll;overflow-x:hidden"-->
-                                                        <div class="col-md-6 col-sm-12 col-xs-12 column">
+                                                        <div class="col-md-3 col-sm-12 col-xs-12 column">
                                                             <table data-toggle="table" class="table table-hover table-bordered" id="Table_user_authed" data-click-to-select="false" >
                                                                 <thead>
                                                                 <tr>
@@ -511,6 +522,63 @@
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
+                                                                    <td>
+                                                                        PM2.5-4
+                                                                    </td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                        <div class="col-md-3 col-sm-12 col-xs-12 column">
+                                                            <table data-toggle="table" class="table table-hover table-bordered" id="Table_user_key" data-click-to-select="false" >
+                                                                <thead>
+                                                                <tr>
+                                                                    <th>
+                                                                        用户钥匙
+                                                                    </th>
+
+                                                                    <th>
+                                                                        隶属项目
+                                                                    </th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody >
+                                                                <tr>
+                                                                    <td>
+                                                                    水文观测1
+                                                                </td>
+                                                                    <td>
+                                                                        水文观测1
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        PM2.5-1
+                                                                    </td>
+                                                                    <td>
+                                                                        PM2.5-1
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        PM2.5-2
+                                                                    </td>
+                                                                    <td>
+                                                                        PM2.5-2
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        PM2.5-3
+                                                                    </td>
+                                                                    <td>
+                                                                        PM2.5-3
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        PM2.5-4
+                                                                    </td>
                                                                     <td>
                                                                         PM2.5-4
                                                                     </td>
@@ -578,13 +646,13 @@
                                                                 <div class="modal-body" style="min-height:520px">
                                                                     <div class="col-md-6">
                                                                         <div class="input-group">
-                                                                            <span class="input-group-addon" id="PGPGCode" style="min-width: 100px">项目群编号</span>
-                                                                            <input type="text" class="form-control" placeholder="项目群编号" aria-describedby="basic-addon1" id="PGPGCode_Input"/>
+                                                                            <span class="input-group-addon" id="PGPGCode" style="min-width: 100px">项目组编号</span>
+                                                                            <input type="text" class="form-control" placeholder="项目组编号" aria-describedby="basic-addon1" id="PGPGCode_Input"/>
                                                                         </div>
                                                                         <p></p>
                                                                         <div class="input-group">
-                                                                            <span class="input-group-addon" id="PGPGName" style="min-width: 100px">项目群名称</span>
-                                                                            <input type="text" class="form-control" placeholder="项目群名称" aria-describedby="basic-addon1" id="PGPGName_Input"/>
+                                                                            <span class="input-group-addon" id="PGPGName" style="min-width: 100px">项目组名称</span>
+                                                                            <input type="text" class="form-control" placeholder="项目组名称" aria-describedby="basic-addon1" id="PGPGName_Input"/>
                                                                         </div>
 
                                                                     </div>
@@ -917,8 +985,8 @@
                                                                         <div class="form-group " style="height:29px">
                                                                             <div class="input-group date form_date col-md-5" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
                                                                                 <div class="input-group">
-                                                                                    <div class="input-group-addon" style="min-width: 100px">开工日期</div>
-                                                                                    <input class="form-control" size="16" type="text" value=""  placeholder="开工日期" id="ProjProStartTime_Input" style="min-width: 116px">
+                                                                                    <div class="input-group-addon" style="min-width: 100px">创建日期</div>
+                                                                                    <input class="form-control" size="16" type="text" value=""  placeholder="创建日期" id="ProjProStartTime_Input" style="min-width: 116px">
                                                                                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                                                                 </div></div>
                                                                         </div>
@@ -1019,9 +1087,66 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-md-6 col-sm-12 col-xs-12 column">
+                                                        <div class="col-md-3 col-sm-12 col-xs-12 column">
                                                             <table data-toggle="table" class="table table-hover table-bordered" id="Table_proj_point" data-click-to-select="false" >
 
+                                                            </table>
+                                                        </div>
+                                                        <div class="col-md-3 col-sm-12 col-xs-12 column">
+                                                            <table data-toggle="table" class="table table-hover table-bordered" id="Table_proj_key" data-click-to-select="false" >
+                                                                <thead>
+                                                                <tr>
+                                                                    <th>
+                                                                        用户钥匙
+                                                                    </th>
+
+                                                                    <th>
+                                                                        隶属项目
+                                                                    </th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody >
+                                                                <tr>
+                                                                    <td>
+                                                                        水文观测1
+                                                                    </td>
+                                                                    <td>
+                                                                        水文观测1
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        PM2.5-1
+                                                                    </td>
+                                                                    <td>
+                                                                        PM2.5-1
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        PM2.5-2
+                                                                    </td>
+                                                                    <td>
+                                                                        PM2.5-2
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        PM2.5-3
+                                                                    </td>
+                                                                    <td>
+                                                                        PM2.5-3
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        PM2.5-4
+                                                                    </td>
+                                                                    <td>
+                                                                        PM2.5-4
+                                                                    </td>
+                                                                </tr>
+                                                                </tbody>
                                                             </table>
                                                         </div>
                                                         <!--/div-->
@@ -1122,13 +1247,13 @@
                                                                 <div class="modal-body" style="min-height:520px">
                                                                     <div class="col-md-6">
                                                                         <div class="input-group">
-                                                                            <span class="input-group-addon" id="PointStatCode" style="min-width: 100px">监控点编号</span>
-                                                                            <input type="text" class="form-control" placeholder="监控点编号" aria-describedby="basic-addon1" id="PointStatCode_Input"/>
+                                                                            <span class="input-group-addon" id="PointStatCode" style="min-width: 100px">站点编号</span>
+                                                                            <input type="text" class="form-control" placeholder="站点编号" aria-describedby="basic-addon1" id="PointStatCode_Input"/>
                                                                         </div>
                                                                         <p></p>
                                                                         <div class="input-group">
-                                                                            <span class="input-group-addon" id="PointStatName" style="min-width: 100px">监控点名称</span>
-                                                                            <input type="text" class="form-control" placeholder="监控点名称" aria-describedby="basic-addon1" id="PointStatName_Input"/>
+                                                                            <span class="input-group-addon" id="PointStatName" style="min-width: 100px">站点名称</span>
+                                                                            <input type="text" class="form-control" placeholder="站点名称" aria-describedby="basic-addon1" id="PointStatName_Input"/>
                                                                         </div>
                                                                         <p></p>
                                                                         <div class="input-group" >
@@ -1175,11 +1300,11 @@
                                                                             <span class="input-group-addon" id="PointCountry" style="min-width: 100px">区县</span>
                                                                             <input type="text" class="form-control" placeholder="区县" aria-describedby="basic-addon1" id="PointCountry_Input"/>
                                                                         </div>
-                                                                        <p></p>
+                                                                        <!--p></p>
                                                                         <div class="input-group" >
                                                                             <span class="input-group-addon" id="PointSquare" style="min-width: 100px">面积</span>
                                                                             <input type="text" class="form-control" placeholder="面积（平方米）" aria-describedby="basic-addon1" id="PointSquare_Input"/>
-                                                                        </div>
+                                                                        </div-->
                                                                     </div>
                                                                     <div class="col-md-6">
                                                                         <div class="input-group">
@@ -1187,7 +1312,7 @@
                                                                             <input type="text" class="form-control" placeholder="街镇" aria-describedby="basic-addon1" id="PointStreet_Input"/>
                                                                         </div>
 
-                                                                        <p></p>
+                                                                        <!--p></p>
                                                                         <div class="form-group " style="height:29px">
                                                                             <div class="input-group date form_date col-md-5" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
                                                                                 <div class="input-group">
@@ -1195,7 +1320,7 @@
                                                                                     <input class="form-control" size="16" type="text" value=""  placeholder="开工日期" id="PointProStartTime_Input" style="min-width: 116px">
                                                                                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                                                                 </div></div>
-                                                                        </div>
+                                                                        </div-->
                                                                     </div>
                                                                     <div class="col-md-12">
                                                                         <p></p>
@@ -1234,7 +1359,7 @@
                                                                     <h4 class="modal-title" id="PointDelAlertModalLabel">确认删除</h4>
                                                                 </div>
                                                                 <div class="modal-body" >
-                                                                    <strong>警告！</strong>您确定要删除此测量点么？
+                                                                    <strong>警告！</strong>您确定要删除此站点么？
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-default" data-dismiss="modal">放弃</button>
@@ -1277,7 +1402,7 @@
                                                 </table>
                                                     </div>
                                                 <div class="row clearfix">
-                                                    <span class="section">监测点信息</span>
+                                                    <span class="section">站点信息</span>
                                                     <div  id="Point_card" style="min-height: 250px">
                                                         <!--div class="panel-body"-->
                                                         <div class="col-md-6 col-sm-12 col-xs-12 column">
@@ -1356,7 +1481,7 @@
                                                                         </div>
                                                                     </div>
 
-                                                                    <div class="col-md-6">
+                                                                    <!--div class="col-md-6">
                                                                         <div class="form-group " style="height:29px">
                                                                             <div class="input-group date form_date col-md-5" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
                                                                                 <div class="input-group">
@@ -1365,7 +1490,14 @@
                                                                                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                                                                 </div></div>
                                                                         </div>
-                                                                    </div>
+                                                                    </div-->
+                                                                        <div class="col-md-6">
+                                                                            <div class="input-group ">
+                                                                                <span class="input-group-addon" id="DevStatCode" style="min-width: 100px">站点编号</span>
+                                                                                <select class="form-control" placeholder="站点编号" aria-describedby="basic-addon1" id="DevStatCode_choice">
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
 
                                                                     <p></p>
@@ -1377,7 +1509,7 @@
                                                                                 </select>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="col-md-6">
+                                                                        <!--div class="col-md-6">
                                                                             <div class="form-group " style="height:29px">
                                                                                 <div class="input-group date form_date col-md-5" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
                                                                                     <div class="input-group">
@@ -1386,15 +1518,24 @@
                                                                                         <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                                                                     </div></div>
                                                                             </div>
+                                                                        </div-->
+                                                                        <div class="col-md-6">
+                                                                            <div class="input-group ">
+                                                                                <span class="input-group-addon" id="DevDevStatus" style="min-width: 100px">设备是否启动</span>
+                                                                                <select class="form-control" placeholder="设备是否启动" aria-describedby="basic-addon1" id="DevDevStatus_choice">
+                                                                                    <option value="true">启动</option>
+                                                                                    <option value="false">关闭</option>
+                                                                                </select>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
 
                                                                     <p></p>
-                                                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                                                    <!--div class="col-md-12 col-sm-12 col-xs-12">
                                                                         <div class="col-md-6">
                                                                             <div class="input-group ">
-                                                                                <span class="input-group-addon" id="DevStatCode" style="min-width: 100px">监测点编号</span>
-                                                                                <select class="form-control" placeholder="监测点编号" aria-describedby="basic-addon1" id="DevStatCode_choice">
+                                                                                <span class="input-group-addon" id="DevStatCode" style="min-width: 100px">站点编号</span>
+                                                                                <select class="form-control" placeholder="站点编号" aria-describedby="basic-addon1" id="DevStatCode_choice">
                                                                                 </select>
                                                                             </div>
                                                                         </div>
@@ -1407,7 +1548,7 @@
                                                                                 </select>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
+                                                                    </div-->
 
                                                                     <p></p>
                                                                     <div class="col-md-12 col-sm-12 col-xs-12">
@@ -1512,65 +1653,73 @@
                                                 <div id="MPMonitorViewMap" class="baidu-maps"></div>
                                             </div>
                                             <HR class="HR-map" SIZE=3/>
-                                            <div class="col-md-4 col-sm-6 col-xs-12 column" >
-                                                <div class="input-group ">
-                                                    <span class="input-group-addon" id="VideoStatCode" style="min-width: 100px">选中地点</span>
-                                                    <input type="text" class="form-control" placeholder="请在地图上选择一个地点" aria-describedby="basic-addon1" id="VideoStatCode_Input" disabled="disabled"/>
+                                            <div>
+                                                <div class="col-md-4 col-sm-6 col-xs-12 column" >
+                                                    <div class="input-group ">
+                                                        <span class="input-group-addon" id="VideoStatCode" style="min-width: 100px">选中地点</span>
+                                                        <input type="text" class="form-control" placeholder="请在地图上选择一个地点" aria-describedby="basic-addon1" id="VideoStatCode_Input" disabled="disabled"/>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-4 col-sm-6 col-xs-12 column" >
-                                                <div class="form-group " style="height:29px">
-                                                    <div class="input-group date form_date col-md-5" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
-                                                        <div class="input-group">
-                                                            <div class="input-group-addon">视频日期</div>
-                                                            <input class="form-control" size="16" type="text" value=""  placeholder="视频日期" id="Video_query_Input" disabled="disabled" style="min-width: 106px">
-                                                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                                                        </div></div>
+                                                <div class="col-md-4 col-sm-6 col-xs-12 column" >
+                                                    <button type='button' class='btn btn-default lock_monitor_btn' >远程开锁</button>
+                                                </div>
+                                                <div  style="display:none">
+                                                <div class="col-md-4 col-sm-6 col-xs-12 column" >
+                                                    <div class="form-group " style="height:29px">
+                                                        <div class="input-group date form_date col-md-5" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                                                            <div class="input-group">
+                                                                <div class="input-group-addon">视频日期</div>
+                                                                <input class="form-control" size="16" type="text" value=""  placeholder="视频日期" id="Video_query_Input" disabled="disabled" style="min-width: 106px">
+                                                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                                            </div></div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-md-4 col-sm-12 col-xs-12 column" >
+                                                    <div class="input-group ">
+                                                        <span class="input-group-addon" id="VideoHour" style="min-width: 100px">时间段</span>
+                                                        <select class="form-control" placeholder="传感器状态" aria-describedby="basic-addon1" id="VideoHour_choice">
+                                                            <option value="0">0:00-1:00</option>
+                                                            <option value="1">1:00-2:00</option>
+                                                            <option value="2">2:00-3:00</option>
+                                                            <option value="3">3:00-4:00</option>
+                                                            <option value="4">4:00-5:00</option>
+                                                            <option value="5">5:00-6:00</option>
+                                                            <option value="6">6:00-7:00</option>
+                                                            <option value="7">7:00-8:00</option>
+                                                            <option value="8">8:00-9:00</option>
+                                                            <option value="9">9:00-10:00</option>
+                                                            <option value="10">10:00-11:00</option>
+                                                            <option value="11">11:00-12:00</option>
+                                                            <option value="12">12:00-13:00</option>
+                                                            <option value="13">13:00-14:00</option>
+                                                            <option value="14">14:00-15:00</option>
+                                                            <option value="15">15:00-16:00</option>
+                                                            <option value="16">16:00-17:00</option>
+                                                            <option value="17">17:00-18:00</option>
+                                                            <option value="18">18:00-19:00</option>
+                                                            <option value="19">19:00-20:00</option>
+                                                            <option value="20">20:00-21:00</option>
+                                                            <option value="21">21:00-22:00</option>
+                                                            <option value="22">22:00-23:00</option>
+                                                            <option value="23">23:00-0:00</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-sm-12 col-xs-12 column" >
+                                                    <div class="input-group ">
+                                                        <span class="input-group-addon" id="VCRStatus" style="min-width: 100px">选择视频</span>
+                                                        <select class="form-control" placeholder="没有视频" aria-describedby="basic-addon1" id="VCRStatus_choice">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-sm-6 col-xs-6 column" >
+                                                    <button type="button" class="btn btn-primary" id="VCRshow">播放</button>
+                                                    <label  style="min-width: 20px"></label>
+                                                    <button type="button" class="btn btn-primary" id="ScreenSaver">屏保</button>
                                                 </div>
 
-                                            </div>
-                                            <div class="col-md-4 col-sm-12 col-xs-12 column" >
-                                                <div class="input-group ">
-                                                    <span class="input-group-addon" id="VideoHour" style="min-width: 100px">时间段</span>
-                                                    <select class="form-control" placeholder="传感器状态" aria-describedby="basic-addon1" id="VideoHour_choice">
-                                                        <option value="0">0:00-1:00</option>
-                                                        <option value="1">1:00-2:00</option>
-                                                        <option value="2">2:00-3:00</option>
-                                                        <option value="3">3:00-4:00</option>
-                                                        <option value="4">4:00-5:00</option>
-                                                        <option value="5">5:00-6:00</option>
-                                                        <option value="6">6:00-7:00</option>
-                                                        <option value="7">7:00-8:00</option>
-                                                        <option value="8">8:00-9:00</option>
-                                                        <option value="9">9:00-10:00</option>
-                                                        <option value="10">10:00-11:00</option>
-                                                        <option value="11">11:00-12:00</option>
-                                                        <option value="12">12:00-13:00</option>
-                                                        <option value="13">13:00-14:00</option>
-                                                        <option value="14">14:00-15:00</option>
-                                                        <option value="15">15:00-16:00</option>
-                                                        <option value="16">16:00-17:00</option>
-                                                        <option value="17">17:00-18:00</option>
-                                                        <option value="18">18:00-19:00</option>
-                                                        <option value="19">19:00-20:00</option>
-                                                        <option value="20">20:00-21:00</option>
-                                                        <option value="21">21:00-22:00</option>
-                                                        <option value="22">22:00-23:00</option>
-                                                        <option value="23">23:00-0:00</option>
-                                                    </select>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-4 col-sm-12 col-xs-12 column" >
-                                                <div class="input-group ">
-                                                    <span class="input-group-addon" id="VCRStatus" style="min-width: 100px">选择视频</span>
-                                                    <select class="form-control" placeholder="没有视频" aria-describedby="basic-addon1" id="VCRStatus_choice">
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4 col-sm-6 col-xs-6 column" >
-                                                <button type="button" class="btn btn-primary" id="VCRshow">播放</button>
-                                                <label  style="min-width: 20px"></label>
-                                                <button type="button" class="btn btn-primary" id="ScreenSaver">屏保</button>
                                             </div>
                                         </div>
                                         <div class="row clearfix" id="MPMonitorTableView" >
@@ -1933,12 +2082,211 @@
                                                 <label  style="min-width: 20px"></label>
                                                 <label  style="min-width: 20px" id = "MonitorFlashTime"></label>
                                             </div>
-                                            <div class="col-md-12 column" id="MonitorQueryResult" style="overflow:scroll;overflow-y:hidden;overflow-x:hidden">
+                                            <div class="col-md-12 column" id="MonitorQueryResult" style="overflow:scroll;overflow-y:hidden;overflow-x:scroll">
                                                 <p></p>
-                                                <table id="MonitorQueryTable" class="display" cellspacing="0" width="100%"  style="white-space: nowrap;">
+                                                <table id="MonitorQueryTable" class="display" cellspacing="0" width="100%"  style="white-space: nowrap;overflow:scroll;overflow-y:hidden;overflow-x:scroll">
                                                 </table>
                                             </div>
 
+                                        </div>
+                                        <div class="row clearfix" id="KeyHistoryView">
+                                            <div class="col-md-12 column">
+                                                <div class="col-md-4 col-sm-6 col-xs-12">
+                                                    <div class="input-group" >
+                                                        <span class="input-group-addon" id="KeyHistoryProj" style="min-width: 100px">查询项目</span>
+                                                        <select class="form-control" placeholder="归属项目" aria-describedby="basic-addon1" id="KeyHistoryProj_choice">
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-sm-6 col-xs-12">
+                                                    <div class="input-group" >
+                                                        <span class="input-group-addon" id="KeyHistoryTime" style="min-width: 100px">查询周期</span>
+                                                        <select class="form-control" placeholder="钥匙种类" aria-describedby="basic-addon1" id="KeyHistoryTime_choice">
+                                                            <option value="1">今日</option>
+                                                            <option value="7">近7天</option>
+                                                            <option value="30">近30天</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-sm-6 col-xs-12">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon" id="KeyHistoryWord" style="min-width: 100px">关键字</span>
+                                                        <input type="text" class="form-control" placeholder="查询关键字" aria-describedby="basic-addon1" id="KeyHistoryWord_Input"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 column">
+                                                <div class="col-md-12 column">
+                                                <button type="button" class="btn btn-primary" id="KeyHistoryTableFlash">查询</button>
+                                                <label  style="min-width: 20px"></label>
+                                                <label  style="min-width: 20px" id="KeyHistoryLastFlash"></label>
+                                                    </div>
+                                            </div>
+                                            <div class="col-md-12 column" id="KeyHistoryQueryResult" style="overflow:scroll;overflow-y:hidden;overflow-x:hidden">
+                                                <p></p>
+                                                <table id="KeyHistoryQueryTable" class="display" cellspacing="0" width="100%"  style="white-space: nowrap;">
+                                                </table>
+                                            </div>
+
+                                        </div>
+                                        <div class="row clearfix" id="KeyAuthView">
+                                            <div class="col-md-12 column">
+                                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                                    <div class="input-group" >
+                                                        <span class="input-group-addon" id="KeyAuthProj" style="min-width: 100px">项目</span>
+                                                        <select class="form-control" placeholder="归属项目" aria-describedby="basic-addon1" id="KeyAuthProj_choice">
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                                    <div class="input-group" >
+                                                        <span class="input-group-addon" id="KeyAuthPoint" style="min-width: 100px">站点</span>
+                                                        <select class="form-control" placeholder="站点列表" aria-describedby="basic-addon1" id="KeyAuthPoint_choice">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                                        <button type="button" class="btn btn-primary" id="KeyAuthQuery">查询授权</button>
+														<label  style="min-width: 20px"></label>
+                                                        <button type="button" class="btn btn-primary" id="KeyAuthNew">新建授权</button>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 column">
+                                                <div class="col-md-12 column">
+                                                    <div class="row clearfix">
+                                                        <table data-toggle="table" class="table table-hover" id="Table_point_key_auth" data-click-to-select="true">
+                                                            <thead>
+                                                            <tr>
+                                                                <th>
+                                                                </th>
+                                                                <th>
+                                                                    编号
+                                                                </th>
+                                                                <th>
+                                                                    钥匙
+                                                                </th>
+                                                                <th>
+                                                                    用户
+                                                                </th>
+                                                                <th>
+                                                                    授权条件
+                                                                </th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <HR class="HR-map" SIZE=3/>
+                                            <p></p>
+                                            <div class="col-md-12 column">
+                                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                                    <div class="input-group" >
+                                                        <span class="input-group-addon" id="KeyUserProj" style="min-width: 100px">项目</span>
+                                                        <select class="form-control" placeholder="归属项目" aria-describedby="basic-addon1" id="KeyUserProj_choice">
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                                    <div class="input-group" >
+                                                        <span class="input-group-addon" id="KeyUserKey" style="min-width: 100px">钥匙</span>
+                                                        <select class="form-control" placeholder="钥匙列表" aria-describedby="basic-addon1" id="KeyUserKey_choice">
+                                                        </select>
+                                                    </div>
+                                                </div>
+												<div class="col-md-4 col-sm-4 col-xs-12">
+                                                    <div class="input-group" >
+                                                        <span class="input-group-addon" id="KeyUserUser" style="min-width: 100px">变更用户</span>
+                                                        <select class="form-control" placeholder="用户列表" aria-describedby="basic-addon1" id="KeyUserUser_choice">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                                    <button type="button" class="btn btn-primary" id="KeyUserChange">变更使用人</button>
+                                                </div>
+                                            </div>
+                                            <div class="modal fade" id="newKeyAuthModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                            <h4 class="modal-title" id="newKeyAuthModalLabel">创建新授权</h4>
+                                                        </div>
+                                                        <div class="modal-body" style="min-height:520px">
+                                                            <div class="col-md-6">
+                                                                <div class="input-group">
+                                                                    <span class="input-group-addon" id="NewKeyAuthDomain" style="min-width: 100px">授权对象</span>
+                                                                    <input type="text" class="form-control" placeholder="授权对象" aria-describedby="basic-addon1" id="NewKeyAuthDomain_Input"/>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="input-group" >
+                                                                    <span class="input-group-addon" id="NewKeyAuthKey" style="min-width: 100px">选择钥匙</span>
+                                                                    <select class="form-control" placeholder="选择钥匙" aria-describedby="basic-addon1" id="NewKeyAuthKey_choice">
+
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <p></p>
+                                                                <div class="form-group " style="height:29px">
+                                                                    <div class="input-group date form_date col-md-5" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                                                                        <div class="input-group">
+                                                                            <div class="input-group-addon" style="min-width: 100px">授权截止</div>
+                                                                            <input class="form-control" size="16" type="text" value=""  placeholder="留空表示永久有效" id="NewKeyAuthEndTime_Input" style="min-width: 116px">
+                                                                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                                                        </div></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">放弃</button>
+                                                            <button type="button" class="btn btn-primary" id="newKeyAuthCommit" DomainId="">确认</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="modal fade" id="KeyAuthDelAlarm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                            <h4 class="modal-title" id="KeyAuthDelAlertModalLabel">确认删除</h4>
+                                                        </div>
+                                                        <div class="modal-body" >
+                                                            <strong>警告！</strong>您确定要删除此授权么？
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">放弃</button>
+                                                            <button type="button" class="btn btn-primary" id="delKeyAuthCommit" AuthId="">确认</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+											<div class="modal fade" id="KeyGrantAlarm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                            <h4 class="modal-title" id="KeyGrantAlertModalLabel">确认转移</h4>
+                                                        </div>
+                                                        <div class="modal-body" >
+                                                            <strong>警告！</strong>您确定要变更钥匙所有权么
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">放弃</button>
+                                                            <button type="button" class="btn btn-primary" id="KeyGrantCommit" KeyId="" UserId="">确认</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="row clearfix" id="WarningCheckView" >
                                             <div class="col-md-12 col-sm-12 col-xs-12 column" >
@@ -2040,6 +2388,319 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="row clearfix" id="KeyManageView" >
+                                        <div class="col-md-6 col-sm-6 col-xs-6 column" id="KeyRightWindow1">
+                                            <ul class="pagination" id="Key_Page_control">
+                                                <li>
+                                                    <a href="#">Prev</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">1</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">2</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">3</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">4</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">5</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">Next</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-6 col-sm-6 col-xs-6" id="KeyRightWindow2">
+                                            <ul class="pagination pull-right" id="Key-item-modify">
+                                                <li>
+                                                    <a href="#" id="KeyfreshButton" data-toggle="modal"><em class="glyphicon glyphicon-refresh" aria-hidden="true"></em></a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" id="KeyNewButton" data-toggle="modal"><em class="glyphicon glyphicon-plus" aria-hidden="true"></em></a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" id="KeyDelButton" data-toggle="modal"><em class="glyphicon glyphicon-trash" aria-hidden="true"></em></a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" id="KeyModifyButton" data-toggle="modal"><em class="glyphicon glyphicon-pencil" aria-hidden="true"></em></a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" id="KeyExportButton"><em class="glyphicon glyphicon-print" aria-hidden="true"></em></a>
+                                                </li>
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="newKeyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                <h4 class="modal-title" id="newKeyModalLabel">创建新钥匙</h4>
+                                                            </div>
+                                                            <div class="modal-body" style="min-height:520px">
+                                                                <div class="col-md-6">
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-addon" id="NewKeyName" style="min-width: 100px">钥匙名</span>
+                                                                        <input type="text" class="form-control" placeholder="用户名" aria-describedby="basic-addon1" id="NewKeyName_Input"/>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="input-group" >
+                                                                        <span class="input-group-addon" id="NewKeyProj" style="min-width: 100px">归属项目</span>
+                                                                        <select class="form-control" placeholder="归属项目" aria-describedby="basic-addon1" id="NewKeyProj_choice">
+
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-12">
+                                                                    <p></p>
+                                                                    <div class="input-group" >
+                                                                        <span class="input-group-addon" id="NewKeyType" style="min-width: 100px">钥匙种类</span>
+                                                                        <select class="form-control" placeholder="钥匙种类" aria-describedby="basic-addon1" id="NewKeyType_choice">
+                                                                            <option value="R">射频卡</option>
+                                                                            <option value="B">蓝牙</option>
+                                                                            <option value="U">用户账户</option>
+                                                                            <option value="W">微信号</option>
+                                                                            <option value="I">身份证</option>
+                                                                            <option value="P">电话号码</option>
+                                                                        </select>
+
+                                                                    </div>
+                                                                    <p></p>
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-addon" id="NewKeyHardwareID" style="min-width: 100px">硬件码</span>
+                                                                        <input type="text" class="form-control" placeholder="请按照钥匙种类正确填写" aria-describedby="basic-addon1" id="NewKeyHardwareID_Input"/>
+                                                                    </div>
+                                                                    <p></p>
+                                                                    <div class="panel panel-default">
+                                                                        <div class="panel-heading">
+                                                                            <h3 class="panel-title">备注</h3>
+                                                                        </div>
+                                                                        <div class="panel-body">
+                                                                            <input type="text" id="NewKeyMemo_Input" class="form-control"  aria-describedby="basic-addon2">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">放弃</button>
+                                                                <button type="button" class="btn btn-primary" id="newKeyCommit">确认</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="modal fade" id="KeyDelAlarm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                <h4 class="modal-title" id="KeyDelAlertModalLabel">确认删除</h4>
+                                                            </div>
+                                                            <div class="modal-body" >
+                                                                <strong>警告！</strong>您确定要删除此钥匙么？
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">放弃</button>
+                                                                <button type="button" class="btn btn-primary" id="delKeyCommit">确认</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-12 col-sm-12 col-xs-12 column" id="KeyRightMainWindow">
+                                            <div class="row clearfix">
+                                                <table data-toggle="table" class="table table-hover" id="Table_key" data-click-to-select="true">
+                                                    <thead>
+                                                    <tr>
+                                                        <th data-field="state" data-radio="true"></th>
+                                                        <th>
+                                                            编号
+                                                        </th>
+                                                        <th>
+                                                            用户名
+                                                        </th>
+                                                        <th>
+                                                            分组
+                                                        </th>
+                                                        <th>
+                                                            备注
+                                                        </th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr>
+                                                        <td>
+                                                        </td>
+                                                        <td>
+                                                            1
+                                                        </td>
+                                                        <td>
+                                                            admin
+                                                        </td>
+                                                        <td>
+                                                            admin
+                                                        </td>
+                                                        <td>
+                                                            Default
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="success">
+                                                        <td>
+                                                        </td>
+                                                        <td>
+                                                            2
+                                                        </td>
+                                                        <td>
+                                                            user
+                                                        </td>
+                                                        <td>
+                                                            user
+                                                        </td>
+                                                        <td>
+                                                            留白
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="error">
+                                                        <td>
+                                                        </td>
+                                                        <td>
+                                                            3
+                                                        </td>
+                                                        <td>
+                                                            temp
+                                                        </td>
+                                                        <td>
+                                                            user
+                                                        </td>
+                                                        <td>
+                                                            Declined
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="warning">
+                                                        <td>
+                                                        </td>
+                                                        <td>
+                                                            4
+                                                            <span class="badge">★</span>
+                                                        </td>
+                                                        <td>
+                                                            laoliu
+                                                        </td>
+                                                        <td>
+                                                            user
+                                                        </td>
+                                                        <td>
+                                                            Pending
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="info">
+                                                        <td>
+                                                        </td>
+                                                        <td>
+                                                            5
+                                                        </td>
+                                                        <td>
+                                                            laozhang
+                                                        </td>
+                                                        <td>
+                                                            user
+                                                        </td>
+                                                        <td>
+                                                            Call in to confirm
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="row clearfix">
+                                                <span class="section">钥匙信息</span>
+                                                <div id="Key_card" style="min-height: 250px">
+                                                    <!--div class="panel-body"-->
+                                                    <div class="col-md-6 col-sm-12 col-xs-12 column">
+                                                        <!--div style="max-height: 210px;overflow:scroll;overflow-x:hidden" id="Label_user_detail"-->
+                                                        <div id="Label_key_detail">
+                                                            <p></p><p></p>
+                                                            <div class='col-md-6 col-sm-6 col-xs-12 column'>
+                                                                <dl>
+                                                                    <dt>用户名：</dt><dd>&nbsp&nbsp&nbsp&nbsp</dd>
+                                                                    <dt>用户类型：</dt><dd>&nbsp&nbsp&nbsp&nbsp</dd>
+                                                                    <dt>联系方式：</dt><dd>&nbsp&nbsp&nbsp&nbsp</dd>
+                                                                </dl>
+                                                            </div>
+                                                            <div class='col-md-6 col-sm-6 col-xs-12 column'>
+                                                                <dl >
+                                                                    <dt>用户昵称：</dt><dd>&nbsp&nbsp&nbsp&nbsp</dd>
+                                                                    <dt>修改日期：</dt><dd>&nbsp&nbsp&nbsp&nbsp</dd>
+                                                                    <dt>邮箱：</dt><dd>&nbsp&nbsp&nbsp&nbsp</dd>
+                                                                </dl>
+                                                            </div>
+                                                            <div class='col-md-12 col-sm-12 col-xs-12 column'>
+                                                                <dl>
+                                                                    <dt>备注：</dt><dd>&nbsp&nbsp&nbsp&nbsp</dd>
+                                                                </dl>
+                                                            </div>
+                                                            <!--p></p><p></p>
+                                                            <label style="min-width: 150px">用户名：</label><label style="min-width: 150px">用户昵称：</label>
+                                                            <p></p>
+                                                            <label style="min-width: 150px">用户类型：</label><label style="min-width: 150px">修改日期：</label>
+                                                            <p></p>
+                                                            <label style="min-width: 300px">联系方式：</label>
+                                                            <p></p>
+                                                            <label style="min-width: 300px">邮箱：</label>
+                                                            <p></p>
+                                                            <label>备注：</label-->
+                                                        </div>
+                                                    </div>
+
+                                                    <!--div style="max-height: 210px;overflow:scroll;overflow-x:hidden"-->
+                                                    <div class="col-md-6 col-sm-12 col-xs-12 column">
+                                                        <table data-toggle="table" class="table table-hover table-bordered" id="Table_key_auth" data-click-to-select="false" >
+                                                            <thead>
+                                                            <tr>
+                                                                <th>
+                                                                    已关联项目
+                                                                </th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody >
+                                                            <tr>
+                                                                <td>
+                                                                    水文观测1
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    PM2.5-1
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    PM2.5-2
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    PM2.5-3
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    PM2.5-4
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <!--/div-->
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
 
                                 </div>
                             </div>
@@ -2119,7 +2780,7 @@
                     </div>
                     <div id="collapseTwo" class="panel-collapse collapse">
                         <ul class="list-group">
-                            <li class="list-group-item li_menu" href="#" id="MPManage">测量点管理</li>
+                            <li class="list-group-item li_menu" href="#" id="MPManage">站点管理</li>
                             <li class="list-group-item li_menu" href="#" id="DevManage">设备管理</li>
                         </ul>
                     </div>
@@ -3231,7 +3892,7 @@
                                         <h4 class="modal-title" id="PointDelAlertModalLabel">确认删除</h4>
                                     </div>
                                     <div class="modal-body" >
-                                        <strong>警告！</strong>您确定要删除此测量点么？
+                                        <strong>警告！</strong>您确定要删除此站点么？
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">放弃</button>
@@ -3977,6 +4638,23 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="UnlockConfirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="UnlockConfirmModalLabel">请确认</h4>
+            </div>
+            <div class="modal-body" id="UnlockConfirmModalContent">
+                <strong>请确认</strong>您要远程打开
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="UnlockConfirmBtn" StateCode="">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="TableExportModule" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -3995,8 +4673,8 @@
 
                         <p></p>
                         <div class="input-group ">
-                            <span class="input-group-addon" id="QueryStatCode" style="min-width: 100px">监测点编号</span>
-                            <select class="form-control" placeholder="监测点编号" aria-describedby="basic-addon1" id="QueryStatCode_choice">
+                            <span class="input-group-addon" id="QueryStatCode" style="min-width: 100px">站点编号</span>
+                            <select class="form-control" placeholder="站点编号" aria-describedby="basic-addon1" id="QueryStatCode_choice">
                             </select>
                         </div>
                         <p></p>
@@ -4240,6 +4918,29 @@
                             </div>
                             <!--a class="cycle-center"></a-->
                         </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="KeyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="KeyModalLabel">钥匙授权信息</h4>
+                </div>
+                <div class="modal-body" style="min-height:230px;max-height:500px;overflow:scroll;overflow-x:hidden">
+                    <div class="col-md-12">
+                        <div class="input-group ">
+                            <span class="input-group-addon" id="KeyAuthNumber" style="min-width: 100px">总授权数</span>
+                            <input type="text" class="form-control" placeholder="总授权数" aria-describedby="basic-addon1" id="KeyAuthNumber_Input" disabled="true"/>
+                        </div>
+                    </div>
+                    <div class="col-md-12" id="KeyAuthList">
                     </div>
                 </div>
                 <div class="modal-footer">

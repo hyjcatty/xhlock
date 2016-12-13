@@ -6191,6 +6191,85 @@ function query_static_warning(){
 		type:"query",
 		user:usr.id
     };
+    var GetStaticMonitorTable_callback= function(result){
+        //log(data);
+        //var result=JSON.parse(data);
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        var Last_update_date=(new Date()).Format("yyyy-MM-dd_hhmmss");
+        $("#MonitorFlashTime").empty();
+        $("#MonitorFlashTime").append("最后刷新时间："+Last_update_date);
+        var ColumnName = result.ret.ColumnName;
+        var TableData = result.ret.TableData;
+        var txt = "<thead> <tr><th></th><th></th>";
+        var i;
+        for( i=0;i<ColumnName.length;i++){
+            txt = txt +"<th>"+ColumnName[i]+"</th>";
+        }
+        //txt = txt +"<th></th></tr></thead>";
+        txt = txt +"</tr></thead>";
+        txt = txt +"<tbody>";
+        for( i=0;i<TableData.length;i++){
+            txt = txt +"<tr>";
+            //txt = txt +"<td><ul class='pagination'> <li><a href='#' class = 'video_btn' StateCode='"+TableData[i][0]+"' ><em class='glyphicon glyphicon-play ' aria-hidden='true' ></em></a> </li></ul></td>";
+            txt = txt +"<td><button type='button' class='btn btn-default lock_btn' StateCode='"+TableData[i][0]+"' ><em class='glyphicon glyphicon-lock ' aria-hidden='true' ></em></button></td><td><button type='button' class='btn btn-default video_btn' StateCode='"+TableData[i][0]+"' ><em class='glyphicon glyphicon-play ' aria-hidden='true' ></em></button></td>";
+            //console.log("StateCode="+TableData[i][0]);
+            for(var j=0;j<TableData[i].length;j++){
+                txt = txt +"<td>"+TableData[i][j]+"</td>";
+            }
+            //txt = txt + "<td><button type='button' class='btn btn-default video_btn' StateCode='"+TableData[i][0]+"' >视频</button></td>";
+            txt = txt +"</tr>";
+        }
+        txt = txt+"</tbody>";
+        $("#MonitorQueryTable").empty();
+        $("#MonitorQueryTable").append(txt);
+        if(if_static_table_initialize) $("#MonitorQueryTable").DataTable().destroy();
+
+        //console.log(monitor_map_list);
+
+        var show_table  = $("#MonitorQueryTable").DataTable( {
+            //dom: 'T<"clear">lfrtip',
+            "scrollY": false,
+            "scrollCollapse": true,
+
+            "scrollX": true,
+            "searching": false,
+            "autoWidth": true,
+            "lengthChange":false,
+            //bSort: false,
+            //aoColumns: [ { sWidth: "45%" }, { sWidth: "45%" }, { sWidth: "10%", bSearchable: false, bSortable: false } ],
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'excel',
+                    text: '导出到excel',
+                    filename: "MonitorData"+Last_update_date
+                }
+            ]
+
+        } );
+        if_static_table_initialize = true;
+        video_btn_click = function(){
+            var statcode = $(this).attr('StateCode');
+            //console.log("StateCode_click="+statcode);
+            if(statcode!==undefined ){
+                show_cameraModule(statcode);
+            }
+        };
+        lock_btn_click = function(){
+            var statcode = $(this).attr('StateCode');
+            //console.log("StateCode_click="+statcode);
+            if(statcode!==undefined ){
+                show_openlockmodule(statcode);
+            }
+        };
+        $(".video_btn").on('click',video_btn_click);
+        $(".lock_btn").on('click',lock_btn_click);
+    };
+    JQ_get(request_head,map,GetStaticMonitorTable_callback);
+    /*
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -6268,7 +6347,7 @@ function query_static_warning(){
         $(".video_btn").on('click',video_btn_click);
         $(".lock_btn").on('click',lock_btn_click);
 
-    });
+    });*/
 }
 
 

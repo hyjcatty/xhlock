@@ -63,7 +63,7 @@ $(document).ready(function() {
         var map={
             action:"login",
             name:$("#Username_Input").val(),
-            password:$("#Password_Input").val()
+            password:b64_sha1($("#Password_Input").val())
         };
         var callback=function(result){
             if(result.status!="true"){

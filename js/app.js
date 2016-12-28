@@ -2101,6 +2101,7 @@ function draw_user_detail_proj_table(){
 function draw_user_detail_key_table(){
     $("#Table_user_key").empty();
     txt ="<thead> <tr> <th>钥匙名称 </th> <th>归属项目 </th></tr> </thead> <tbody >";
+    if(user_selected_key === null) user_selected_key = [];
     for(var i=0;i<user_selected_key.length;i++){
         txt = txt + "<tr id='"+user_selected_key[i].id+"' class='keyrow'> <td>"+ user_selected_key[i].name+"</td> <td>"+ user_selected_key[i].domain+"</td></tr>";
     }
@@ -2133,6 +2134,7 @@ function show_new_user_module(){
 
     $("#duallistboxUserAuth_new").empty();
     var txt = "";
+    if(project_pg_list === null) project_pg_list = [];
     for(var i =0;i<project_pg_list.length;i++){
         txt = "<option value='"+project_pg_list[i].id+"'>"+project_pg_list[i].name+"</option>";
         $("#duallistboxUserAuth_new").append(txt);
@@ -2236,6 +2238,7 @@ function show_mod_user_module(user,user_auth){
 
     $("#duallistboxUserAuth_new").empty();
     var txt = "";
+    if(project_pg_list === null) project_pg_list = [];
     for(var i =0;i<project_pg_list.length;i++){
         txt = "<option value='"+project_pg_list[i].id+"'";
         for(var j=0;j<user_auth.length;j++){
@@ -2759,6 +2762,7 @@ function draw_pg_detail_panel(){
 
     $("#Table_pg_proj").empty();
     txt ="<thead> <tr> <th>下辖项目清单 </th> </tr> </thead> <tbody >";
+    if(pg_selected_proj === null) pg_selected_proj = [];
     for(var i=0;i<pg_selected_proj.length;i++){
         txt = txt + "<tr> <td>"+ pg_selected_proj[i].name+"</td> </tr>";
     }
@@ -2788,6 +2792,7 @@ function show_new_pg_module(){
 
     $("#duallistboxPGProj_new").empty();
     var txt = "";
+    if(project_list === null) project_list = [];
     for(var i =0;i<project_list.length;i++){
         txt = "<option value='"+project_list[i].id+"'>"+project_list[i].name+"</option>";
         $("#duallistboxPGProj_new").append(txt);
@@ -2887,6 +2892,7 @@ function show_mod_pg_module(pg,pg_proj){
 
     $("#duallistboxPGProj_new").empty();
     var txt = "";
+    if(project_list === null) project_list = [];
     for(var i =0;i<project_list.length;i++){
         txt = "<option value='"+project_list[i].id+"'";
         for(var j=0;j<pg_proj.length;j++){
@@ -3338,6 +3344,7 @@ function draw_key_detail_panel(){
 function draw_key_detail_auth_table(){
 	$("#Table_key_auth").empty();
 	txt ="<thead> <tr> <th>授权设备 </th> <th>授权方式 </th></tr> </thead> <tbody >";
+    if(key_selected_auth === null) key_selected_auth = [];
 	for(var i=0;i<key_selected_auth.length;i++){
 		txt = txt + "<tr> <td>"+ key_selected_auth[i].DomainName+"</td> <td>"+ key_selected_auth[i].AuthWay+"</td></tr>";
 	}
@@ -3937,6 +3944,7 @@ function draw_proj_detail_panel(){
 function draw_proj_detail_point_table(){
     $("#Table_proj_point").empty();
     txt ="<thead> <tr> <th>站点清单 </th> </tr> </thead> <tbody >";
+    if(project_selected_point === null) project_selected_point = [];
     for(var i=0;i<project_selected_point.length;i++){
         txt = txt + "<tr> <td>"+ project_selected_point[i].name+"</td> </tr>";
     }
@@ -3946,6 +3954,7 @@ function draw_proj_detail_point_table(){
 function draw_proj_detail_key_table(){
     $("#Table_proj_key").empty();
     txt ="<thead> <tr> <th>钥匙名称 </th> <th>所有人 </th></tr> </thead> <tbody >";
+    if(project_selected_key === null) project_selected_key = [];
     for(var i=0;i<project_selected_key.length;i++){
         txt = txt + "<tr id='"+project_selected_key[i].id+"' class='keyrow'> <td>"+ project_selected_key[i].name+"</td> <td>"+ project_selected_key[i].username+"</td></tr>";
     }
@@ -4157,6 +4166,7 @@ function get_projdev_version(ProjCode){
         var projdev = result.ret;
         $("#duallistboxDevUpdate").empty();
         var txt = "";
+        if(projdev === null) projdev = [];
         for(var i =0;i<projdev.length;i++){
             txt = "<option value='"+projdev[i].DevCode+"'";
             txt = txt +">"+projdev[i].DevCode+projdev[i].ProjName+projdev[i].version+"</option>";
@@ -4232,11 +4242,13 @@ function draw_parameter_page(){
     $("#UpdateVersion_choice").empty();
     var txt = "";
 	var i;
+    if(project_list === null) project_list = [];
     for( i=0;i<project_list.length;i++){
         txt = txt +"<option value="+project_list[i].id+">"+project_list[i].name+"</option>";
     }
     $("#UpdateProj_choice").append(txt);
     txt = "";
+    if(software_version_list === null) software_version_list = [];
     for( i=0;i<software_version_list.length;i++){
         txt = txt +"<option value="+software_version_list[i]+">"+software_version_list[i]+"</option>";
     }
@@ -4701,6 +4713,7 @@ function draw_point_detail_panel(){
     if(point_selected_device === null) return;
 
     var projname ="";
+    if(project_list === null) project_list = [];
     for(var j=0;j<project_list.length;j++){
         if(point_selected.ProjCode == project_list[j].id){
             projname = project_list[j].name;break;
@@ -4768,6 +4781,7 @@ function draw_point_detail_panel(){
 
     $("#Table_point_device").empty();
     txt ="<thead> <tr> <th>监控设备清单 </th> </tr> </thead> <tbody >";
+    if(point_selected_device === null) point_selected_device = [];
     for(var i=0;i<point_selected_device.length;i++){
         txt = txt + "<tr> <td>"+ point_selected_device[i].name+"</td> </tr>";
     }
@@ -5461,6 +5475,7 @@ function draw_dev_detail_panel(){
     $("#Table_device_sensor").empty();
     txt ="<thead> <tr> <th>传感器 </th><th>状态 </th> </tr> </thead> <tbody >";
     var i;
+    if(device_selected_sensor === null) device_selected_sensor = [];
 	for( i=0;i<device_selected_sensor.length;i++){
         var temp = "开启";
         if(device_selected_sensor[i].status == "false") temp = "关闭";
@@ -5611,6 +5626,7 @@ function submit_mod_dev_module(){
 
 function get_proj_name(id){
     var proj_name= null;
+    if(project_list === null) project_list = [];
     for(var i=0;i<project_list.length;i++){
         if(project_list[i].id == id){
             proj_name = project_list[i].name;
@@ -5621,6 +5637,7 @@ function get_proj_name(id){
 }
 function get_point_name(id){
     var point_name= null;
+    if(point_list === null) point_list = [];
     for(var i=0;i<point_list.length;i++){
         if(point_list[i].id == id){
             point_name = point_list[i].name;
@@ -5631,6 +5648,7 @@ function get_point_name(id){
 }
 function get_proj_option(id){
     txt = "";
+    if(project_list === null) project_list = [];
     for( var i=0; i<project_list.length;i++){
         if(project_list[i].id == id){
             txt = txt +"<option value="+project_list[i].id+" selected='selected'>"+project_list[i].name+"</option>";
@@ -5648,6 +5666,7 @@ function get_proj_point_option(ProjCode,select,select_value){
         return;
     }
     var txt ="";
+    if(point_list === null) point_list = [];
     for( var i=0; i<point_list.length;i++){
         if(point_list[i].ProjCode == ProjCode){
 
@@ -5831,6 +5850,7 @@ function initializeMap(){
 }
 function get_select_monitor(title){
     var temp = title.split(":");
+    if(monitor_map_list === null) monitor_map_list = [];
     for(var i=0;i<monitor_map_list.length;i++){
         if(monitor_map_list[i].StatCode == temp[0]){
             monitor_selected = monitor_map_list[i];
@@ -5860,6 +5880,7 @@ function addMarker(point){
 			if(monitor_map_handle == this) monitor_map_handle = null;
 		});
 	};
+    if(monitor_map_list === null) monitor_map_list = [];
     for(var i=0;i<monitor_map_list.length;i++){
         var t_point = new BMap.Point(parseFloat(monitor_map_list[i].Longitude),parseFloat(monitor_map_list[i].Latitude));
         var marker = new BMap.Marker(t_point, {icon: myIcon});
@@ -6069,6 +6090,7 @@ function show_monitor_page(page_number){
     txt = txt +"<tbody>";
 
     sequence = (page_number*table_row*2);
+    if(monitor_map_list === null) monitor_map_list = [];
     for(var i=0;i<(table_row*2);i++){
         if((sequence+i)<monitor_map_list.length){
             //console.log(sequence+i);
@@ -6357,6 +6379,7 @@ function query_static_warning(){
 function build_key_history_proj_choice(){
     if(project_list === null) return;
     var txt ="";
+    if(project_list === null) project_list = [];
     for( i=0;i<project_list.length;i++){
         txt = txt +"<option value="+project_list[i].id+">"+project_list[i].name+"</option>";
     }
@@ -7070,6 +7093,7 @@ function unhide_all_chart(){
 }
 function get_select_alarm(title){
     var temp = title.split(":");
+    if(monitor_map_list === null) monitor_map_list = [];
     for(var i=0;i<monitor_map_list.length;i++){
         if(monitor_map_list[i].StatCode == temp[0]){
             alarm_selected = monitor_map_list[i];
@@ -7116,6 +7140,7 @@ function alarm_addMarker(point){
 			if(alarm_map_handle == this) alarm_map_handle = null;
 		});
 	};
+    if(monitor_map_list === null) monitor_map_list = [];
     for(var i=0;i<monitor_map_list.length;i++){
         var t_point = new BMap.Point(parseFloat(monitor_map_list[i].Longitude),parseFloat(monitor_map_list[i].Latitude));
         var marker = new BMap.Marker(t_point, {icon: myIcon});
@@ -7477,6 +7502,7 @@ function get_device_sensor(DevCode){
 }
 function get_sensor_name(sensorid){
     var ret = "未知传感器";
+    if(sensor_list === null) sensor_list = [];
     for(var i=0;i<sensor_list.length;i++){
         if(sensorid == sensor_list[i].id){
             ret = sensor_list[i].nickname;
@@ -7493,6 +7519,7 @@ function show_sensor_module(){
     $("#SensorDevCode_Input").val(device_selected.DevCode);
     $("#SensorName_Input").val(get_sensor_name(select_sensor.id));
     $("#SensorStatus_choice").val(select_sensor.status);
+    if(select_sensor.para === null) select_sensor.para = [];
     if(select_sensor.para.length!==0){
         var txt = "";
 		var i;
@@ -7520,6 +7547,7 @@ function submit_sensor_module(){
         return;
     }
     var paramlist = [];//new Array();
+    if(select_sensor.para === null) select_sensor.para = [];
     for(var i=0;i<select_sensor.para.length;i++){
         var temp = {
             name : select_sensor.para[i].name,
@@ -7771,6 +7799,7 @@ function show_usr_msg_module(){
 function reflash_usr_img_table(){
     $("#UsrImgTable").empty();
     var txt = "<thead> <tr> <th> 已上传文件</th> </tr> </thead> <tbody >";
+    if(usr_img === null) usr_img = [];
     for(var i =0;i<usr_img.length;i++){
         txt = txt + "<tr> <td>"+ usr_img[i].name+"</td></tr>";
     }
@@ -8044,6 +8073,7 @@ function get_proj_user_list(){
 function build_key_auth_proj_choice(){
     if(project_list === null) return;
     var txt ="";
+    if(project_list === null) project_list = [];
     for( i=0;i<project_list.length;i++){
         txt = txt +"<option value="+project_list[i].id+">"+project_list[i].name+"</option>";
     }
@@ -8062,6 +8092,7 @@ function build_key_auth_proj_choice(){
 function update_key_auth_proj_stat_choice(projcode,projname){
 	$("#KeyAuthPoint_choice").empty();
     var txt = "";
+    if(point_list === null) point_list = [];
     for( i=0;i<point_list.length;i++){
 		if(point_list[i].ProjCode == projcode){
         txt = txt +"<option value="+point_list[i].id+">"+point_list[i].name+"</option>";}
@@ -8073,6 +8104,7 @@ function update_key_auth_proj_stat_choice(projcode,projname){
 function update_key_auth_proj_key_choice(projcode){
 	$("#KeyUserKey_choice").empty();
     var txt = "";
+    if(key_list === null) key_list = [];
     for( i=0;i<key_list.length;i++){
 		if(key_list[i].ProjCode == projcode){
         txt = txt +"<option value="+key_list[i].id+">"+key_list[i].name+":"+key_list[i].username+"</option>";}
@@ -8082,6 +8114,7 @@ function update_key_auth_proj_key_choice(projcode){
 function update_new_key_auth_key_choice(projcode){
 	$("#NewKeyAuthKey_choice").empty();
     var txt = "";
+    if(key_list === null) key_list = [];
     for( i=0;i<key_list.length;i++){
 		if(key_list[i].ProjCode == projcode){
         txt = txt +"<option value="+key_list[i].id+">"+key_list[i].name+":"+key_list[i].username+"</option>";}
@@ -8091,6 +8124,7 @@ function update_new_key_auth_key_choice(projcode){
 function update_key_auth_proj_user_choice(projcode){
 	$("#KeyUserUser_choice").empty();
     var txt = "";
+    if(proj_user_list === null) proj_user_list = [];
     for( i=0;i<proj_user_list.length;i++){
 		if(proj_user_list[i].ProjCode == projcode){
         txt = txt +"<option value="+proj_user_list[i].id+">"+proj_user_list[i].name+"</option>";}
@@ -8134,6 +8168,7 @@ function get_domain_auth_list(DomainCode){
             return;
         }
         var domain_auth_list = result.ret;
+        if(domain_auth_list === null) domain_auth_list = [];
         var txt = "<thead><tr><th></th><th>编号</th><th>钥匙</th><th>用户</th><th>授权条件</th></tr></thead><tbody>";
         $("#Table_point_key_auth").empty();
         for(var i=0;i<domain_auth_list.length;i++){

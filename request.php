@@ -2574,10 +2574,38 @@ RESPONSE:
     $jsonencode = _encode($retval);
 	echo $jsonencode; break;
     case "GetVideoList":
-    $usr = $_GET["id"];
-    $StatCode = $_GET["StatCode"];
-    $date = $_GET["date"];
-    $hour = $_GET["hour"];
+/*
+REQUEST:
+    var body={
+		StatCode:StatCode,
+		date:date,
+		hour:hour
+    };
+    var map={
+        action:"GetVideoList",
+		body:body,
+		type:"query",
+		user:usr.id
+    };
+RESPONSE:
+	$map = array(
+		'id'=>"Video_" .$StatCode . "_"  .$date ."_" .$hour ."_" .(string)$j,
+		'attr'=>"Video_" .$StatCode . "_"  .$date ."_" .$hour ."_" .(string)$j."视频属性"
+	);
+	array_push($VideoList,$map);
+    
+    $retval=array(
+        'status'=>'true',
+        'ret'=> $VideoList,
+		'msg'=>'success',
+		'auth'=>'true'
+    );
+*/
+    $body_in = $_GET['body'];
+    $usr = $_GET["user"];
+    $StatCode = $body_in["StatCode"];
+    $date = $body_in["date"];
+    $hour = $body_in["hour"];
     $VideoList = array();
     for($j=0;$j<5;$j++) {
 
@@ -3541,6 +3569,225 @@ RESPONSE:
     );
     $jsonencode = _encode($retval);
 	echo $jsonencode; break;
+
+	case "VersionInformation":
+/*
+REQUEST:
+    var map={
+        action:"VersionInformation",
+        type:"query",
+        user:usr.id
+    };
+RESPONSE:
+		$body = array();
+		for($i=0;$i<4;$i++){
+			$text = "number ".((string)($i+1))." line.";
+			array_push($body,$text);
+		}
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$body,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+*/
+		$body = array();
+		for($i=0;$i<4;$i++){
+			$text = "number ".((string)($i+1))." line.";
+			array_push($body,$text);
+		}
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$body,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "ProjUpdateStrategyList":
+		/*
+        REQUEST:
+            var body = {
+        		ProjCode : ProjCode
+        	};
+            var map={
+                action:"ProjUpdateStrategyList",
+                body:body,
+        		type:"query",
+        		user:usr.id
+            };
+        RESPONSE:
+        	$body=array(
+        		'ColumnName'=> $column_name,
+        		'TableData'=>$row_content
+        		);
+        	$retval=array(
+        		'status'=>'true',
+        		'ret'=>$body,
+        		'msg'=>'success',
+        		'auth'=>'true'
+        	);
+        */
+		$body_in = $_GET['body'];
+		$ProjCode = $body_in["ProjCode"];
+		$column = 16;
+		$row = 40;
+		$column_name = array();
+		$row_content = array();
+		for( $i=0;$i<$column;$i++){
+			array_push($column_name,"第".(string)($i+1)."列");
+		}
+		for($i=0;$i<$row;$i++){
+			$one_row = array();
+			array_push($one_row,(string)($i+1));
+			$flag = rand(0,1);
+			if($flag == 0){
+				array_push($one_row,"Y");
+			}else{
+				array_push($one_row,"N");
+			}
+			for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
+
+			//one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+			array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+			//one_row.push("测试");
+			array_push($one_row,"测试");
+			//one_row.push("名称");
+			array_push($one_row,"名称");
+			//one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+			array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+			array_push($row_content,$one_row);
+			//row_content.push(one_row);
+		}
+		$body=array(
+			'ColumnName'=> $column_name,
+			'TableData'=>$row_content
+			);
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$body,
+			'msg'=>'success',
+			'auth'=>'true'
+
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "ProjVersionStrategyChange":
+/*
+REQUEST:
+	var body={
+		ProjCode:ProjCode,
+		UpdateLine:Line
+	}
+    var map={
+        action:"ProjVersionStrategyChange",
+        body:body,
+        type:"mod",
+        user:usr.id
+    };
+RESPONSE:
+	$retval=array(
+		'status'=>'true',
+		'msg'=>'success',
+		'auth'=>'true'
+	);
+*/
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+
+	case "PointUpdateStrategyChange":
+	/*
+    REQUEST:
+    	var body={
+    		StatCode:StatCode,
+    		AutoUpdate:AutoUpdate
+    	}
+        var map={
+            action:"PointUpdateStrategyChange",
+            body:body,
+            type:"mod",
+            user:usr.id
+        };
+    RESPONSE:
+    	$retval=array(
+    		'status'=>'true',
+    		'msg'=>'success',
+    		'auth'=>'true'
+    	);
+    */
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "ProjUpdateStrategyChange":
+	/*
+    REQUEST:
+    	var body={
+    		ProjCode:ProjCode,
+    		AutoUpdate:AutoUpdate
+    	}
+        var map={
+            action:"ProjVersionStrategyChange",
+            body:body,
+            type:"mod",
+            user:usr.id
+        };
+    RESPONSE:
+    	$retval=array(
+    		'status'=>'true',
+    		'msg'=>'success',
+    		'auth'=>'true'
+    	);
+    */
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "GetProjUpdateStrategy":
+	/*
+	REQUEST:
+		var body={
+			ProjCode:ProjCode
+		}
+		var map={
+			action:"GetProjUpdateStrategy",
+			body:body,
+			type:"query",
+			user:usr.id
+		};
+	RESPONSE:
+		$body=array(
+			'VersionLine'=>1
+		);
+		$retval=array(
+			'status'=>'true',
+			'body'=>$body,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+	*/
+		$body=array(
+			'VersionLine'=>"1"
+		);
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$body,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
 	default:
 	break;
 }

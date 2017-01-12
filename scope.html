@@ -1165,6 +1165,40 @@
                                             </div>
                                             <div class="col-md-5 col-sm-5 col-xs-12 column" >
                                                 <div class="input-group ">
+                                                    <span class="input-group-addon" id="UpdateLine" style="min-width: 100px">选择版本线</span>
+                                                    <select class="form-control" placeholder="项目归属的版本线" aria-describedby="basic-addon1" id="UpdateLine_choice">
+                                                        <option value="1">稳定版</option>
+                                                        <option value="2">试运行版</option>
+                                                        <option value="3">测试版</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1 col-sm-1 col-xs-12 column" >
+                                                <button type="button" class="btn btn-primary" id="UpdateLineChange_button">变更版本线</button>
+                                            </div>
+                                            <div class="col-md-12 col-sm-12 col-xs-12 column" >
+                                                <button type="button" class="btn btn-primary" id="FlashProjUpdatedetail_button">查看细节</button>
+                                                <label  style="min-width: 20px"></label>
+                                                <button type="button" class="btn btn-primary" id="ProjAutoUpdate_button">全部自动升级</button>
+                                                <label  style="min-width: 20px"></label>
+                                                <button type="button" class="btn btn-primary" id="ProjNotUpdate_button">全部不自动升级</button>
+                                                <label  style="min-width: 20px"></label>
+                                                <label  style="min-width: 20px" id = "UpdateFlashTime"></label>
+                                            </div>
+                                            <div class="col-md-12 col-sm-12 col-xs-12 column" id ="Version_detail">
+                                                <dl >
+                                                    <dt>版本升级详细信息：</dt>
+                                                    <p></p>
+                                                    <dd></dd>
+                                                </dl>
+                                            </div>
+                                            <div class="col-md-12 column" id="ProjUpdateDetailResult" style="overflow:scroll;overflow-y:hidden;overflow-x:scroll">
+                                                <p></p>
+                                                <table id="ProjUpdateDetailTable" class="display" cellspacing="0" width="100%"  style="white-space: nowrap;overflow:scroll;overflow-y:hidden;overflow-x:scroll">
+                                                </table>
+                                            </div>
+                                            <!--div class="col-md-5 col-sm-5 col-xs-12 column" >
+                                                <div class="input-group ">
                                                     <span class="input-group-addon" id="UpdateVersion" style="min-width: 100px">选择版本</span>
                                                     <select class="form-control" placeholder="选择需要升级的版本" aria-describedby="basic-addon1" id="UpdateVersion_choice">
                                                     </select>
@@ -1173,8 +1207,8 @@
                                             <div class="col-md-1 col-sm-1 col-xs-12 column" >
                                                 <button type="button" class="btn btn-primary" id="UpdateConfirm_button">升级</button>
                                             </div>
-                                            <div style="min-height: 20px"></div>
-                                            <div class="col-md-12 col-sm-12 col-xs-12 column" style="min-height:200px">
+                                            <div style="min-height: 20px"></div-->
+                                            <!--div class="col-md-12 col-sm-12 col-xs-12 column" style="min-height:200px">
                                                 <div>
                                                     <select multiple="multiple" size="10" name="duallistboxDevUpdate" class="DevUpdateAuthDual" id="duallistboxDevUpdate">
                                                         <option value="1">Option 1</option>
@@ -1189,7 +1223,7 @@
                                                         <option value="10">Option 10</option>
                                                     </select>
                                                 </div>
-                                            </div>
+                                            </div-->
 
 
                                         </div>

@@ -145,6 +145,7 @@ var  if_key_history_table_initialize = false;
 //key auth Control
 var Key_auth_initialized = false;
 //alarm Control
+var alarm_map_list = null;
 var alarm_type_list = null;
 var alarm_map_initialized = false;
 var alarm_selected = null;
@@ -522,6 +523,7 @@ $(document).ready(function() {
     //var monitor_table_handle= setInterval("query_warning()", cycle_time);
     var monitor_handle= setInterval(get_monitor_warning_on_map, cycle_time);
     var monitor_table_handle= setInterval(query_warning, cycle_time);
+    var monitor_alarm_handle= setInterval(alarm_cycle, cycle_time);
     PageInitialize();
     $("#menu_logout").on('click',function(){
         logout();
@@ -5681,6 +5683,34 @@ function get_monitor_list(){
         //console.log(monitor_map_list);
     });*/
 }
+function get_monitor_alarm_list(){
+    var map={
+        action:"MonitorAlarmList",
+        type:"query",
+        user:usr.id
+    };
+    //console.log(map);
+    var get_monitor_list_callback = function(result){
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        alarm_map_list = result.ret;
+    };
+    JQ_get(request_head,map,get_monitor_list_callback);
+    /*
+     jQuery.get(request_head, map, function (data) {
+     log(data);
+     var result=JSON.parse(data);
+     if(result.status == "false"){
+     show_expiredModule();
+     return;
+     }
+     monitor_map_list = result.ret;
+
+     //console.log(monitor_map_list);
+     });*/
+}
 function get_monitor_warning_on_map(){
     if(monitor_selected === null||monitor_map_handle===null){
         return;
@@ -5808,7 +5838,7 @@ function initializeMap(){
 
     //map_MPMonitor.centerAndZoom(new BMap.Point(Longitude,Latitude),15);
 
-    if(user.city === "GPS"){
+    if(usr.city === "GPS"){
         if(Longitude === null){
             map_MPMonitor.centerAndZoom("beijing",15);
         }else{
@@ -6957,7 +6987,7 @@ function query_alarm(date,type,name){
 function initializeAlarmMap(){
     get_project_list();
     get_proj_point_list();
-    get_monitor_list();
+    get_monitor_alarm_list();
     get_alarm_type_list();
     var basic_min_height = parseInt(($("#WCMonitorViewMap").css("min-height")).replace(/[^0-9]/ig,""));
     if(window.screen.availHeight/2 > basic_min_height) basic_min_height=window.screen.availHeight/2;
@@ -6967,7 +6997,7 @@ function initializeAlarmMap(){
     //map_MPMonitor.addControl(new BMap.ScaleControl());
     map_MPMonitor.enableScrollWheelZoom();
     //map_MPMonitor.centerAndZoom(usr.city,15);
-    if(user.city === "GPS"){
+    if(usr.city === "GPS"){
         if(Longitude === null){
             map_MPMonitor.centerAndZoom("beijing",15);
         }else{
@@ -6981,6 +7011,11 @@ function initializeAlarmMap(){
     window.setTimeout(build_alarm_tabs, wait_time_long);
     //alarm_addMarker();
     alarm_map_initialized=true;
+}
+function alarm_cycle(){
+    if(alarm_map_initialized === false) return;
+    get_monitor_alarm_list();
+    window.setTimeout(alarm_addMarker, wait_time_long);
 }
 function build_alarm_tabs(){
     if(alarm_type_list === null) return;
@@ -7108,9 +7143,9 @@ function get_alarmpointinfo_on_map(){
 
 }
 function alarm_addMarker(point){
-    if(monitor_map_list === null)return;
+    if(alarm_map_list === null)return;
     // 创建图标对象
-    var myIcon = new BMap.Icon("./image/map-marker-ball-azure-small.png", new BMap.Size(32, 32),{
+    var myIcon = new BMap.Icon("./image/map-marker-ball-pink-small.png", new BMap.Size(32, 32),{
         anchor: new BMap.Size(16, 30)
     });
 	alarm_mark_click = function(){
@@ -7127,31 +7162,17 @@ function alarm_addMarker(point){
 			if(alarm_map_handle == this) alarm_map_handle = null;
 		});
 	};
-    if(monitor_map_list === null) monitor_map_list = [];
-    for(var i=0;i<monitor_map_list.length;i++){
-        var t_point = new BMap.Point(parseFloat(monitor_map_list[i].Longitude),parseFloat(monitor_map_list[i].Latitude));
+    if(alarm_map_list === null) alarm_map_list = [];
+    for(var i=0;i<alarm_map_list.length;i++){
+        var t_point = new BMap.Point(parseFloat(alarm_map_list[i].Longitude),parseFloat(alarm_map_list[i].Latitude));
         var marker = new BMap.Marker(t_point, {icon: myIcon});
-        marker.setTitle(monitor_map_list[i].StatCode+":"+monitor_map_list[i].StatName);
+        marker.setTitle(alarm_map_list[i].StatCode+":"+alarm_map_list[i].StatName);
         map_MPMonitor.addOverlay(marker);
-		/*
-        marker.addEventListener("click", function(){
-            get_select_alarm(this.getTitle());
-            //console.log("Selected:"+alarm_selected.StatName);
-
-            var sContent = this.getTitle();
-            var infoWindow = new BMap.InfoWindow(sContent,{offset:new BMap.Size(0,-23)});
-            infoWindow.setWidth(400);
-            alarm_map_handle = infoWindow;
-            get_alarmpointinfo_on_map();
-            this.openInfoWindow(infoWindow);
-            infoWindow.addEventListener("close",function(){
-                if(alarm_map_handle == this) alarm_map_handle = null;
-            });
-        });*/
 		marker.addEventListener("click",alarm_mark_click);
     }
 
 }
+
 
 
 

@@ -2415,11 +2415,16 @@
                                             </div>
 
                                         </div>
-                                        <div class="row clearfix" id="WarningHandleView">WarningHandleView
-                                            <div style="width:100%">
-                                                <div>
-                                                    <canvas id="canvas" height="450" width="600"></canvas>
-                                                </div>
+                                        <div class="row clearfix" id="WarningHandleView">
+                                            <div class="col-md-12 column">
+                                                <button type="button" class="btn btn-primary" id="WarningHandleTableFlash">刷新</button>
+                                                <label  style="min-width: 20px"></label>
+                                                <label  style="min-width: 20px" id = "WarningHandleFlashTime"></label>
+                                            </div>
+                                            <div class="col-md-12 column" id="WarningHandleQueryResult" style="overflow:scroll;overflow-y:hidden;overflow-x:scroll">
+                                                <p></p>
+                                                <table id="WarningHandleQueryTable" class="display" cellspacing="0" width="100%"  style="white-space: nowrap;overflow:scroll;overflow-y:hidden;overflow-x:scroll">
+                                                </table>
                                             </div>
                                         </div>
                                         <div class="row clearfix" id="KeyManageView" >

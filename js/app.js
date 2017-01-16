@@ -152,6 +152,9 @@ var alarm_selected = null;
 var alarm_map_handle=null;
 var alarm_array = null;
 
+//alarm handle control
+var Warning_Handle_table_initialized = true;
+var if_Warning_Handle_table_initialize = false;
 
 //Export Control
 var export_table_name = null;
@@ -1152,6 +1155,9 @@ $(document).ready(function() {
     $("#MonitorTableFlash").on('click',function() {
         query_static_warning();
     });
+    $("#WarningHandleTableFlash").on('click',function() {
+        query_warning_handle_list();
+    });
 
 
     $("#menu_user_profile").on('click',function() {
@@ -1425,9 +1431,10 @@ function warning_check(){
 }
 function warning_handle(){
     clear_window();
-    //$("#WarningHandleView").css("display","block");
-    write_title("施工中","");
-    $("#Undefined").css("display","block");
+    $("#WarningHandleView").css("display","block");
+    write_title("告警处理","请查看报表");
+    query_warning_handle_list();
+    //$("#Undefined").css("display","block");
 }
 function desktop(){
     clear_window();
@@ -8715,4 +8722,78 @@ function query_ProjUpdateStrategyList(ProjCode){
         $(".update_change_btn").on('click',update_change_btn_click);
     };
     JQ_get(request_head,map,ProjUpdateStrategyList_callback);
+}
+
+
+function query_warning_handle_list(){
+    if(Warning_Handle_table_initialized !== true) return;
+    var map={
+        action:"GetWarningHandleListTable",
+        type:"query",
+        user:usr.id
+    };
+    var GetWarningHandleListTable_callback= function(result){
+        //log(data);
+        //var result=JSON.parse(data);
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        var Last_update_date=(new Date()).Format("yyyy-MM-dd_hhmmss");
+        $("#WarningHandleFlashTime").empty();
+        $("#WarningHandleFlashTime").append("最后刷新时间："+Last_update_date);
+        var ColumnName = result.ret.ColumnName;
+        var TableData = result.ret.TableData;
+        //var txt = "<thead> <tr><th></th><th></th>";
+        var txt = "<thead> <tr>";
+        var i;
+        for( i=0;i<ColumnName.length;i++){
+            txt = txt +"<th>"+ColumnName[i]+"</th>";
+        }
+        //txt = txt +"<th></th></tr></thead>";
+        txt = txt +"</tr></thead>";
+        txt = txt +"<tbody>";
+        for( i=0;i<TableData.length;i++){
+            txt = txt +"<tr>";
+            //txt = txt +"<td><ul class='pagination'> <li><a href='#' class = 'video_btn' StateCode='"+TableData[i][0]+"' ><em class='glyphicon glyphicon-play ' aria-hidden='true' ></em></a> </li></ul></td>";
+            //txt = txt +"<td><button type='button' class='btn btn-default lock_btn' StateCode='"+TableData[i][0]+"' ><em class='glyphicon glyphicon-lock ' aria-hidden='true' ></em></button></td><td><button type='button' class='btn btn-default video_btn' StateCode='"+TableData[i][0]+"' ><em class='glyphicon glyphicon-play ' aria-hidden='true' ></em></button></td>";
+            //console.log("StateCode="+TableData[i][0]);
+            for(var j=0;j<TableData[i].length;j++){
+                txt = txt +"<td>"+TableData[i][j]+"</td>";
+            }
+            //txt = txt + "<td><button type='button' class='btn btn-default video_btn' StateCode='"+TableData[i][0]+"' >视频</button></td>";
+            txt = txt +"</tr>";
+        }
+        txt = txt+"</tbody>";
+        $("#WarningHandleQueryTable").empty();
+        $("#WarningHandleQueryTable").append(txt);
+        if(if_Warning_Handle_table_initialize) $("#WarningHandleQueryTable").DataTable().destroy();
+
+        //console.log(monitor_map_list);
+
+        var show_table  = $("#WarningHandleQueryTable").DataTable( {
+            //dom: 'T<"clear">lfrtip',
+            "scrollY": false,
+            "scrollCollapse": true,
+
+            "scrollX": true,
+            "searching": false,
+            "autoWidth": true,
+            "lengthChange":false,
+            //bSort: false,
+            //aoColumns: [ { sWidth: "45%" }, { sWidth: "45%" }, { sWidth: "10%", bSearchable: false, bSortable: false } ],
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'excel',
+                    text: '导出到excel',
+                    filename: "MonitorData"+Last_update_date
+                }
+            ]
+
+        } );
+        if_Warning_Handle_table_initialize = true;
+    };
+    JQ_get(request_head,map,GetWarningHandleListTable_callback);
+
 }

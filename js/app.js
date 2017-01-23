@@ -1,4 +1,4 @@
-﻿
+
 
 //var request_head= ".request";
 //var jump_url = ".jump";
@@ -8423,6 +8423,27 @@ function JQ_get(url,request,callback){
         callback(result);
     });
 }
+function JQ_get_with_para(url,request,callback,para){
+    if(request.user!="null"){
+        if(usr.userauth[request.type] == "false"){
+            show_alarm_module(true,"您没有进行此操作的权限",null);
+            return;
+        }
+    }
+    jQuery.get(url, request, function (data) {
+        log(data);
+        var result=JSON.parse(data);
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        if(result.auth == "false"){
+            show_alarm_module(true,"您没有进行此操作的权限："+result.msg,null);
+            return;
+        }
+        callback(result,para);
+    });
+}
 function thread_sync(sync_key,thread_number,callback){
     var Intervalhandle = 0;
     var pending = function(Intervalhandle,callback){
@@ -8512,7 +8533,10 @@ function draw_parameter_page(){
     $("#ProjNotUpdate_button").on('click',function(){
         click_ProjUpdateStrategyChange_commit($("#UpdateProj_choice").val(),"false");
     });
-
+    $("#UpdateProj_choice").change(function(){
+        query_ProjUpdateStrategyList($("#UpdateProj_choice").val());
+    });
+    query_ProjUpdateStrategyList($("#UpdateProj_choice").val());
 }
 function get_VersionInformation(){
     var map={
@@ -8587,7 +8611,7 @@ function click_ProjVersionStrategyChange_commit(ProjCode,VersionLine){
     };
     JQ_get(request_head,map,ProjVersionStrategyChange_callback);
 }
-function click_PointUpdateStrategyChange_commit(StatCode,ifupdate){
+function click_PointUpdateStrategyChange_commit(StatCode,ifupdate,button){
     var body={
         StatCode:StatCode,
         AutoUpdate:ifupdate
@@ -8598,19 +8622,29 @@ function click_PointUpdateStrategyChange_commit(StatCode,ifupdate){
         type:"query",
         user:usr.id
     };
-    var PointUpdateStrategyChange_callback = function(result){
+    var PointUpdateStrategyChange_callback = function(result,button){
         var ret = result.status;
         if(ret == "true"){
-            setTimeout(function() {
+            //console.log("click");
+
+            button.empty();
+            if(ifupdate === "true"){
+                button.append("<em class='glyphicon glyphicon-ok' aria-hidden='true' ></em>");
+                button.attr("AutoUpdate","Y");
+            }else{
+                button.append("<em class='glyphicon glyphicon-remove' aria-hidden='true' ></em>");
+                button.attr("AutoUpdate","N");
+            }
+            /*setTimeout(function() {
                 show_alarm_module(false, "监测点自动更新设置成功！请手动刷新" , null);
-            },500);
+            },500);*/
         }else{
             setTimeout(function() {
                 show_alarm_module(true, "监测点自动更新设置失败" + result.msg, null);
             },500);
         }
     };
-    JQ_get(request_head,map,PointUpdateStrategyChange_callback);
+    JQ_get_with_para(request_head,map,PointUpdateStrategyChange_callback,button);
 }
 function click_ProjUpdateStrategyChange_commit(ProjCode,ifupdate){
     var body={
@@ -8659,7 +8693,7 @@ function query_ProjUpdateStrategyList(ProjCode){
         $("#UpdateFlashTime").append("最后刷新时间："+Last_update_date);
         var ColumnName = result.ret.ColumnName;
         var TableData = result.ret.TableData;
-        var txt = "<thead> <tr><th></th>";
+        var txt = "<thead> <tr>";
         var i;
         for( i=0;i<ColumnName.length;i++){
             txt = txt +"<th>"+ColumnName[i]+"</th>";
@@ -8670,14 +8704,18 @@ function query_ProjUpdateStrategyList(ProjCode){
         for( i=0;i<TableData.length;i++){
             txt = txt +"<tr>";
             //txt = txt +"<td><ul class='pagination'> <li><a href='#' class = 'video_btn' StateCode='"+TableData[i][0]+"' ><em class='glyphicon glyphicon-play ' aria-hidden='true' ></em></a> </li></ul></td>";
-            var icontag = "glyphicon glyphicon-upload";
-            if(TableData[i][1] ==="Y"){
-                icontag = "glyphicon glyphicon-remove-sign";
-            }
-            txt = txt +"<td><button type='button' class='btn btn-default update_change_btn' StateCode='"+TableData[i][0]+"' AutoUpdate= '"+TableData[i][1]+"'><em class='"+icontag+"' aria-hidden='true' ></em></button></td>";
             //console.log("StateCode="+TableData[i][0]);
             for(var j=0;j<TableData[i].length;j++){
-                txt = txt +"<td>"+TableData[i][j]+"</td>";
+                if(j!=1){txt = txt +"<td>"+TableData[i][j]+"</td>";}
+                else{
+                    var icontag = "glyphicon glyphicon-remove";
+                    if(TableData[i][1] ==="Y"){
+                        icontag = "glyphicon glyphicon-ok";
+                    }
+                    txt = txt +"<td><button type='button' class='btn btn-default update_change_btn' StateCode='"+TableData[i][0]+"' AutoUpdate= '"+TableData[i][1]+"'><em class='"+icontag+"' aria-hidden='true' ></em></button></td>";
+
+                }
+
             }
             txt = txt +"</tr>";
         }
@@ -8702,6 +8740,18 @@ function query_ProjUpdateStrategyList(ProjCode){
             dom: 'Bfrtip',
             buttons: [
                 {
+                    text: '自动升级',
+                    action:function (e,dt,node,config){
+                        click_ProjUpdateStrategyChange_commit($("#UpdateProj_choice").val(),"true");
+                    }
+                },
+                {
+                    text: '手动升级',
+                    action:function (e,dt,node,config){
+                        click_ProjUpdateStrategyChange_commit($("#UpdateProj_choice").val(),"false");
+                    }
+                },
+                {
                     extend: 'excel',
                     text: '导出到excel',
                     filename: "MonitorData"+Last_update_date
@@ -8712,12 +8762,13 @@ function query_ProjUpdateStrategyList(ProjCode){
         if_update_table_initialize = true;
         update_change_btn_click = function(){
             var statcode = $(this).attr('StateCode');
+            if(statcode === undefined ||statcode === null) return;
             var ifup = $(this).attr('AutoUpdate');
             var ifupdate = "true";
             if(ifup ==="Y"){
                 ifupdate = "false";
             }
-            click_PointUpdateStrategyChange_commit(statcode,ifupdate);
+            click_PointUpdateStrategyChange_commit(statcode,ifupdate,$(this));
         };
         $(".update_change_btn").on('click',update_change_btn_click);
     };
@@ -8783,13 +8834,30 @@ function query_warning_handle_list(){
             //bSort: false,
             //aoColumns: [ { sWidth: "45%" }, { sWidth: "45%" }, { sWidth: "10%", bSearchable: false, bSortable: false } ],
             dom: 'Bfrtip',
+            select:true,
+            buttons:{
+                buttons:[
+
+                    {
+                        extend: 'excel',
+                        text: '导出到excel',
+                        filename: "AlarmData"+Last_update_date
+                    }
+                ]
+            }/*,
             buttons: [
+                {
+                    text: 'testbutton',
+                    action:function (e,dt,node,config){
+                        console.log("test button click");
+                    }
+                },
                 {
                     extend: 'excel',
                     text: '导出到excel',
-                    filename: "MonitorData"+Last_update_date
+                    filename: "AlarmData"+Last_update_date
                 }
-            ]
+            ]*/
 
         } );
         if_Warning_Handle_table_initialize = true;

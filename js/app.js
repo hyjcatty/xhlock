@@ -449,6 +449,7 @@ function get_user_information(){
             get_sensor_list();
             get_camera_unit();
             get_project_list();
+			get_proj_point_list();
             hide_menu();
         }
 	};
@@ -765,7 +766,12 @@ $(document).ready(function() {
         touchcookie();
         key_history();
     });
-
+    $("#CableCheck").on('click',function(){
+        CURRENT_URL = "CableCheck";
+        active_menu("CableCheck");
+        touchcookie();
+        CABLE_Check();
+    });
 
 
     //user view buttons
@@ -1320,6 +1326,10 @@ $(document).ready(function() {
         click_key_grant_commit($(this).attr("KeyId"),$(this).attr("UserId"));
     });
 
+	$("#AlarmHandleUpdateCommit").on('click',function(){
+		AlarmHandleUpdateCommit_button_commit();
+    });
+
     //alert($(window).height());
     //alert($(window).width());
     clear_window();
@@ -1367,7 +1377,8 @@ function key_manage(){
     clear_window();
     write_title("钥匙管理","根据您的权限对项目组进行添加/删除/修改等操作");
     $("#KeyManageView").css("display","block");
-    if(!key_initial){ key_intialize(0);}
+    //if(!key_initial){ key_intialize(0);}
+    key_intialize(0);
 }
 function proj_manage(){
     clear_window();
@@ -1555,6 +1566,11 @@ function AD_Conf(){
 function WEB_Conf(){
     clear_window();
     write_title("施工中","");
+    $("#Undefined").css("display","block");
+}
+function CABLE_Check(){
+    clear_window();
+    write_title("纤芯管理","");
     $("#Undefined").css("display","block");
 }
 /*
@@ -3257,10 +3273,12 @@ function draw_key_table(data){
     var i;
     for(i=0;i<table_row;i++){
         if((sequence+i)<key_table.length){
+            var keyusername = key_table[sequence+i].KeyUserName;
+            if(keyusername == "none")keyusername = "部门收管";
             if(0!==i%2){
                 txt =txt+ "<tr class='success  li_menu' id='key_table_cell"+i+"' KeyCode='"+key_table[sequence+i].KeyCode+"'>";
             }else{ txt =txt+ "<tr class=' li_menu' id='key_table_cell"+i+"' KeyCode='"+key_table[sequence+i].KeyCode+"'>";}
-            txt = txt +"<td>" + key_table[sequence+i].KeyCode+"</td>"+"<td>" + key_table[sequence+i].KeyName+"</td>"+"<td>" + key_table[sequence+i].KeyProjName+"</td>"+"<td>" + key_table[sequence+i].KeyUserName+"</td>"+"<td>" + key_type_transfer(key_table[sequence+i].KeyType)+"</td>";
+            txt = txt +"<td>" + key_table[sequence+i].KeyCode+"</td>"+"<td>" + key_table[sequence+i].KeyName+"</td>"+"<td>" + key_table[sequence+i].KeyProjName+"</td>"+"<td>" + keyusername+"</td>"+"<td>" + key_type_transfer(key_table[sequence+i].KeyType)+"</td>";
             
 
             txt = txt +"</tr>";
@@ -3330,6 +3348,8 @@ function clear_key_detail_panel(){
 }
 function draw_key_detail_panel(){
     $("#Label_key_detail").empty();
+    var keyusername = key_selected.KeyUserName;
+    if(keyusername == "none")keyusername = "部门收管";
     var txt = "<p></p><p></p>"+
         "<div class='col-md-6 col-sm-6 col-xs-12 column'>"+
         "<dl >"+
@@ -3340,7 +3360,7 @@ function draw_key_detail_panel(){
         "<div class='col-md-6 col-sm-6 col-xs-12 column'>"+
         "<dl >"+
         "<dt>归口部门：</dt><dd>"+key_selected.KeyProjName+"</dd>"+
-        "<dt>使用人：</dt><dd>"+key_selected.KeyUserName+"</dd>"+
+        "<dt>使用人：</dt><dd>"+keyusername+"</dd>"+
         "</dl>"+
         "</div>"+
         "<div class='col-md-12 col-sm-12 col-xs-12 column'>"+
@@ -3970,7 +3990,9 @@ function draw_proj_detail_key_table(){
     txt ="<thead> <tr> <th>钥匙名称 </th> <th>所有人 </th></tr> </thead> <tbody >";
     if(project_selected_key === null) project_selected_key = [];
     for(var i=0;i<project_selected_key.length;i++){
-        txt = txt + "<tr id='"+project_selected_key[i].id+"' class='keyrow'> <td>"+ project_selected_key[i].name+"</td> <td>"+ project_selected_key[i].username+"</td></tr>";
+        var keyusername = project_selected_key[i].username;
+        if(keyusername == "none")keyusername = "部门收管";
+        txt = txt + "<tr id='"+project_selected_key[i].id+"' class='keyrow'> <td>"+ project_selected_key[i].name+"</td> <td>"+ keyusername+"</td></tr>";
     }
     txt = txt+ "</tbody>";
     $("#Table_proj_key").append(txt);
@@ -6304,6 +6326,10 @@ function query_static_warning(){
         };
         $(".video_btn").on('click',video_btn_click);
         $(".lock_btn").on('click',lock_btn_click);
+        $("#MonitorQueryTable_paginate").on('click',function(){
+            $(".video_btn").on('click',video_btn_click);
+            $(".lock_btn").on('click',lock_btn_click);
+        });
     };
     JQ_get(request_head,map,GetStaticMonitorTable_callback);
     /*
@@ -8122,7 +8148,9 @@ function update_key_auth_proj_key_choice(projcode){
     if(key_list === null) key_list = [];
     for( i=0;i<key_list.length;i++){
 		if(key_list[i].ProjCode == projcode){
-        txt = txt +"<option value="+key_list[i].id+">"+key_list[i].name+":"+key_list[i].username+"</option>";}
+            var keyusername = key_list[i].username;
+            if(keyusername == "none")keyusername = "部门收管";
+        txt = txt +"<option value="+key_list[i].id+">"+key_list[i].name+":"+keyusername+"</option>";}
     }
 	$("#KeyUserKey_choice").append(txt);
 }
@@ -8132,7 +8160,9 @@ function update_new_key_auth_key_choice(projcode){
     if(key_list === null) key_list = [];
     for( i=0;i<key_list.length;i++){
 		if(key_list[i].ProjCode == projcode){
-        txt = txt +"<option value="+key_list[i].id+">"+key_list[i].name+":"+key_list[i].username+"</option>";}
+            var keyusername = key_list[i].username;
+            if(keyusername == "none")keyusername = "部门收管";
+        txt = txt +"<option value="+key_list[i].id+">"+key_list[i].name+":"+keyusername+"</option>";}
     }
 	$("#NewKeyAuthKey_choice").append(txt);
 }
@@ -8150,20 +8180,20 @@ function update_key_auth_proj_user_choice(projcode){
 }
 
 function key_auth_initialize(){
-    if(Key_auth_initialized === false){
-        if(project_list === null||point_list === null||key_list === null||proj_user_list === null) {
+    //if(Key_auth_initialized === false){
+        //if(project_list === null||point_list === null||key_list === null||proj_user_list === null) {
             get_project_list();
             get_proj_point_list();
 
             get_proj_key_list();
 			get_proj_user_list();
             window.setTimeout(build_key_auth_proj_choice, wait_time_middle);
-        }else{
-            build_key_auth_proj_choice();
-        }
-        Key_auth_initialized = true;
+        //}else{
+            //build_key_auth_proj_choice();
+       // }
+       // Key_auth_initialized = true;
 
-    }
+   // }
 }
 
 function get_domain_auth_list(DomainCode){
@@ -8187,8 +8217,10 @@ function get_domain_auth_list(DomainCode){
         var txt = "<thead><tr><th></th><th>编号</th><th>钥匙</th><th>用户</th><th>授权条件</th></tr></thead><tbody>";
         $("#Table_point_key_auth").empty();
         for(var i=0;i<domain_auth_list.length;i++){
+            var keyusername = domain_auth_list[i].UserName;
+            if(keyusername == "none")keyusername = "部门收管";
             txt= txt+"<tr> <td><button type='button' class='btn btn-default Auth_del_btn' AuthId='"+domain_auth_list[i].AuthId+"' ><em class='glyphicon glyphicon-trash ' aria-hidden='true' ></em></button></td>";
-            txt = txt +"<td>"+domain_auth_list[i].AuthId+"</td><td>"+domain_auth_list[i].KeyName+"</td><td>"+domain_auth_list[i].UserName+"</td><td>"+domain_auth_list[i].AuthWay+"</td></tr>";
+            txt = txt +"<td>"+domain_auth_list[i].AuthId+"</td><td>"+domain_auth_list[i].KeyName+"</td><td>"+keyusername+"</td><td>"+domain_auth_list[i].AuthWay+"</td></tr>";
         }
         txt = txt+"</tbody>";
         $("#Table_point_key_auth").append(txt);
@@ -8771,6 +8803,9 @@ function query_ProjUpdateStrategyList(ProjCode){
             click_PointUpdateStrategyChange_commit(statcode,ifupdate,$(this));
         };
         $(".update_change_btn").on('click',update_change_btn_click);
+        $("#ProjUpdateDetailTable_paginate").on('click',function(){
+            $(".update_change_btn").on('click',update_change_btn_click);
+        });
     };
     JQ_get(request_head,map,ProjUpdateStrategyList_callback);
 }
@@ -8796,7 +8831,7 @@ function query_warning_handle_list(){
         var ColumnName = result.ret.ColumnName;
         var TableData = result.ret.TableData;
         //var txt = "<thead> <tr><th></th><th></th>";
-        var txt = "<thead> <tr>";
+        var txt = "<thead> <tr><th></th>";
         var i;
         for( i=0;i<ColumnName.length;i++){
             txt = txt +"<th>"+ColumnName[i]+"</th>";
@@ -8806,7 +8841,12 @@ function query_warning_handle_list(){
         txt = txt +"<tbody>";
         for( i=0;i<TableData.length;i++){
             txt = txt +"<tr>";
-            //txt = txt +"<td><ul class='pagination'> <li><a href='#' class = 'video_btn' StateCode='"+TableData[i][0]+"' ><em class='glyphicon glyphicon-play ' aria-hidden='true' ></em></a> </li></ul></td>";
+			if(TableData[i][1] == "N"){
+				txt = txt +"<td><ul class='pagination'> <li><a href='#' class = 'alarm_action_btn' StatCode='"+TableData[i][0]+"'>处理</a> </li></ul></td>";
+			}else{
+				txt = txt +"<td><ul class='pagination'> <li><a href='#' class = 'alarm_close_btn' StatCode='"+TableData[i][0]+"'>关闭</a> </li></ul></td>";
+            
+			}
             //txt = txt +"<td><button type='button' class='btn btn-default lock_btn' StateCode='"+TableData[i][0]+"' ><em class='glyphicon glyphicon-lock ' aria-hidden='true' ></em></button></td><td><button type='button' class='btn btn-default video_btn' StateCode='"+TableData[i][0]+"' ><em class='glyphicon glyphicon-play ' aria-hidden='true' ></em></button></td>";
             //console.log("StateCode="+TableData[i][0]);
             for(var j=0;j<TableData[i].length;j++){
@@ -8824,13 +8864,14 @@ function query_warning_handle_list(){
 
         var show_table  = $("#WarningHandleQueryTable").DataTable( {
             //dom: 'T<"clear">lfrtip',
-            "scrollY": false,
+            "scrollY": true,
             "scrollCollapse": true,
 
             "scrollX": true,
             "searching": false,
             "autoWidth": true,
             "lengthChange":false,
+            //"paging":false,
             //bSort: false,
             //aoColumns: [ { sWidth: "45%" }, { sWidth: "45%" }, { sWidth: "10%", bSearchable: false, bSortable: false } ],
             dom: 'Bfrtip',
@@ -8861,7 +8902,86 @@ function query_warning_handle_list(){
 
         } );
         if_Warning_Handle_table_initialize = true;
+		alarm_action_btn_click = function(){
+            var statcode = $(this).attr('StatCode');
+            $("#AlarmHandleUpdateCommit").attr("StatCode",statcode);
+			var alarm_statname = get_point_name(statcode);
+			$("#AlarmStatName_Input").val(alarm_statname);
+            modal_middle($('#AlarmHandleProcess'));
+			$('#AlarmHandleProcess').modal('show');
+        };
+        $(".alarm_action_btn").on('click',alarm_action_btn_click);
+		alarm_close_btn_click = function(){
+            var statcode = $(this).attr('StatCode');
+			handle_Alarm_close(statcode);
+        };
+        $(".alarm_close_btn").on('click',alarm_close_btn_click);
+
+        $("#WarningHandleQueryTable_paginate").on('click',function(){
+            $(".alarm_action_btn").on('click',alarm_action_btn_click);
+            $(".alarm_close_btn").on('click',alarm_close_btn_click);
+        });
     };
     JQ_get(request_head,map,GetWarningHandleListTable_callback);
 
+}
+function handle_Alarm_process(StatCode,Mobile,Action){
+    var body={
+        StatCode:StatCode,
+        Mobile:Mobile,
+        Action:Action
+    };
+    var map={
+        action:"AlarmHandle",
+        body:body,
+        type:"mod",
+        user:usr.id
+    };
+    var HandleAlarmProcess_callback = function(result){
+        var ret = result.status;
+        if(ret == "true"){
+            setTimeout(function() {
+                show_alarm_module(false, "工单下发成功" , null);
+                query_warning_handle_list();
+            },500);
+        }else{
+            setTimeout(function() {
+                show_alarm_module(true, "工单下发失败" + result.msg, null);
+            },500);
+        }
+    };
+    JQ_get(request_head,map,HandleAlarmProcess_callback);
+}
+function handle_Alarm_close(StatCode){
+    var body={
+        StatCode:StatCode
+    };
+    var map={
+        action:"AlarmClose",
+        body:body,
+        type:"mod",
+        user:usr.id
+    };
+    var HandleAlarmClose_callback = function(result){
+        var ret = result.status;
+        if(ret == "true"){
+            setTimeout(function() {
+                show_alarm_module(false, "告警关闭成功" , null);
+                query_warning_handle_list();
+            },500);
+        }else{
+            setTimeout(function() {
+                show_alarm_module(true, "告警关闭失败" + result.msg, null);
+            },500);
+        }
+    };
+    JQ_get(request_head,map,HandleAlarmClose_callback);
+}
+function AlarmHandleUpdateCommit_button_commit(){
+	var statcode = $("#AlarmHandleUpdateCommit").attr("StatCode");
+	var mobile = $("#AlarmHandleMobile_Input").val();
+	var action = $("#AlarmHandleAction_Input").val();
+	if(mobile===""||action ==="") return;
+	handle_Alarm_process(statcode,mobile,action);
+	$('#AlarmHandleProcess').modal('hide');
 }

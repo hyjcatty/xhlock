@@ -522,7 +522,7 @@ $(document).ready(function() {
     //$('.user_auth_dual').showFilterInputs=false;
     $("#Desktop").css("min-height",window.screen.availHeight-300);
     $("#Undefined").css("min-height",window.screen.availHeight-300);
-
+    $("#CableCheckView").css("min-height",window.screen.availHeight-300);
     //var monitor_handle= setInterval("get_monitor_warning_on_map()", cycle_time);
     //var monitor_table_handle= setInterval("query_warning()", cycle_time);
     var monitor_handle= setInterval(get_monitor_warning_on_map, cycle_time);
@@ -1571,7 +1571,7 @@ function WEB_Conf(){
 function CABLE_Check(){
     clear_window();
     write_title("纤芯管理","");
-    $("#Undefined").css("display","block");
+    $("#CableCheckView").css("display","block");
 }
 /*
 function KEY_Manage(){
@@ -1611,6 +1611,7 @@ function clear_window(){
     $("#KeyManageView").css("display","none");
     $("#KeyHistoryView").css("display","none");
     $("#KeyAuthView").css("display","none");
+    $("#CableCheckView").css("display","none");
 }
 
 

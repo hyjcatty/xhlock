@@ -4235,6 +4235,60 @@ RESPONSE:
 			);
 			$jsonencode = _encode($retval);
 			echo $jsonencode; break;
+	case "AlarmHandle":
+    	/*
+        REQUEST:
+        	var body={
+        		StatCode:StatCode,
+        		Mobile:Mobile,
+        		Action:Action
+        	}
+            var map={
+                action:"AlarmHandle",
+                body:body,
+                type:"mod",
+                user:usr.id
+            };
+        RESPONSE:
+        	$retval=array(
+        		'status'=>'true',
+        		'msg'=>'success',
+        		'auth'=>'true'
+        	);
+        */
+    		$retval=array(
+    			'status'=>'true',
+    			'msg'=>'success',
+    			'auth'=>'true'
+    		);
+    		$jsonencode = _encode($retval);
+    		echo $jsonencode; break;
+	case "AlarmClose":
+		/*
+		REQUEST:
+			var body={
+				StatCode:StatCode
+			}
+			var map={
+				action:"AlarmClose",
+				body:body,
+				type:"mod",
+				user:usr.id
+			};
+		RESPONSE:
+			$retval=array(
+				'status'=>'true',
+				'msg'=>'success',
+				'auth'=>'true'
+			);
+		*/
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
 	default:
 	break;
 }

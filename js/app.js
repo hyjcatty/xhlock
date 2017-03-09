@@ -170,7 +170,11 @@ var select_sensor = null;
 var select_key_auth = null;
 
 
-
+//alarm handle control
+var RTU_Manage_table_initialized = true;
+var OTDR_Manage_table_initialized = true;
+var if_RTU_Manage_table_initialize = false;
+var if_OTDR_Manage_table_initialize = false;
 //Camera Control
 var camera_unit_h;
 var camera_unit_v;
@@ -451,6 +455,7 @@ function get_user_information(){
             get_project_list();
 			get_proj_point_list();
             hide_menu();
+            setTimeout(mp_monitor,wait_time_middle);
         }
 	};
 	JQ_get(request_head,map,get_user_information_callback);
@@ -771,6 +776,18 @@ $(document).ready(function() {
         active_menu("CableCheck");
         touchcookie();
         CABLE_Check();
+    });
+    $("#RTUManage").on('click',function(){
+        CURRENT_URL = "RTUManage";
+        active_menu("RTUManage");
+        touchcookie();
+        RTU_Manage();
+    });
+    $("#OTDRManage").on('click',function(){
+        CURRENT_URL = "OTDRManage";
+        active_menu("OTDRManage");
+        touchcookie();
+        OTDR_Manage();
     });
 
 
@@ -1163,6 +1180,12 @@ $(document).ready(function() {
     });
     $("#WarningHandleTableFlash").on('click',function() {
         query_warning_handle_list();
+    });
+    $("#RTUFlash").on('click',function() {
+        query_RTU_list();
+    });
+    $("#OTDRFlash").on('click',function() {
+        query_OTDR_list();
     });
 
 
@@ -1573,6 +1596,18 @@ function CABLE_Check(){
     write_title("纤芯管理","");
     $("#CableCheckView").css("display","block");
 }
+function RTU_Manage(){
+    clear_window();
+    write_title("RTU管理","");
+    $("#RTUManageView").css("display","block");
+    query_RTU_list();
+}
+function OTDR_Manage(){
+    clear_window();
+    write_title("OTDR管理","");
+    $("#OTDRManageView").css("display","block");
+    query_OTDR_list();
+}
 /*
 function KEY_Manage(){
     clear_window();
@@ -1612,6 +1647,8 @@ function clear_window(){
     $("#KeyHistoryView").css("display","none");
     $("#KeyAuthView").css("display","none");
     $("#CableCheckView").css("display","none");
+    $("#RTUManageView").css("display","none");
+    $("#OTDRManageView").css("display","none");
 }
 
 
@@ -7371,7 +7408,7 @@ function submit_alarm_query(){
 		user:usr.id
     };
 	var submit_alarm_query_callback = function(result){
-if(result.status == "false"){
+        if(result.status == "false"){
             show_expiredModule();
             return;
         }
@@ -7424,62 +7461,7 @@ if(result.status == "false"){
         $('#TableExportModule').modal('show');
 	};
 	JQ_get(request_head,map,submit_alarm_query_callback);
-	/*
-    jQuery.get(request_head, map, function (data) {
-        log(data);
-        var result=JSON.parse(data);
-        if(result.status == "false"){
-            show_expiredModule();
-            return;
-        }
-        ColumnName = result.ColumnName;
-        TableData = result.TableData;
-		$("#ExportTable").empty();
-        var txt = "<thead> <tr>";
-		var i;
-        for( i=0;i<ColumnName.length;i++){
-            txt = txt +"<th>"+ColumnName[i]+"</th>";
-        }
-        txt = txt +"</tr></thead>";
-        txt = txt +"<tbody>";
-        for( i=0;i<TableData.length;i++){
-            txt = txt +"<tr>";
-            for(var j=0;j<TableData[i].length;j++){
-                txt = txt +"<td>"+TableData[i][j]+"</td>";
-            }
-            txt = txt +"</tr>";
-        }
-        txt = txt+"</tbody>";
-        $("#ExportTable").append(txt);
-        if(if_table_initialize) $("#ExportTable").DataTable().destroy();
 
-        //console.log(monitor_map_list);
-
-        var show_table  = $("#ExportTable").DataTable( {
-            //dom: 'T<"clear">lfrtip',
-            "scrollY": 200,
-            "scrollCollapse": true,
-
-            "scrollX": true,
-            "searching": false,
-            "autoWidth": true,
-            "lengthChange":false,
-            //bSort: false,
-            //aoColumns: [ { sWidth: "45%" }, { sWidth: "45%" }, { sWidth: "10%", bSearchable: false, bSortable: false } ],
-            dom: 'Bfrtip',
-            buttons: [
-                {
-                    extend: 'excel',
-                    text: '导出到excel',
-                    filename: "日志数据导出"+$("#QueryStatCode_choice").text()+(new Date()).Format("yyyy-MM-dd_hhmmss")
-                }
-            ]
-
-        } );
-        if_table_initialize = true;
-        modal_middle($('#TableExportModule'));
-        $('#TableExportModule').modal('show');
-    });*/
 }
 
 //Sensor Manager
@@ -8232,30 +8214,7 @@ function get_domain_auth_list(DomainCode){
 		});
 	};
 	JQ_get(request_head,map,get_domain_auth_list_callback);
-	/*
-    jQuery.get(request_head, map, function (data) {
-        log(data);
-        var result=JSON.parse(data);
-        if(result.status == "false"){
-            show_expiredModule();
-            return;
-        }
-        var domain_auth_list = result.ret;
-        var txt = "<thead><tr><th></th><th>编号</th><th>钥匙</th><th>用户</th><th>授权条件</th></tr></thead><tbody>";
-        $("#Table_point_key_auth").empty();
-        for(var i=0;i<domain_auth_list.length;i++){
-            txt= txt+"<tr> <td><button type='button' class='btn btn-default Auth_del_btn' AuthId='"+domain_auth_list[i].AuthId+"' ><em class='glyphicon glyphicon-trash ' aria-hidden='true' ></em></button></td>";
-            txt = txt +"<td>"+domain_auth_list[i].AuthId+"</td><td>"+domain_auth_list[i].KeyName+"</td><td>"+domain_auth_list[i].UserName+"</td><td>"+domain_auth_list[i].AuthWay+"</td></tr>";
-        }
-        txt = txt+"</tbody>";
-        $("#Table_point_key_auth").append(txt);
 
-		$(".Auth_del_btn").on('click',function(){
-			touchcookie();
-			show_auth_delete_module($(this).attr("AuthId"));
-		});
-
-    });*/
 }
 
 function show_auth_delete_module(authid){
@@ -8985,4 +8944,157 @@ function AlarmHandleUpdateCommit_button_commit(){
 	if(mobile===""||action ==="") return;
 	handle_Alarm_process(statcode,mobile,action);
 	$('#AlarmHandleProcess').modal('hide');
+}
+
+function query_RTU_list(){
+    if(RTU_Manage_table_initialized !== true) return;
+    var map={
+        action:"GetRTUTable",
+        type:"query",
+        user:usr.id
+    };
+    var GetRTUTable_callback= function(result){
+        //log(data);
+        //var result=JSON.parse(data);
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        var Last_update_date=(new Date()).Format("yyyy-MM-dd_hhmmss");
+        $("#RTUFlashTime").empty();
+        $("#RTUFlashTime").append("最后刷新时间："+Last_update_date);
+        var ColumnName = result.ret.ColumnName;
+        var TableData = result.ret.TableData;
+        //var txt = "<thead> <tr><th></th><th></th>";
+        var txt = "<thead> <tr>";
+        var i;
+        for( i=0;i<ColumnName.length;i++){
+            txt = txt +"<th>"+ColumnName[i]+"</th>";
+        }
+        //txt = txt +"<th></th></tr></thead>";
+        txt = txt +"</tr></thead>";
+        txt = txt +"<tbody>";
+        for( i=0;i<TableData.length;i++){
+            txt = txt +"<tr>";
+            //txt = txt +"<td><button type='button' class='btn btn-default lock_btn' StateCode='"+TableData[i][0]+"' ><em class='glyphicon glyphicon-lock ' aria-hidden='true' ></em></button></td><td><button type='button' class='btn btn-default video_btn' StateCode='"+TableData[i][0]+"' ><em class='glyphicon glyphicon-play ' aria-hidden='true' ></em></button></td>";
+            //console.log("StateCode="+TableData[i][0]);
+            for(var j=0;j<TableData[i].length;j++){
+                txt = txt +"<td>"+TableData[i][j]+"</td>";
+            }
+            //txt = txt + "<td><button type='button' class='btn btn-default video_btn' StateCode='"+TableData[i][0]+"' >视频</button></td>";
+            txt = txt +"</tr>";
+        }
+        txt = txt+"</tbody>";
+        $("#RTUQueryTable").empty();
+        $("#RTUQueryTable").append(txt);
+        if(if_RTU_Manage_table_initialize) $("#RTUQueryTable").DataTable().destroy();
+
+        //console.log(monitor_map_list);
+
+        var show_table  = $("#RTUQueryTable").DataTable( {
+            //dom: 'T<"clear">lfrtip',
+            "scrollY": true,
+            "scrollCollapse": true,
+
+            "scrollX": true,
+            "searching": false,
+            "autoWidth": true,
+            "lengthChange":false,
+            //"paging":false,
+            //bSort: false,
+            //aoColumns: [ { sWidth: "45%" }, { sWidth: "45%" }, { sWidth: "10%", bSearchable: false, bSortable: false } ],
+            dom: 'Bfrtip',
+            select:true,
+            buttons:{
+                buttons:[
+
+                    {
+                        extend: 'excel',
+                        text: '导出到excel',
+                        filename: "AlarmData"+Last_update_date
+                    }
+                ]
+            }
+
+        } );
+        if_RTU_Manage_table_initialize = true;
+    };
+    JQ_get(request_head,map,GetRTUTable_callback);
+
+}
+function query_OTDR_list(){
+    if(OTDR_Manage_table_initialized !== true) return;
+    var map={
+        action:"GetOTDRTable",
+        type:"query",
+        user:usr.id
+    };
+    var GetOTDRTable_callback= function(result){
+        //log(data);
+        //var result=JSON.parse(data);
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        var Last_update_date=(new Date()).Format("yyyy-MM-dd_hhmmss");
+        $("#OTDRFlashTime").empty();
+        $("#OTDRFlashTime").append("最后刷新时间："+Last_update_date);
+        var ColumnName = result.ret.ColumnName;
+        var TableData = result.ret.TableData;
+        //var txt = "<thead> <tr><th></th><th></th>";
+        var txt = "<thead> <tr>";
+        var i;
+        for( i=0;i<ColumnName.length;i++){
+            txt = txt +"<th>"+ColumnName[i]+"</th>";
+        }
+        //txt = txt +"<th></th></tr></thead>";
+        txt = txt +"</tr></thead>";
+        txt = txt +"<tbody>";
+        for( i=0;i<TableData.length;i++){
+            txt = txt +"<tr>";
+            //txt = txt +"<td><button type='button' class='btn btn-default lock_btn' StateCode='"+TableData[i][0]+"' ><em class='glyphicon glyphicon-lock ' aria-hidden='true' ></em></button></td><td><button type='button' class='btn btn-default video_btn' StateCode='"+TableData[i][0]+"' ><em class='glyphicon glyphicon-play ' aria-hidden='true' ></em></button></td>";
+            //console.log("StateCode="+TableData[i][0]);
+            for(var j=0;j<TableData[i].length;j++){
+                txt = txt +"<td>"+TableData[i][j]+"</td>";
+            }
+            //txt = txt + "<td><button type='button' class='btn btn-default video_btn' StateCode='"+TableData[i][0]+"' >视频</button></td>";
+            txt = txt +"</tr>";
+        }
+        txt = txt+"</tbody>";
+        $("#OTDRQueryTable").empty();
+        $("#OTDRQueryTable").append(txt);
+        if(if_RTU_Manage_table_initialize) $("#OTDRQueryTable").DataTable().destroy();
+
+        //console.log(monitor_map_list);
+
+        var show_table  = $("#OTDRQueryTable").DataTable( {
+            //dom: 'T<"clear">lfrtip',
+            "scrollY": true,
+            "scrollCollapse": true,
+
+            "scrollX": true,
+            "searching": false,
+            "autoWidth": true,
+            "lengthChange":false,
+            //"paging":false,
+            //bSort: false,
+            //aoColumns: [ { sWidth: "45%" }, { sWidth: "45%" }, { sWidth: "10%", bSearchable: false, bSortable: false } ],
+            dom: 'Bfrtip',
+            select:true,
+            buttons:{
+                buttons:[
+
+                    {
+                        extend: 'excel',
+                        text: '导出到excel',
+                        filename: "AlarmData"+Last_update_date
+                    }
+                ]
+            }
+
+        } );
+        if_RTU_Manage_table_initialize = true;
+    };
+    JQ_get(request_head,map,GetOTDRTable_callback);
+
 }

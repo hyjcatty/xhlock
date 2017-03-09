@@ -137,7 +137,9 @@
                                 </li-->
                                 <li><a><i class="fa fa-outdent"></i> 纤芯管理 <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        <li><a href="#" id="CableCheck">纤芯查看</a></li>
+                                        <!--li><a href="#" id="CableCheck">RTU管理</a></li-->
+                                        <li><a href="#" id="RTUManage">RTU管理</a></li>
+                                        <li><a href="#" id="OTDRManage">RTU管理</a></li>
                                     </ul>
                                 </li>
                             </ul>
@@ -2747,6 +2749,34 @@
                                             </div>
                                         </div>
                                     </div>
+                                        <div class="row clearfix" id="RTUManageView">
+
+                                            <div class="col-md-12 column">
+                                                <button type="button" class="btn btn-primary" id="RTUFlash">刷新</button>
+                                                <label  style="min-width: 20px"></label>
+                                                <label  style="min-width: 20px" id = "RTUFlashTime"></label>
+                                            </div>
+                                            <div class="col-md-12 column" id="RTUQueryResult" style="overflow:scroll;overflow-y:hidden;overflow-x:scroll">
+                                                <p></p>
+                                                <table id="RTUQueryTable" class="display" cellspacing="0" width="100%"  style="white-space: nowrap;overflow:scroll;overflow-y:hidden;overflow-x:scroll">
+                                                </table>
+                                            </div>
+
+                                        </div>
+                                        <div class="row clearfix" id="OTDRManageView">
+
+                                            <div class="col-md-12 column">
+                                                <button type="button" class="btn btn-primary" id="OTDRFlash">刷新</button>
+                                                <label  style="min-width: 20px"></label>
+                                                <label  style="min-width: 20px" id = "OTDRFlashTime"></label>
+                                            </div>
+                                            <div class="col-md-12 column" id="OTDRQueryResult" style="overflow:scroll;overflow-y:hidden;overflow-x:scroll">
+                                                <p></p>
+                                                <table id="OTDRQueryTable" class="display" cellspacing="0" width="100%"  style="white-space: nowrap;overflow:scroll;overflow-y:hidden;overflow-x:scroll">
+                                                </table>
+                                            </div>
+
+                                        </div>
 
                                 </div>
                             </div>

@@ -8097,6 +8097,8 @@ function get_proj_user_list(){
 function build_key_auth_proj_choice(){
     if(project_list === null) return;
     var txt ="";
+    $("#KeyAuthProj_choice").empty();
+    $("#KeyUserProj_choice").empty();
     if(project_list === null) project_list = [];
     for( i=0;i<project_list.length;i++){
         txt = txt +"<option value="+project_list[i].id+">"+project_list[i].name+"</option>";

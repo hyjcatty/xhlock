@@ -8113,6 +8113,7 @@ function build_key_auth_proj_choice(){
     });
     $("#KeyUserProj_choice").change(function(){
         update_key_auth_proj_key_choice($(this).val());
+        update_key_auth_proj_user_choice($("#KeyUserProj_choice").val());
     });
 }
 function update_key_auth_proj_stat_choice(projcode,projname){

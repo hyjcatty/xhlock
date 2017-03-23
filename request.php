@@ -4413,6 +4413,147 @@ RESPONSE:
 		);
 		$jsonencode = _encode($retval);
 		echo $jsonencode; break;
+	case "Favourite_count":
+		/*
+		REQUEST:
+			var body={
+				StatCode:StatCode
+			}
+			var map={
+				action:"Favourite_count",
+				body:body,
+				type:"query",
+				user:usr.id
+			};
+		RESPONSE:
+			$retval=array(
+				'status'=>'true',
+				'msg'=>'success',
+				'auth'=>'true'
+			);
+		*/
+			$retval=array(
+				'status'=>'true',
+				'msg'=>'success',
+				'auth'=>'true'
+			);
+			$jsonencode = _encode($retval);
+			echo $jsonencode; break;
+	case "Favourite_list":
+		/*
+		REQUEST:
+			var map={
+				action:"Favourite_list",
+				type:"query",
+				user:usr.id
+			};
+		RESPONSE:
+			$retval=array(
+				'status'=>'true',
+				'ret'=> list,
+				'msg'=>'success',
+				'auth'=>'true'
+			);
+		*/
+		$stat_list = array();
+		$map1=array(
+			'StatCode'=>"120101001",
+			'StatName'=>"浦东环球金融中心工程",
+			'ChargeMan'=>"张三",
+			'Telephone'=>"13912345678",
+			'Department'=>"",
+			'Address'=>"世纪大道100号",
+			'Country'=>"浦东新区",
+			'Street'=>"",
+			'Square'=>"40000",
+			'Flag_la'=>"N",
+			'Latitude'=>"31.240246",
+			'Flag_lo'=>"E",
+			'Longitude'=>"121.514168",
+			'ProStartTime'=>"2015-01-01",
+			'Stage'=>""
+		);
+		array_push($stat_list,$map1);
+		$map2=array(
+			'StatCode'=>"120101002",
+			'StatName'=>"港运大厦",
+			'ChargeMan'=>"张三",
+			'Telephone'=>"13912345678",
+			'Department'=>"",
+			'Address'=>"杨树浦路1963弄24号",
+			'Country'=>"虹口区",
+			'Street'=>"",
+			'Square'=>"0",
+			'Flag_la'=>"N",
+			'Latitude'=>"31.255719",
+			'Flag_lo'=>"E",
+			'Longitude'=>"121.517700",
+			'ProStartTime'=>"2016-04-01",
+			'Stage'=>""
+		);
+		array_push($stat_list,$map2);
+		$map3= array(
+			'StatCode'=>"120101003",
+			'StatName'=>"万宝国际广场",
+			'ChargeMan'=>"张三",
+			'Telephone'=>"13912345678",
+			'Department'=>"",
+			'Address'=>"延安西路500号",
+			'Country'=>"长宁区",
+			'Street'=>"",
+			'Square'=>"0",
+			'Flag_la'=>"N",
+			'Latitude'=>"31.223441",
+			'Flag_lo'=>"E",
+			'Longitude'=>"121.442703",
+			'ProStartTime'=>"2016-04-01",
+			'Stage'=>""
+		);
+		array_push($stat_list,$map3);
+		$map4= array(
+			'StatCode'=>"120101004",
+			'StatName'=>"金桥创科园",
+			'ChargeMan'=>"李四",
+			'Telephone'=>"13912345678",
+			'Department'=>"",
+			'Address'=>"桂桥路255号",
+			'Country'=>"浦东新区",
+			'Street'=>"",
+			'Square'=>"0",
+			'Flag_la'=>"N",
+			'Latitude'=>"31.248271",
+			'Flag_lo'=>"E",
+			'Longitude'=>"121.615476",
+			'ProStartTime'=>"2016-04-01",
+			'Stage'=>""
+		);
+		array_push($stat_list,$map4);
+		$map5= array(
+			'StatCode'=>"120101006",
+			'StatName'=>"江湾体育场",
+			'ChargeMan'=>"李四",
+			'Telephone'=>"13912345678",
+			'Department'=>"",
+			'Address'=>"国和路346号",
+			'Country'=>"杨浦区",
+			'Street'=>"",
+			'Square'=>"0",
+			'Flag_la'=>"N",
+			'Latitude'=>"31.313004",
+			'Flag_lo'=>"E",
+			'Longitude'=>"121.525701",
+			'ProStartTime'=>"2016-04-13",
+			'Stage'=>""
+		);
+		array_push($stat_list,$map5);
+		$retval=array(
+			'status'=>'true',
+			'ret'=> $stat_list,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
 	default:
 	break;
 }

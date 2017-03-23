@@ -454,6 +454,7 @@ function get_user_information(){
             get_camera_unit();
             get_project_list();
 			get_proj_point_list();
+            getfavoritelist();
             hide_menu();
             setTimeout(mp_monitor,wait_time_middle);
         }
@@ -5916,6 +5917,7 @@ function initializeMap(){
     }
     // hyj this will not be a problem because the bmap initialization will cost several seconds.
     window.setTimeout(addMarker, wait_time_long);
+    build_fast_guild();
     //addMarker();
     map_initialized=true;
     //$(window).resize();
@@ -5929,6 +5931,7 @@ function get_select_monitor(title){
     for(var i=0;i<monitor_map_list.length;i++){
         if(monitor_map_list[i].StatCode == temp[0]){
             monitor_selected = monitor_map_list[i];
+            favorateCount(monitor_selected.StatCode);
             return;
         }
     }
@@ -9100,4 +9103,107 @@ function query_OTDR_list(){
     };
     JQ_get(request_head,map,GetOTDRTable_callback);
 
+}
+function get_pm(city_name){
+    var cityname = city_name;
+    var url = "http://api.map.baidu.com/telematics/v3/weather?location="+cityname+"&output=json&ak=2Pcn24FAWGTcyW4jsC8O38IyPd0pDZYX";
+    $.ajax({
+        url: url,
+        //dataType: "script",
+        scriptCharset: "gbk",
+        dataType: 'jsonp',
+        crossDomain: true,
+        success: function (data) {
+            weather_info = cityname+"今日天气："+data.results[0].weather_data[0].weather+" 气温："+data.results[0].weather_data[0].temperature+" 颗粒物："+data.results[0].pm25;
+            $("#weather_label").text(weather_info+"    ");
+        }
+    });
+}
+function getfavoritelist(){
+    var map={
+        action:"Favourite_list",
+        type:"query",
+        user:usr.id
+    };
+    var get_favorite_list_callback = function(result){
+        var ret = result.status;
+        if(ret == "true"){
+            usr_faverate_list = result.ret;
+            if(usr_faverate_list.length>0){
+                get_city(usr_faverate_list[0].Latitude,usr_faverate_list[0].Longitude);
+            }
+        }else {
+            show_alarm_module(true, "请重新登录！" + result.msg, null);
+        }
+    };
+    JQ_get(request_head,map,get_favorite_list_callback);
+}
+
+function favorateCount(StatCode){
+    var body={
+        StatCode:StatCode
+    };
+    var map={
+        action:"Favourite_count",
+        body:body,
+        type:"query",
+        user:usr.id
+    };
+    var favorite_count_callback = function(result){
+        var ret = result.status;
+        if(ret == "true"){
+
+        }else {
+            show_alarm_module(true, "请重新登录！" + result.msg, null);
+        }
+    };
+    JQ_get(request_head,map,favorite_count_callback);
+}
+function build_fast_guild(){
+    $("#fast_guild").empty();
+    txt ="<thead> <tr> <th>常用站点 </th> </tr> </thead> <tbody >";
+    for(var i=0;i<usr_faverate_list.length;i++){
+        txt = txt + "<tr> <td class='favouratelist' Latitude="+usr_faverate_list[i].Latitude+" Longitude="+usr_faverate_list[i].Longitude+" StatCode="+usr_faverate_list[i].StatCode+" StatName="+usr_faverate_list[i].StatName+">"+ usr_faverate_list[i].StatName+"</td> </tr>";
+    }
+    txt = txt+ "</tbody>";
+    $("#fast_guild").append(txt);
+    $(".favouratelist").on("click",function(){
+        var fLongitude = $(this).attr("Longitude");
+        var fLatitude = $(this).attr("Latitude");
+        map_MPMonitor.centerAndZoom(new BMap.Point(fLongitude,fLatitude),15);
+        var title = $(this).attr("StatCode")+":"+$(this).attr("StatName");
+        var marker = find_marker(title);
+        if(marker !== null) {
+            get_select_monitor(title);
+            //console.log("Selected:"+monitor_selected.StatName);
+            var sContent = $(this).attr("StatCode") + ":" + $(this).attr("StatName");
+            var infoWindow = new BMap.InfoWindow(sContent, {offset: new BMap.Size(0, -23)});
+            infoWindow.setWidth(600);
+            monitor_map_handle = infoWindow;
+            get_monitor_warning_on_map();
+            marker.openInfoWindow(infoWindow);
+            infoWindow.addEventListener("close", function () {
+                if (monitor_map_handle == this) monitor_map_handle = null;
+            });
+        }
+    });
+}
+function find_marker(title){
+    for(var i=0;i<mark_MPMonitor_List.length;i++){
+        if(mark_MPMonitor_List[i].getTitle() === title){
+            return mark_MPMonitor_List[i];
+        }
+    }
+    return null;
+}
+function get_city(Latitude,Longitude){
+    var map = new BMap.Map("allmap");
+    var point = new BMap.Point(Longitude, Latitude);
+    var gc = new BMap.Geocoder();
+    gc.getLocation(point, function(rs) {
+        var addComp = rs.addressComponents;
+        usr_favorate_city = addComp.city;
+        //console.log("favorate city is "+usr_favorate_city);
+        get_pm(usr_favorate_city);
+    });
 }

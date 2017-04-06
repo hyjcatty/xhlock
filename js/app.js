@@ -444,17 +444,19 @@ function get_user_information(){
             show_alarm_module(true,"获取用户失败，请联系管理员",null);
         }else{
             usr = result.ret;
+
+            getfavoritelist();
             get_user_message();
             get_user_image();
-            //hyj add in 20160926 for server very slow
-            get_monitor_list();
+
             nav_check();
 
             get_sensor_list();
             get_camera_unit();
             get_project_list();
 			get_proj_point_list();
-            getfavoritelist();
+            //hyj add in 20160926 for server very slow
+            get_monitor_list();
             hide_menu();
             setTimeout(mp_monitor,wait_time_middle);
         }
@@ -9132,6 +9134,7 @@ function getfavoritelist(){
             if(usr_faverate_list.length>0){
                 get_city(usr_faverate_list[0].Latitude,usr_faverate_list[0].Longitude);
             }
+            //build_fast_guild();
         }else {
             show_alarm_module(true, "请重新登录！" + result.msg, null);
         }

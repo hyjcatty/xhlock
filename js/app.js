@@ -445,7 +445,7 @@ function get_user_information(){
         }else{
             usr = result.ret;
 
-            getfavoritelist();
+            //getfavoritelist();
             get_user_message();
             get_user_image();
 
@@ -5919,7 +5919,8 @@ function initializeMap(){
     }
     // hyj this will not be a problem because the bmap initialization will cost several seconds.
     window.setTimeout(addMarker, wait_time_long);
-    build_fast_guild();
+    getfavoritelist();
+    //build_fast_guild();
     //addMarker();
     map_initialized=true;
     //$(window).resize();
@@ -9134,7 +9135,7 @@ function getfavoritelist(){
             if(usr_faverate_list.length>0){
                 get_city(usr_faverate_list[0].Latitude,usr_faverate_list[0].Longitude);
             }
-            //build_fast_guild();
+            build_fast_guild();
         }else {
             show_alarm_module(true, "请重新登录！" + result.msg, null);
         }

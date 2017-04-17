@@ -4540,6 +4540,39 @@ function get_point_device(StatCode){
         draw_point_detail_panel();
     });*/
 }
+function get_point_picture(StatCode){
+    var body={
+        StatCode: StatCode
+    };
+    var map={
+        action:"PointPicture",
+        type:"query",
+        body: body,
+        user:usr.id
+    };
+    var get_point_device_callback = function(result){
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        point_selected_picture = result.ret;
+        //HYJ add for server slow;
+        draw_point_picture_panel();
+    };
+    JQ_get(request_head,map,get_point_device_callback);
+    /*
+     jQuery.get(request_head, map, function (data) {
+     log(data);
+     var result=JSON.parse(data);
+     if(result.status == "false"){
+     show_expiredModule();
+     return;
+     }
+     point_selected_device = result.ret;
+     //HYJ add for server slow;
+     draw_point_detail_panel();
+     });*/
+}
 function point_intialize(start) {
     point_initial = true;
     point_table = null;
@@ -4680,6 +4713,7 @@ function draw_point_table(data){
 
 function Initialize_point_detail(){
     get_point_device(point_selected.StatCode);
+    get_point_picture(point_selected.StatCode);
     //window.setTimeout(draw_point_detail_panel, wait_time_short);
 }
 function clear_point_detail_panel(){
@@ -4826,6 +4860,23 @@ function draw_point_detail_panel(){
     }
     txt = txt+ "</tbody>";
     $("#Table_point_device").append(txt);
+
+}
+
+function draw_point_picture_panel(){
+
+    $("#Table_point_picture").empty();
+    txt ="<thead> <tr> <th>安装照片 </th> </tr> </thead> <tbody >";
+    if(point_selected_picture === null) point_selected_picture = [];
+    for(var i=0;i<point_selected_picture.length;i++){
+        txt = txt + "<tr> <td class='pictd' picurl='"+point_selected_picture[i].url+"' >"+ point_selected_picture[i].name+"</td> </tr>";
+    }
+    txt = txt+ "</tbody>";
+    $("#Table_point_picture").append(txt);
+    $(".pictd").on('click',function(){
+        console.log("http://"+window.location.host+basic_address+$(this).attr("picurl"));
+        window.open("http://"+window.location.host+basic_address+$(this).attr("picurl"),'监控照片',"height=480, width=640, top=0, left=400,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
+    });
 
 }
 function show_new_point_module(){

@@ -1227,6 +1227,50 @@ RESPONSE:
 	);
 	$jsonencode = _encode($retval);
 	echo $jsonencode; break;
+case "PointPicture":
+/*
+REQUEST:
+    var body={
+	StatCode: StatCode
+	};
+    var map={
+        action:"PointPicture",
+        type:"query",
+        body: body,
+        user:usr.id
+    };
+RESPONSE:
+	$projpic = array();
+	for($i=1;$i<4;$i++){
+		$temp = array(
+			'name'=> (string)($i+1),
+			'url'=> "/video/screenshot/".(string)$i.".png"
+		);
+		array_push($projpic,$temp);
+	}
+	$retval=array(
+		'status'=>"true",
+		'ret'=> $projpic,
+		'msg'=>'success',
+		'auth'=>'true'
+	);
+*/
+	$projdev = array();
+	for($i=0;$i<4;$i++){
+		$temp = array(
+			'name'=> (string)($i+1),
+            'url'=> "/video/screenshot/".(string)($i+1).".png"
+		);
+		array_push($projdev,$temp);
+	}
+	$retval=array(
+		'status'=>"true",
+		'ret'=> $projdev,
+		'msg'=>'success',
+		'auth'=>'true'
+	);
+	$jsonencode = _encode($retval);
+	echo $jsonencode; break;
 case "DevTable":
 /*
 REQUEST:

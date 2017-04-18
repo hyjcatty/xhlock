@@ -23,7 +23,7 @@ function _urlencode($elem)
   }
   return urlencode($elem);
 }
-
+$basedir="/dist";
 $key=$_GET["action"];
 //echo $key;
 switch ($key){
@@ -1244,7 +1244,7 @@ RESPONSE:
 	for($i=1;$i<4;$i++){
 		$temp = array(
 			'name'=> (string)($i+1),
-			'url'=> "/video/screenshot/".(string)$i.".png"
+			'url'=> $basedir."/video/screenshot/".(string)$i.".png"
 		);
 		array_push($projpic,$temp);
 	}
@@ -1259,7 +1259,7 @@ RESPONSE:
 	for($i=0;$i<4;$i++){
 		$temp = array(
 			'name'=> (string)($i+1),
-            'url'=> "/video/screenshot/".(string)($i+1).".png"
+            'url'=> $basedir."/video/screenshot/".(string)($i+1).".png"
 		);
 		array_push($projdev,$temp);
 	}

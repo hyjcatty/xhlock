@@ -1,6 +1,7 @@
 ﻿<?php
 header("Content-type:text/html;charset=utf-8");
 #require '/php/req.php';
+$install_path="_INSTALL_PATH_";
 function _encode($arr)
 {
   $na = array();
@@ -23,7 +24,7 @@ function _urlencode($elem)
   }
   return urlencode($elem);
 }
-$basedir="/dist";
+#$basedir="/dist";
 $key=$_GET["action"];
 //echo $key;
 switch ($key){
@@ -1259,7 +1260,7 @@ RESPONSE:
 	for($i=0;$i<4;$i++){
 		$temp = array(
 			'name'=> (string)($i+1),
-            'url'=> $basedir."/video/screenshot/".(string)($i+1).".png"
+            'url'=> $install_path."/video/screenshot/".(string)($i+1).".png"
 		);
 		array_push($projdev,$temp);
 	}
@@ -2520,7 +2521,7 @@ RESPONSE:
         for ($i=1;$i<6;$i++){
             $map = array(
                 'name'=>"test".(string)$i.".jpg",
-                'url'=>"assets/img/test".(string)$i.".jpg"
+                'url'=>$install_path."/screensaver/assets/img/test".(string)$i.".jpg"
             );
             array_push($ImgList,$map);
         }
@@ -2694,7 +2695,7 @@ $retval=array(
     if($number == 10){
         $retval=array(
             'status'=>'true',
-            'ret'=> "avorion.mp4",
+            'ret'=> $install_path."/video/avorion.mp4",
 			'msg'=>'success',
 			'auth'=>'true'
         );
@@ -2846,7 +2847,7 @@ RESPONSE:
 	$camerastatus=array(
 	   'v'=>"120~",
 	   'h'=>"120~",
-	   'url'=>"./video/screenshot/".(string)$videocode.".png"
+	   'url'=>$install_path."/video/screenshot/".(string)$videocode.".png"
 	);
 	$retval=array(
 		'status'=>'true',
@@ -2940,7 +2941,7 @@ RESPONSE:
 	$camerastatus=array(
 	   'v'=>"120~",
 	   'h'=>"120~",
-	   'url'=>"./video/screenshot/".(string)$videocode.".png"
+	   'url'=>$install_path."/video/screenshot/".(string)$videocode.".png"
 	);
 	$retval=array(
 		'status'=>'true',
@@ -2975,7 +2976,7 @@ case "CameraHAdj":
 	$camerastatus=array(
 		'v'=>"120~",
 		'h'=>"120~",
-		'url'=>"./video/screenshot/".(string)$videocode.".png"
+		'url'=>$install_path."/video/screenshot/".(string)$videocode.".png"
 	);
 	$retval=array(
 		'status'=>'true',

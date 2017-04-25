@@ -1,5 +1,6 @@
 <?php
 	$id= $_REQUEST["id"];
+	$upload_path="_UPLOAD_PATH_";
 	function _encode($arr)
     {
       $na = array();
@@ -25,7 +26,7 @@
 		  
 		   		if($_FILES['file-zh']['name'][$i]!=''&&is_uploaded_file($_FILES['file-zh']['tmp_name'][$i]))
 		   		{
-				  $fname='E:/Apache24/bootstrap/usr_img/'.$_FILES['file-zh']['name'][$i];
+				  $fname=$upload_path.$_FILES['file-zh']['name'][$i];
 				  move_uploaded_file($_FILES['file-zh']['tmp_name'][$i],$fname);
 				  $retval=array(
                   		'status'=>"true",

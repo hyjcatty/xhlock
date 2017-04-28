@@ -5858,7 +5858,7 @@ function get_monitor_warning_on_map(){
             }else{
                 txt = "<div id ='Element_card_floating' align='center' ><p style='font-size:14px;font-weight: bold' >"+"站点名称："+monitor_selected.StatName+"</p>"+
                     "<HR style='FILTER: alpha(opacity=100,finishopacity=0,style=3)' width='80%' color=#987cb9 SIZE=3/>" +
-                    "<div style='font-size:10px; min-height: 350px; min-width:420px' >" ;
+                    "<div style='font-size:10px; min-height: 420px; min-width:420px' >" ;
                 txt = txt + " <div class='col-md-6 column'>";
                 for(var i=0;i<ret.length;i++){
                     var nickname = ret[i].AlarmEName;

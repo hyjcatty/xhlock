@@ -130,7 +130,8 @@ var monitor_selected = null;
 var monitor_list = null;
 var monitor_string="";
 var monitor_map_handle=null;
-
+var mark_MPMonitor_List=[];
+var usr_faverate_list = null;
 //warning table Control
 var Monitor_table_initialized = false;
 var Monitor_table_start=0;
@@ -458,7 +459,8 @@ function get_user_information(){
             //hyj add in 20160926 for server very slow
             get_monitor_list();
             hide_menu();
-            setTimeout(mp_monitor,wait_time_middle);
+			getfavoritelist();
+            
         }
 	};
 	JQ_get(request_head,map,get_user_information_callback);
@@ -2009,9 +2011,9 @@ function draw_user_table_head(){
 function get_user_level(level){
     if (level =="0") return "管理员";
     if (level =="1") return "高级用户";
-    if (level =="2") return "二级用户";
-    if (level =="3") return "三级用户";
-    if (level =="4") return "巡检员";
+    if (level =="2") return "一级用户";
+    if (level =="3") return "二级用户";
+    if (level =="4") return "三级用户";
     return "未知级别";
 }
 function draw_user_table(data){
@@ -3487,8 +3489,8 @@ function submit_new_key_module(){
     new_key(key);
 }
 function show_mod_key_module(key){
+    $("#newKeyModalLabel").text("钥匙修改");
     build_key_module_proj_choice();
-    $("#newkeyModalLabel").text("钥匙修改");
     key_module_status = false;
 
     $("#NewKeyName_Input").val(key.KeyName);
@@ -5961,7 +5963,7 @@ function initializeMap(){
     map_MPMonitor.enableScrollWheelZoom();
 
     //map_MPMonitor.centerAndZoom(new BMap.Point(Longitude,Latitude),15);
-
+    /*
     if(usr.city === "GPS"){
         if(Longitude === null){
             map_MPMonitor.centerAndZoom("beijing",15);
@@ -5970,10 +5972,17 @@ function initializeMap(){
         }
     }else{
         map_MPMonitor.centerAndZoom(usr.city,15);
+    }*/
+
+    if(usr_faverate_list === null){
+        console.log("usr_faverate_list:"+usr_faverate_list);
+        map_MPMonitor.centerAndZoom("beijing",15);
+    }else{
+        map_MPMonitor.centerAndZoom(new BMap.Point(usr_faverate_list[0].Longitude,usr_faverate_list[0].Latitude),15);
     }
     // hyj this will not be a problem because the bmap initialization will cost several seconds.
     window.setTimeout(addMarker, wait_time_long);
-    getfavoritelist();
+    
     //build_fast_guild();
     //addMarker();
     map_initialized=true;
@@ -6036,6 +6045,7 @@ function addMarker(point){
             });
         });*/
 		marker.addEventListener("click", monitor_mark_click);
+        mark_MPMonitor_List.push(marker);
 
     }
 
@@ -7128,6 +7138,7 @@ function initializeAlarmMap(){
     //map_MPMonitor.addControl(new BMap.ScaleControl());
     map_MPMonitor.enableScrollWheelZoom();
     //map_MPMonitor.centerAndZoom(usr.city,15);
+    /*
     if(usr.city === "GPS"){
         if(Longitude === null){
             map_MPMonitor.centerAndZoom("beijing",15);
@@ -7136,6 +7147,12 @@ function initializeAlarmMap(){
         }
     }else{
         map_MPMonitor.centerAndZoom(usr.city,15);
+    }*/
+    if(usr_faverate_list === null){
+
+        map_MPMonitor.centerAndZoom("beijing",15);
+    }else{
+        map_MPMonitor.centerAndZoom(new BMap.Point(usr_faverate_list[0].Longitude,usr_faverate_list[0].Latitude),15);
     }
     //HYJ this will not be a problem because bmap will cost
     window.setTimeout(alarm_addMarker, wait_time_long);
@@ -9186,6 +9203,7 @@ function getfavoritelist(){
         var ret = result.status;
         if(ret == "true"){
             usr_faverate_list = result.ret;
+            //console.log("usr_faverate_list:"+usr_faverate_list);
             if(usr_faverate_list.length>0){
                 get_city(usr_faverate_list[0].Latitude,usr_faverate_list[0].Longitude);
             }
@@ -9219,12 +9237,15 @@ function favorateCount(StatCode){
 }
 function build_fast_guild(){
     $("#fast_guild").empty();
+	console.log("usr_faverate_list:"+usr_faverate_list);
+	setTimeout(mp_monitor,wait_time_middle);
     txt ="<thead> <tr> <th>常用站点 </th> </tr> </thead> <tbody >";
     for(var i=0;i<usr_faverate_list.length;i++){
         txt = txt + "<tr> <td class='favouratelist' Latitude="+usr_faverate_list[i].Latitude+" Longitude="+usr_faverate_list[i].Longitude+" StatCode="+usr_faverate_list[i].StatCode+" StatName="+usr_faverate_list[i].StatName+">"+ usr_faverate_list[i].StatName+"</td> </tr>";
     }
     txt = txt+ "</tbody>";
     $("#fast_guild").append(txt);
+    //map_MPMonitor.centerAndZoom(new BMap.Point(usr_faverate_list[0].Longitude,usr_faverate_list[0].Latitude),15);
     $(".favouratelist").on("click",function(){
         var fLongitude = $(this).attr("Longitude");
         var fLatitude = $(this).attr("Latitude");

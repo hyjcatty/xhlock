@@ -4599,6 +4599,65 @@ RESPONSE:
 		);
 		$jsonencode = _encode($retval);
 		echo $jsonencode; break;
+	case "Get_user_auth_code":
+		/*
+		REQUEST:
+			var body={
+				name:username
+			}
+			var map={
+				action:"Get_user_auth_code",
+				body:body,
+				type:"query",
+				user:null
+			};
+		RESPONSE:
+			$retval=array(
+				'status'=>'true',
+				'msg'=>'success',
+				'auth'=>'true'
+			);
+		*/
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "Reset_password":
+		/*
+		REQUEST:
+			var body={
+				name:username,
+				code:code,
+				password:password
+			}
+			var map={
+				action:"Reset_password",
+				body:body,
+				type:"query",
+				user:null
+			};
+		RESPONSE:
+			$retval=array(
+				'status'=>'true',
+				'msg'=>'success',
+				'auth'=>'true'
+			);
+		*/
+		$body = array(
+			'key'=> '1234567',
+			'admin'=> 'true'
+		);
+		$retval=array(
+		'status'=>'true',
+		'auth'=>'true',
+		'ret'=>$body,
+		'msg'=>'login successfully'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
 	default:
 	break;
 }

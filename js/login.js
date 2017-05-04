@@ -4,10 +4,13 @@
 var basic_address = getRelativeURL()+"/";
 var request_head= basic_address+"request.php";
 var jump_url = basic_address+"jump.php";
+var login_url = basic_address+"Login.html";
+var lost_url = basic_address+"LostPassword.html";
 var winHeight=800;
 var winWidth=800;
 var logoHeight=100;
 var headHeight=100;
+var tempInterval=0;
 function getsec(str)
 {
     var str1=Number(str.substring(1,str.length));
@@ -58,7 +61,14 @@ $(document).ready(function() {
     $(".leaderboard").css("padding-top",basic_min_height+"px");
     console.log( $(".leaderboard").css("padding-top"));
     $("#Login_Comfirm").on('click',function(){
-
+        if($("#Username_Input").val() === ""){
+            $("#Username_Input").focus();
+            return;
+        }
+        if($("#Password_Input").val() === ""){
+            $("#Password_Input").focus();
+            return;
+        }
         setCookie("Environmental.inspection.usrname",$("#Username_Input").val(),"d30");
         var map={
             action:"login",
@@ -97,6 +107,34 @@ $(document).ready(function() {
 
         });*/
 
+    });
+    $("#Forget_Password").on('click',function(){
+        jump_to_password_change();
+    });
+    $("#back_to_Login").on('click',function(){
+        jump_to_login();
+    });
+    $("#Send_SMS").on('click',function(){
+        var username = $("#Username_Input").val();
+        if(username === ""){
+            $("#Username_Input").focus();
+            return;
+        }else{
+            send_authcode(username);
+        }
+    });
+    /*
+    $("#Send_SMS").attr("disabled","disabled");
+    $("#Username_Input").change(function(){
+        if($("#Username_Input").val()!==""){
+            console.log("cancel disable");
+            $("#Send_SMS").attr("disabled","");
+        }else{
+            $("#Send_SMS").attr("disabled","disabled");
+        }
+    });*/
+    $("#NewPassword_Comfirm").on('click',function(){
+       passwordchange();
     });
 });
 
@@ -149,7 +187,7 @@ function get_size(){
     $("#logo").css("height",logoHeight);
     $("#webhead").css("height",logoHeight);
     $("body").css("height",winHeight);
-    var module_height = parseInt((winHeight-180)/2)-64;
+    var module_height = (parseInt((winHeight-180)/2)-64)/2;
     $("#kuang").css("margin-top",module_height);
     if(winHeight>winWidth){
         $("#webhead").css("margin-top",logoHeight);
@@ -162,4 +200,105 @@ function JQ_get(url,request,callback){
         var result=JSON.parse(data);
         callback(result);
     });
+}
+function jump_to_password_change(){
+    window.location="http://"+window.location.host+lost_url;
+}
+function jump_to_login(){
+    window.location="http://"+window.location.host+login_url;
+}
+function send_authcode(username){
+    var body={
+        name:username
+    };
+    var map={
+        action:"Get_user_auth_code",
+        body:body,
+        type:"query",
+        user:null
+    };
+    var callback=function(result){
+        if(result.status!="true"){
+            $("#UserAlertModalLabel").text = "警告";
+            $("#UserAlertModalContent").empty();
+            $("#UserAlertModalContent").append("<strong>警告！</strong>"+result.msg);
+            modal_middle($('#UserAlarm'));
+            $('#UserAlarm').modal('show') ;
+        }else{
+            sms_buffer();
+        }
+    };
+    JQ_get(request_head,map,callback);
+}
+function sms_buffer(){
+    $("#Send_SMS").attr("disabled","disabled");
+    $("#Send_SMS").attr("data-cycle","0");
+    cycle_action = function(){
+        cyclenumber = parseInt( $("#Send_SMS").attr("data-cycle"));
+        console.log(cyclenumber);
+        if(cyclenumber+1 == 60){
+            $("#Send_SMS").attr("disabled",false);
+            $("#Send_SMS").attr("data-cycle","0");
+            $("#Send_SMS").text("发送验证码");
+            window.clearInterval(tempInterval);
+        }else{
+            $("#Send_SMS").attr("data-cycle",(cyclenumber+1));
+            $("#Send_SMS").text("请等待"+(60-cyclenumber)+"秒");
+        }
+    };
+    tempInterval = setInterval(cycle_action, 1000);
+}
+function passwordchange(){
+    var username = $("#Username_Input").val();
+    var authcode = $("#Authcode_Input").val();
+    var password = $("#NewPassword_Input").val();
+    var repassword = $("#reNewPassword_Input").val();
+    if(username === ""){
+        $("#Username_Input").focus();
+        return;
+    }
+    if(authcode === ""){
+        $("#Authcode_Input").focus();
+        return;
+    }
+    if(password === ""){
+        $("#NewPassword_Input").focus();
+        return;
+    }
+    if(repassword === ""){
+        $("#reNewPassword_Input").focus();
+        return;
+    }
+    if(password != repassword ){
+        $("#NewPassword_Input").val("");
+        $("#reNewPassword_Input").val("");
+        $("#NewPassword_Input").attr("placeholder","两个密码不相同");
+        $("#reNewPassword_Input").attr("placeholder","两个密码不相同");
+        $("#NewPassword_Input").focus();
+        return;
+    }
+    var body={
+        name:username,
+        code:authcode,
+        password:b64_sha1(password)
+    };
+    var map={
+        action:"Reset_password",
+        body:body,
+        type:"query",
+        user:null
+    };
+    var passwordresetcallback=function(result){
+        if(result.status!="true"){
+            $("#UserAlertModalLabel").text = "警告";
+            $("#UserAlertModalContent").empty();
+            $("#UserAlertModalContent").append("<strong>警告！</strong>"+result.msg);
+            modal_middle($('#UserAlarm'));
+            $('#UserAlarm').modal('show') ;
+        }else{
+            setCookie("Environmental.inspection.session",result.ret.key,"m10");
+            jump(result.ret.key);
+        }
+    };
+    JQ_get(request_head,map,passwordresetcallback);
 }

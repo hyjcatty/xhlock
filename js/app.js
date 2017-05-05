@@ -4868,7 +4868,7 @@ function draw_point_detail_panel(){
 function draw_point_picture_panel(){
 
     $("#Table_point_picture").empty();
-    txt ="<thead> <tr> <th>安装照片 </th> </tr> </thead> <tbody >";
+    txt ="<thead> <tr> <th>站点照片 </th> </tr> </thead> <tbody >";
     if(point_selected_picture === null) point_selected_picture = [];
     for(var i=0;i<point_selected_picture.length;i++){
         txt = txt + "<tr> <td class='pictd' picurl='"+point_selected_picture[i].url+"' >"+ point_selected_picture[i].name+"</td> </tr>";
@@ -4886,7 +4886,7 @@ function draw_point_picture_panel(){
 }
 function show_new_point_module(){
 
-    $("#newPointModalLabel").text("创建站点");
+    $("#newPointModalLabel").text("创建新站点");
     point_module_status = true;
 
     $("#PointStatCode_Input").val("");
@@ -4965,7 +4965,7 @@ function submit_new_point_module(){
         $("#PointTelephone_Input").attr("placeholder","联系电话不能为空");
         $("#PointTelephone_Input").focus();
         return;
-    }
+    }/*
     if(new_PointLongitude === null || new_PointLongitude === ""){
         $("#PointLongitude_Input").attr("placeholder","经度不能为空");
         $("#PointLongitude_Input").focus();
@@ -4975,7 +4975,7 @@ function submit_new_point_module(){
         $("#PointLatitude_Input").attr("placeholder","纬度不能为空");
         $("#PointLatitude_Input").focus();
         return;
-    }
+    }*/
     if(new_PointDepartment === null || new_PointDepartment === ""){
         $("#PointDepartment_Input").attr("placeholder","单位名称不能为空");
         $("#PointDepartment_Input").focus();
@@ -5660,7 +5660,7 @@ function submit_new_dev_module(){
     new_dev(device);
 }
 function show_mod_dev_module(device){
-    $("#newDevModalLabel").text("项目修改");
+    $("#newDevModalLabel").text("设备修改");
     device_module_status = false;
     //设备编号 DevCode
     //监测点编号 StatCode
@@ -5974,7 +5974,7 @@ function initializeMap(){
         map_MPMonitor.centerAndZoom(usr.city,15);
     }*/
 
-    if(usr_faverate_list === null){
+    if(usr_faverate_list === null || usr_faverate_list.length===0){
         console.log("usr_faverate_list:"+usr_faverate_list);
         map_MPMonitor.centerAndZoom("beijing",15);
     }else{
@@ -7148,7 +7148,7 @@ function initializeAlarmMap(){
     }else{
         map_MPMonitor.centerAndZoom(usr.city,15);
     }*/
-    if(usr_faverate_list === null){
+    if(usr_faverate_list === null ||usr_faverate_list.length===0){
 
         map_MPMonitor.centerAndZoom("beijing",15);
     }else{

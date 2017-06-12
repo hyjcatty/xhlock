@@ -6572,7 +6572,7 @@ function query_open_lock_history(){
         $("#KeyHistoryLastFlash").append("最后刷新时间："+Last_update_date);
         var ColumnName = result.ret.ColumnName;
         var TableData = result.ret.TableData;
-        var txt = "<thead> <tr>";
+        var txt = "<thead> <tr><th></th>";
         var i;
         for( i=0;i<ColumnName.length;i++){
             txt = txt +"<th>"+ColumnName[i]+"</th>";
@@ -6582,6 +6582,7 @@ function query_open_lock_history(){
         txt = txt +"<tbody>";
         for( i=0;i<TableData.length;i++){
             txt = txt +"<tr>";
+            txt = txt +"<td><button type='button' class='btn btn-default open_btn' OpenCode='"+TableData[i][0]+"' ><em class='glyphicon glyphicon-picture ' aria-hidden='true' ></em></button></td>";
             //txt = txt +"<td><ul class='pagination'> <li><a href='#' class = 'video_btn' StateCode='"+TableData[i][0]+"' ><em class='glyphicon glyphicon-play ' aria-hidden='true' ></em></a> </li></ul></td>";
             //txt = txt +"<td><button type='button' class='btn btn-default lock_btn' StateCode='"+TableData[i][0]+"' ><em class='glyphicon glyphicon-lock ' aria-hidden='true' ></em></button></td><td><button type='button' class='btn btn-default video_btn' StateCode='"+TableData[i][0]+"' ><em class='glyphicon glyphicon-play ' aria-hidden='true' ></em></button></td>";
             //console.log("StateCode="+TableData[i][0]);
@@ -6619,6 +6620,13 @@ function query_open_lock_history(){
             ]
 
         } );
+        Openpicture_btn_click = function(){
+            var opencode = $(this).attr('OpenCode');
+            //console.log("StateCode_click="+statcode);
+            getopenpicture(opencode);
+
+        };
+        $(".open_btn").on('click',Openpicture_btn_click);
         if_key_history_table_initialize = true;
 	};
 	JQ_get(request_head,map,query_open_lock_history_callback);
@@ -8277,13 +8285,13 @@ function get_domain_auth_list(DomainCode){
         }
         var domain_auth_list = result.ret;
         if(domain_auth_list === null) domain_auth_list = [];
-        var txt = "<thead><tr><th></th><th>编号</th><th>钥匙</th><th>用户</th><th>授权条件</th></tr></thead><tbody>";
+        var txt = "<thead><tr><th></th><th>编号</th><th>钥匙编号</th><th>钥匙</th><th>用户</th><th>授权条件</th></tr></thead><tbody>";
         $("#Table_point_key_auth").empty();
         for(var i=0;i<domain_auth_list.length;i++){
             var keyusername = domain_auth_list[i].UserName;
             if(keyusername == "none")keyusername = "部门收管";
             txt= txt+"<tr> <td><button type='button' class='btn btn-default Auth_del_btn' AuthId='"+domain_auth_list[i].AuthId+"' ><em class='glyphicon glyphicon-trash ' aria-hidden='true' ></em></button></td>";
-            txt = txt +"<td>"+domain_auth_list[i].AuthId+"</td><td>"+domain_auth_list[i].KeyName+"</td><td>"+keyusername+"</td><td>"+domain_auth_list[i].AuthWay+"</td></tr>";
+            txt = txt +"<td>"+domain_auth_list[i].AuthId+"</td><td>"+domain_auth_list[i].KeyId+"</td><td>"+domain_auth_list[i].KeyName+"</td><td>"+keyusername+"</td><td>"+domain_auth_list[i].AuthWay+"</td></tr>";
         }
         txt = txt+"</tbody>";
         $("#Table_point_key_auth").append(txt);
@@ -9285,4 +9293,31 @@ function get_city(Latitude,Longitude){
         //console.log("favorate city is "+usr_favorate_city);
         get_pm(usr_favorate_city);
     });
+}
+
+function getopenpicture(openid){
+    var body={
+        openid:openid
+    };
+    var map={
+        action:"GetOpenImg",
+        body:body,
+        type:"query",
+        user:usr.id
+    };
+    var get_open_picture_callback = function(result){
+        var ret = result.status;
+        if(ret == "true"){
+            if(result.ret.ifpicture == "true"){
+                var picture = result.ret.picture;
+                window.open("http://"+window.location.host+"/"+picture,'监控照片',"height=480, width=640, top=0, left=400,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
+
+            }else{
+                show_alarm_module(false, "本次开锁未能捕捉到照片", null);
+            }
+        }else {
+            show_alarm_module(true, "请重新登录！" + result.msg, null);
+        }
+    };
+    JQ_get(request_head,map,get_open_picture_callback);
 }

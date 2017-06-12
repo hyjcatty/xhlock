@@ -4658,6 +4658,52 @@ RESPONSE:
 		);
 		$jsonencode = _encode($retval);
 		echo $jsonencode; break;
+	case "GetOpenImg":
+		/*
+		REQUEST:
+			var body={
+				openid:id
+			}
+			var map={
+				action:"GetOpenImg",
+				body:body,
+				type:"query",
+				user:user
+			};
+		RESPONSE:
+
+			$body = array(
+						'ifpicture'=>'true',
+            			'picture'=> $install_path."/screensaver/assets/img/test".(string)$i.".jpg"
+            		);
+			$retval=array(
+				'status'=>'true',
+				'auth'=>'true',
+				'ret'=>$body,
+				'msg'=>'login successfully'
+			);
+		*/
+		$temp = rand(0,1);
+		if($temp ==0){
+
+			$body = array(
+				'ifpicture'=>'true',
+				'picture'=> $install_path."/screensaver/assets/img/test1.jpg"
+			);
+		}else{
+			$body = array(
+				'ifpicture'=>'false',
+				'picture'=> $install_path."/screensaver/assets/img/test1.jpg"
+			);
+		}
+		$retval=array(
+		'status'=>'true',
+		'auth'=>'true',
+		'ret'=>$body,
+		'msg'=>''
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
 	default:
 	break;
 }

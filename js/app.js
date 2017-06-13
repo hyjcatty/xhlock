@@ -6381,7 +6381,11 @@ function query_static_warning(){
         for( i=0;i<TableData.length;i++){
             txt = txt +"<tr>";
             //txt = txt +"<td><ul class='pagination'> <li><a href='#' class = 'video_btn' StateCode='"+TableData[i][0]+"' ><em class='glyphicon glyphicon-play ' aria-hidden='true' ></em></a> </li></ul></td>";
-            txt = txt +"<td><button type='button' class='btn btn-default lock_btn' StateCode='"+TableData[i][0]+"' ><em class='glyphicon glyphicon-lock ' aria-hidden='true' ></em></button></td><td><button type='button' class='btn btn-default video_btn' StateCode='"+TableData[i][0]+"' ><em class='glyphicon glyphicon-play ' aria-hidden='true' ></em></button></td>";
+            txt = txt +"<td><button type='button' class='btn btn-default lock_btn' StateCode='"+TableData[i][0]+"' ><em class='glyphicon glyphicon-lock ' aria-hidden='true' ></em></button></td>" +
+                //"<td><button type='button' class='btn btn-default video_btn' StateCode='"+TableData[i][0]+"' ><em class='glyphicon glyphicon-play ' aria-hidden='true' ></em></button>" +
+                "</td><td><button type='button' class='btn btn-default map_btn' StateCode='"+TableData[i][0]+"' StateName='"+TableData[i][1]+"' ><em class='glyphicon glyphicon-globe ' aria-hidden='true' ></em></button>" +
+
+                "</td>";
             //console.log("StateCode="+TableData[i][0]);
             for(var j=0;j<TableData[i].length;j++){
                 txt = txt +"<td>"+TableData[i][j]+"</td>";
@@ -6432,11 +6436,52 @@ function query_static_warning(){
                 show_openlockmodule(statcode);
             }
         };
-        $(".video_btn").on('click',video_btn_click);
+        //$(".video_btn").on('click',video_btn_click);
+        map_btn_click = function(){
+            mp_monitor();
+            var statcode = $(this).attr('StateCode');
+            var statname = $(this).attr('StateName');
+
+            var delayfunction = function(statcode,statname){
+                if(statcode!==undefined && statname!==undefined ){
+
+                    //console.log("Longitude_click="+fLongitude+"Latitude_click="+fLatitude);
+                    //map_MPMonitor.centerAndZoom(new BMap.Point(fLongitude,fLatitude),15);
+                    var title = statcode+":"+statname;
+                    var marker = find_marker(title);
+                    if(marker !== null) {
+                        get_select_monitor(title);
+                        //get_select_alarm2(title);
+                        console.log("Selected:"+monitor_selected.StatName);
+                        console.log("Selected:"+monitor_selected.Longitude);
+                        console.log("Selected:"+monitor_selected.Latitude);
+                        var fLongitude = monitor_selected.Longitude;
+                        var fLatitude = monitor_selected.Latitude;
+                        map_MPMonitor.centerAndZoom(new BMap.Point(fLongitude,fLatitude),15);
+                        var sContent = statcode + ":" + statname;
+
+                        var infoWindow = new BMap.InfoWindow(sContent, {offset: new BMap.Size(0, -23),width:600,height:300});
+                        //infoWindow.setWidth(600);
+                        monitor_map_handle = infoWindow;
+                        get_monitor_warning_on_map();
+                        //get_monitorpointinfo_on_map();
+                        marker.openInfoWindow(infoWindow);
+                        infoWindow.addEventListener("close", function () {
+                            if (monitor_map_handle == this) monitor_map_handle = null;
+                        });
+                    }
+                }
+            };
+            setTimeout(function(){delayfunction(statcode,statname);},500);
+
+
+        };
         $(".lock_btn").on('click',lock_btn_click);
+        $(".map_btn").on('click',map_btn_click);
         $("#MonitorQueryTable_paginate").on('click',function(){
-            $(".video_btn").on('click',video_btn_click);
+            //$(".video_btn").on('click',video_btn_click);
             $(".lock_btn").on('click',lock_btn_click);
+            $(".map_btn").on('click',map_btn_click);
         });
     };
     JQ_get(request_head,map,GetStaticMonitorTable_callback);

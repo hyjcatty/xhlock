@@ -2582,42 +2582,62 @@ RESPONSE:
     );
 */	
     $usr = $_GET["user"];
-    $column = 16;
-    $row = 40;
-    $column_name = array();
-    $row_content = array();
-    for( $i=0;$i<$column;$i++){
-        array_push($column_name,"第".(string)($i+1)."列");
-    }
-    for($i=0;$i<$row;$i++){
-        $one_row = array();
-        array_push($one_row,(string)($i+1));
-        array_push($one_row,"备注".(string)($i+1));
-        for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
+        $column = 16;
+        $row = 40;
+        $column_name = array();
+        $row_content = array();
+        //$geo_content = array();
+        for( $i=0;$i<$column;$i++){
+            array_push($column_name,"第".(string)($i+1)."列");
+        }
+        for($i=0;$i<$row;$i++){
+            $one_row = array();
+            //$geo = array();
+    		//if($i%2==0){
 
-        //one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
-        array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
-        //one_row.push("测试");
-        array_push($one_row,"测试");
-        //one_row.push("名称");
-        array_push($one_row,"名称");
-        //one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
-        array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
-        array_push($row_content,$one_row);
-        //row_content.push(one_row);
-    }
-	$body=array(
-        'ColumnName'=> $column_name,
-        'TableData'=>$row_content
-		);
-    $retval=array(
-        'status'=>'true',
-        'ret'=> $body,
-		'msg'=>'success',
-		'auth'=>'true'
-    );
-    $jsonencode = _encode($retval);
-	echo $jsonencode; break;
+    		//	array_push($geo,"31.223441");
+    		//	array_push($geo,"121.442703");
+    		//}else{
+
+    		//	array_push($geo,"31.313004");
+    		//	array_push($geo,"121.525701");
+    		//}
+            if($i%2==0){
+
+    			array_push($one_row,"120101003");
+    			array_push($one_row,"万宝国际广场");
+            }else{
+
+    			array_push($one_row,"120101006");
+    			array_push($one_row,"江湾体育场");
+            }
+            for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
+
+            //one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+            array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+            //one_row.push("测试");
+            array_push($one_row,"测试");
+            //one_row.push("名称");
+            array_push($one_row,"名称");
+            //one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+            array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+            array_push($row_content,$one_row);
+            //array_push($geo_content,$geo);
+            //row_content.push(one_row);
+        }
+    	$body=array(
+            'ColumnName'=> $column_name,
+            'TableData'=>$row_content//,
+            //'GeoData'=>$geo_content
+    		);
+        $retval=array(
+            'status'=>'true',
+            'ret'=> $body,
+    		'msg'=>'success',
+    		'auth'=>'true'
+        );
+        $jsonencode = _encode($retval);
+    	echo $jsonencode; break;
     case "GetVideoList":
 /*
 REQUEST:

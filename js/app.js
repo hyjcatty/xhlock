@@ -6477,9 +6477,17 @@ function query_static_warning(){
 
         };
         $(".lock_btn").on('click',lock_btn_click);
-        $(".map_btn").on('click',map_btn_click);
+        $(".map_btn").on('click',map_btn_click);/*
         $("#MonitorQueryTable_paginate").on('click',function(){
             //$(".video_btn").on('click',video_btn_click);
+            $(".lock_btn").on('click',lock_btn_click);
+            $(".map_btn").on('click',map_btn_click);
+        });*/
+
+        $("#MonitorQueryTable").on('draw.dt',function(){
+            //$(".video_btn").on('click',video_btn_click);
+            $(".lock_btn").unbind();
+            $(".map_btn").unbind();
             $(".lock_btn").on('click',lock_btn_click);
             $(".map_btn").on('click',map_btn_click);
         });
@@ -6672,6 +6680,14 @@ function query_open_lock_history(){
 
         };
         $(".open_btn").on('click',Openpicture_btn_click);
+        /*
+        $("#KeyHistoryQueryTable_paginate").on('click',function(){
+            $(".open_btn").on('click',Openpicture_btn_click);
+        });*/
+        $("#KeyHistoryQueryTable").on('draw.dt',function(){
+            $(".open_btn").unbind();
+            $(".open_btn").on('click',Openpicture_btn_click);
+        });
         if_key_history_table_initialize = true;
 	};
 	JQ_get(request_head,map,query_open_lock_history_callback);
@@ -8896,7 +8912,13 @@ function query_ProjUpdateStrategyList(ProjCode){
             click_PointUpdateStrategyChange_commit(statcode,ifupdate,$(this));
         };
         $(".update_change_btn").on('click',update_change_btn_click);
+        /*
         $("#ProjUpdateDetailTable_paginate").on('click',function(){
+            $(".update_change_btn").on('click',update_change_btn_click);
+        });*/
+
+        $("#ProjUpdateDetailTable").on('draw.dt',function(){
+            $(".update_change_btn").unbind();
             $(".update_change_btn").on('click',update_change_btn_click);
         });
     };
@@ -9009,8 +9031,15 @@ function query_warning_handle_list(){
 			handle_Alarm_close(statcode);
         };
         $(".alarm_close_btn").on('click',alarm_close_btn_click);
-
+        /*
         $("#WarningHandleQueryTable_paginate").on('click',function(){
+            $(".alarm_action_btn").on('click',alarm_action_btn_click);
+            $(".alarm_close_btn").on('click',alarm_close_btn_click);
+        });*/
+
+        $("#WarningHandleQueryTable").on('draw.dt',function(){
+            $(".alarm_action_btn").unbind();
+            $(".alarm_close_btn").unbind();
             $(".alarm_action_btn").on('click',alarm_action_btn_click);
             $(".alarm_close_btn").on('click',alarm_close_btn_click);
         });

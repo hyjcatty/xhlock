@@ -81,6 +81,8 @@ gulp.task("resourcecopy",function(){
         .pipe(gulp.dest(option.buildPath+"/"));
     gulp.src("./*.js")
         .pipe(gulp.dest(option.buildPath+"/"));
+    gulp.src("./imageshow/**/*")
+        .pipe(gulp.dest(option.buildPath+"/imageshow/"));
     //gulp.src("./*.html")
      //   .pipe(gulp.dest(option.buildPath+"/"));
 })

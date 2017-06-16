@@ -15,7 +15,7 @@ var request_head= basic_address+"request.php";
 var jump_url = basic_address+"jump.php";
 var upload_url=basic_address+"upload.php";
 var screen_saver_address=basic_address+"screensaver/screen.html";
-
+var show_image_url=basic_address+"imageshow/ImageShow.html";
 function logout(){
     delCookie("Environmental.inspection.session");
     window.location="http://"+window.location.host+basic_address+"Login.html";
@@ -4877,7 +4877,8 @@ function draw_point_picture_panel(){
     $("#Table_point_picture").append(txt);
     $(".pictd").on('click',function(){
         console.log("http://"+window.location.host+"/"+$(this).attr("picurl"));
-        window.open("http://"+window.location.host+"/"+$(this).attr("picurl"),'监控照片',"height=240, width=320, top=0, left=400,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
+        //window.open("http://"+window.location.host+"/"+$(this).attr("picurl"),'监控照片',"height=240, width=320, top=0, left=400,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
+        window.open("http://"+window.location.host+"/"+show_image_url+"?image="+$(this).attr("picurl")+"#",'监控照片',"height=620, width=640, top=0, left=400,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
 
         //console.log("http://"+window.location.host+basic_address+$(this).attr("picurl"));
         //window.open("http://"+window.location.host+basic_address+$(this).attr("picurl"),'监控照片',"height=480, width=640, top=0, left=400,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
@@ -9384,7 +9385,9 @@ function getopenpicture(openid){
         if(ret == "true"){
             if(result.ret.ifpicture == "true"){
                 var picture = result.ret.picture;
-                window.open("http://"+window.location.host+"/"+picture,'监控照片',"height=240, width=320, top=0, left=400,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
+                //console.log("picture="+picture);
+                //window.open("http://"+window.location.host+"/"+picture,'监控照片',"height=240, width=320, top=0, left=400,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
+                window.open("http://"+window.location.host+"/"+show_image_url+"?image="+picture+"#",'监控照片',"height=620, width=640, top=0, left=400,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
 
             }else{
                 show_alarm_module(false, "本次开锁未能捕捉到照片", null);

@@ -143,6 +143,8 @@ var  if_static_table_initialize = false;
 //key history table Control
 var Key_History_table_initialized = false;
 var  if_key_history_table_initialize = false;
+//Export table
+var  if_Export_table_initialize = false;
 //key auth Control
 var Key_auth_initialized = false;
 //alarm Control
@@ -776,6 +778,12 @@ $(document).ready(function() {
         touchcookie();
         key_history();
     });
+    $("#ExportTableManage").on('click',function(){
+        CURRENT_URL = "ExportTableManage";
+        active_menu("ExportTableManage");
+        touchcookie();
+        export_table();
+    });
     $("#CableCheck").on('click',function(){
         CURRENT_URL = "CableCheck";
         active_menu("CableCheck");
@@ -1324,6 +1332,11 @@ $(document).ready(function() {
 
         touchcookie();
     });
+    $("#ExportTableFlash").on('click',function(){
+        query_export_table();
+
+        touchcookie();
+    });
 	$("#KeyAuthQuery").on('click',function(){
 		get_domain_auth_list($("#KeyAuthPoint_choice").val());
         touchcookie();
@@ -1632,7 +1645,13 @@ function key_history(){
     key_history_initialize();
     //query_static_warning();
 }
-
+function export_table(){
+    clear_window();
+    write_title("报表导出","请输入查询条件");
+    $("#ExportTableView").css("display","block");
+    export_table_initialize();
+    //query_static_warning();
+}
 function clear_window(){
     $("#UserManageView").css("display","none");
     $("#PGManageView").css("display","none");
@@ -1654,6 +1673,7 @@ function clear_window(){
     $("#CableCheckView").css("display","none");
     $("#RTUManageView").css("display","none");
     $("#OTDRManageView").css("display","none");
+    $("#ExportTableView").css("display","none");
 }
 
 
@@ -6575,8 +6595,105 @@ function query_static_warning(){
     });*/
 }
 
+function export_table_initialize(){
 
 
+}
+function query_export_table(){
+    var Query_table_name = $("#ExportTableSelect_choice").val();
+    var Query_table_time = $("#ExportTableTime_choice").val();
+    var Query_table_word = $("#ExportTableWord_Input").val();
+    var condition = {
+        TableName:Query_table_name,
+        Time:Query_table_time,
+        KeyWord:Query_table_word
+    };
+    var map={
+        action:"ExportTable",
+        body:condition,
+        user:usr.id
+    };
+    var query_export_callback = function(result){
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        var Last_update_date=(new Date()).Format("yyyy-MM-dd_hhmmss");
+        $("#ExportTableLastFlash").empty();
+        $("#ExportTableLastFlash").append("最后刷新时间："+Last_update_date);
+        var ColumnName = result.ret.ColumnName;
+        var TableData = result.ret.TableData;
+        //var txt = "<thead> <tr><th></th>";
+        var txt = "<thead> <tr>";
+        var i;
+        for( i=0;i<ColumnName.length;i++){
+            txt = txt +"<th>"+ColumnName[i]+"</th>";
+        }
+        //txt = txt +"<th></th></tr></thead>";
+        txt = txt +"</tr></thead>";
+        txt = txt +"<tbody>";
+        for( i=0;i<TableData.length;i++){
+            txt = txt +"<tr>";
+            //txt = txt +"<td><button type='button' class='btn btn-default open_btn' OpenCode='"+TableData[i][0]+"' ><em class='glyphicon glyphicon-picture ' aria-hidden='true' ></em></button></td>";
+            //txt = txt +"<td><ul class='pagination'> <li><a href='#' class = 'video_btn' StateCode='"+TableData[i][0]+"' ><em class='glyphicon glyphicon-play ' aria-hidden='true' ></em></a> </li></ul></td>";
+            //txt = txt +"<td><button type='button' class='btn btn-default lock_btn' StateCode='"+TableData[i][0]+"' ><em class='glyphicon glyphicon-lock ' aria-hidden='true' ></em></button></td><td><button type='button' class='btn btn-default video_btn' StateCode='"+TableData[i][0]+"' ><em class='glyphicon glyphicon-play ' aria-hidden='true' ></em></button></td>";
+            //console.log("StateCode="+TableData[i][0]);
+            for(var j=0;j<TableData[i].length;j++){
+                txt = txt +"<td>"+TableData[i][j]+"</td>";
+            }
+            //txt = txt + "<td><button type='button' class='btn btn-default video_btn' StateCode='"+TableData[i][0]+"' >视频</button></td>";
+            txt = txt +"</tr>";
+        }
+        txt = txt+"</tbody>";
+        $("#ExportTableQueryTable").empty();
+        $("#ExportTableQueryTable").append(txt);
+        if(if_Export_table_initialize) $("#ExportTableQueryTable").DataTable().destroy();
+
+        //console.log(monitor_map_list);
+
+        var show_table  = $("#ExportTableQueryTable").DataTable( {
+            //dom: 'T<"clear">lfrtip',
+            "scrollY": false,
+            "scrollCollapse": true,
+
+            "scrollX": true,
+            "searching": false,
+            "autoWidth": true,
+            "lengthChange":false,
+            //bSort: false,
+            //aoColumns: [ { sWidth: "45%" }, { sWidth: "45%" }, { sWidth: "10%", bSearchable: false, bSortable: false } ],
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'excel',
+                    text: '导出到excel',
+                    filename: "HistoryData"+Last_update_date
+                }
+            ]
+
+        } );
+        /*
+        Openpicture_btn_click = function(){
+            var opencode = $(this).attr('OpenCode');
+            //console.log("StateCode_click="+statcode);
+            getopenpicture(opencode);
+
+        };
+        $(".open_btn").on('click',Openpicture_btn_click);*/
+        /*
+         $("#KeyHistoryQueryTable_paginate").on('click',function(){
+         $(".open_btn").on('click',Openpicture_btn_click);
+         });*/
+        /*
+        $("#ExportTableQueryTable").on('draw.dt',function(){
+            $(".open_btn").unbind();
+            $(".open_btn").on('click',Openpicture_btn_click);
+        });*/
+        if_Export_table_initialize = true;
+    };
+    JQ_get(request_head,map,query_export_callback);
+
+}
 
 //Open Lock History query
 function build_key_history_proj_choice(){
@@ -9226,7 +9343,7 @@ function query_OTDR_list(){
         txt = txt+"</tbody>";
         $("#OTDRQueryTable").empty();
         $("#OTDRQueryTable").append(txt);
-        if(if_RTU_Manage_table_initialize) $("#OTDRQueryTable").DataTable().destroy();
+        if(OTDR_Manage_table_initialized) $("#OTDRQueryTable").DataTable().destroy();
 
         //console.log(monitor_map_list);
 
@@ -9256,7 +9373,7 @@ function query_OTDR_list(){
             }
 
         } );
-        if_RTU_Manage_table_initialize = true;
+        OTDR_Manage_table_initialized = true;
     };
     JQ_get(request_head,map,GetOTDRTable_callback);
 

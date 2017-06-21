@@ -69,6 +69,7 @@
                                 <li><a><i class="fa fa-home"></i> 系统管理 <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="#" id="UserManage">用户管理</a></li>
+                                        <li><a href="#" id="ExportTableManage">报表管理</a></li>
                                         <!--li><a href="#" id="ParaManage">参数管理</a></li>
                                         <li><a href="#" id="InstControl">数据管理</a></li-->
                                     </ul>
@@ -139,7 +140,7 @@
                                     <ul class="nav child_menu">
                                         <!--li><a href="#" id="CableCheck">RTU管理</a></li-->
                                         <li><a href="#" id="RTUManage">RTU管理</a></li>
-                                        <li><a href="#" id="OTDRManage">RTU管理</a></li>
+                                        <li><a href="#" id="OTDRManage">OTDR管理</a></li>
                                     </ul>
                                 </li>
                             </ul>
@@ -2786,6 +2787,52 @@
                                             <div class="col-md-12 column" id="OTDRQueryResult" style="overflow:scroll;overflow-y:hidden;overflow-x:scroll">
                                                 <p></p>
                                                 <table id="OTDRQueryTable" class="display" cellspacing="0" width="100%"  style="white-space: nowrap;overflow:scroll;overflow-y:hidden;overflow-x:scroll">
+                                                </table>
+                                            </div>
+
+                                        </div>
+                                        <div class="row clearfix" id="ExportTableView">
+                                            <div class="col-md-12 column">
+                                                <div class="col-md-4 col-sm-6 col-xs-12">
+                                                    <div class="input-group" >
+                                                        <span class="input-group-addon" id="ExportTableSelect" style="min-width: 100px">报表名称</span>
+                                                        <select class="form-control" placeholder="归属项目" aria-describedby="basic-addon1" id="ExportTableSelect_choice">
+                                                            <option value="OpenCloseRecorder">开关门记录</option>
+                                                            <option value="ChamberInfo">光交箱信息</option>
+                                                            <option value="MaintenancePersonRecorder">维护人员信息</option>
+                                                            <option value="HistoryAlarm">历史告警记录</option>
+                                                            <option value="RoutingRecordAudit">巡检记录统计</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-sm-6 col-xs-12">
+                                                    <div class="input-group" >
+                                                        <span class="input-group-addon" id="ExportTableyTime" style="min-width: 100px">查询周期</span>
+                                                        <select class="form-control" placeholder="查询时间段" aria-describedby="basic-addon1" id="ExportTableTime_choice">
+                                                            <option value="1">今日</option>
+                                                            <option value="7">近7天</option>
+                                                            <option value="30">近30天</option>
+                                                            <option value="all">全部</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-sm-6 col-xs-12">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon" id="ExportTableWord" style="min-width: 100px">关键字</span>
+                                                        <input type="text" class="form-control" placeholder="查询关键字" aria-describedby="basic-addon1" id="ExportTableWord_Input"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 column">
+                                                <div class="col-md-12 column">
+                                                    <button type="button" class="btn btn-primary" id="ExportTableFlash">查询</button>
+                                                    <label  style="min-width: 20px"></label>
+                                                    <label  style="min-width: 20px" id="ExportTableLastFlash"></label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 column" id="ExportTableQueryResult" style="overflow:scroll;overflow-y:hidden;overflow-x:hidden">
+                                                <p></p>
+                                                <table id="ExportTableQueryTable" class="display" cellspacing="0" width="100%"  style="white-space: nowrap;">
                                                 </table>
                                             </div>
 

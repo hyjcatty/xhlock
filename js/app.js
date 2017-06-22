@@ -7556,10 +7556,12 @@ function Data_export_Normal(title,tablename,condition,filter){
             txt = txt +"</tr>";
         }
         txt = txt+"</tbody>";
-        $("#ExportTable").append(txt);
+        //$("#ExportTable").append(txt);
         if(if_table_initialize) $("#ExportTable").DataTable().destroy();
+        $("#ExportTable").empty();
+        $("#ExportTable").append(txt);
 
-        //console.log(monitor_map_list);
+        console.log($("#ExportTable").html());
 
         var show_table  = $("#ExportTable").DataTable( {
             //dom: 'T<"clear">lfrtip',

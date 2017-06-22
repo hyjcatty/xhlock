@@ -2130,8 +2130,9 @@ RESPONSE:
 	$TableName = $body_in["TableName"];
 	$Condition = $body_in["Condition"];
 	//$Filter = $_GET["Filter"];
-	$column = 16;
-	$row = 40;
+
+	$column = rand(10,20);
+	$row = rand(40,100);
 	$column_name = array();
 	$row_content = array();
 	for( $i=0;$i<$column;$i++){

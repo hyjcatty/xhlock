@@ -7561,7 +7561,7 @@ function Data_export_Normal(title,tablename,condition,filter){
         $("#ExportTable").empty();
         $("#ExportTable").append(txt);
 
-        console.log($("#ExportTable").html());
+        //console.log($("#ExportTable").html());
 
         var show_table  = $("#ExportTable").DataTable( {
             //dom: 'T<"clear">lfrtip',

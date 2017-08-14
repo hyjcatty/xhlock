@@ -18,7 +18,7 @@ var screen_saver_address=basic_address+"screensaver/screen.html";
 var show_image_url=basic_address+"imageshow/ImageShow.html";
 function logout(){
     delCookie("Environmental.inspection.session");
-    window.location="http://"+window.location.host+basic_address+"Login.html";
+    window.location="http://"+window.location.host+basic_address+"login.html";
 
     /*
      delCookie("Environmental.inspection.session");
@@ -2869,7 +2869,7 @@ function show_new_pg_module(){
     pg_module_status = true;
 
     $("#PGPGCode_Input").val("");
-    $('#PGPGCode_Input').attr("disabled",false);
+    $('#PGPGCode_Input').attr("disabled",true);
     $("#PGPGName_Input").val("");
     $("#PGChargeMan_Input").val("");
     $("#PGTelephone_Input").val("");
@@ -2913,12 +2913,12 @@ function submit_new_pg_module(){
     var new_PGDepartment = $("#PGDepartment_Input").val();
     var new_PGAddress = $("#PGAddress_Input").val();
     var new_PGStage = $("#PGStage_Input").val();
-
+/*
     if(new_PGPGCode === null || new_PGPGCode === ""){
         $("#PGPGCode_Input").attr("placeholder","项目组号不能为空");
         $("#PGPGCode_Input").focus();
         return;
-    }
+    }*/
     if(new_PGPGName === null || new_PGPGName === ""){
         $("#PGPGName_Input").attr("placeholder","项目组名称不能为空");
         $("#PGPGName_Input").focus();
@@ -4072,7 +4072,7 @@ function show_new_proj_module(){
     project_module_status = true;
 
     $("#ProjProjCode_Input").val("");
-    $('#ProjProjCode_Input').attr("disabled",false);
+    $('#ProjProjCode_Input').attr("disabled",true);
     $("#ProjProjName_Input").val("");
     $("#ProjChargeMan_Input").val("");
     $("#ProjTelephone_Input").val("");
@@ -4103,12 +4103,12 @@ function submit_new_proj_module(){
     var new_ProjAddress = $("#ProjAddress_Input").val();
     var new_ProjProStartTime = $("#ProjProStartTime_Input").val();
     var new_ProjStage = $("#ProjStage_Input").val();
-
+/*
     if(new_ProjProjCode === null || new_ProjProjCode === ""){
         $("#ProjProjCode_Input").attr("placeholder","项目号不能为空");
         $("#ProjProjCode_Input").focus();
         return;
-    }
+    }*/
     if(new_ProjProjName === null || new_ProjProjName === ""){
         $("#ProjProjName_Input").attr("placeholder","项目名称不能为空");
         $("#ProjProjName_Input").focus();
@@ -4911,7 +4911,7 @@ function show_new_point_module(){
     point_module_status = true;
 
     $("#PointStatCode_Input").val("");
-    $('#PointStatCode_Input').attr("disabled",false);
+    $('#PointStatCode_Input').attr("disabled",true);
     $("#PointStatName_Input").val("");
     $("#PointChargeMan_Input").val("");
     $("#PointTelephone_Input").val("");
@@ -4961,12 +4961,12 @@ function submit_new_point_module(){
     var new_PointSquare = "0";//$("#PointSquare_Input").val();
     var new_PointProStartTime = "1999-01-01";//$("#PointProStartTime_Input").val();
     var new_PointStage = $("#PointStage_Input").val();
-
+/*
     if(new_PointStatCode === null || new_PointStatCode === ""){
         $("#PointStatCode_Input").attr("placeholder","站点号不能为空");
         $("#PointStatCode_Input").focus();
         return;
-    }
+    }*/
     if(new_PointStatName === null || new_PointStatName === ""){
         $("#PointStatName_Input").attr("placeholder","站点名称不能为空");
         $("#PointStatName_Input").focus();
@@ -5881,7 +5881,7 @@ function get_monitor_warning_on_map(){
             }else{
                 txt = "<div id ='Element_card_floating' align='center' ><p style='font-size:14px;font-weight: bold' >"+"站点名称："+monitor_selected.StatName+"</p>"+
                     "<HR style='FILTER: alpha(opacity=100,finishopacity=0,style=3)' width='80%' color=#987cb9 SIZE=3/>" +
-                    "<div style='font-size:10px; min-height: 420px; min-width:420px' >" ;
+                    "<div style='font-size:10px; min-height: 500px; min-width:420px' >" ;
                 txt = txt + " <div class='col-md-6 column'>";
                 for(var i=0;i<ret.length;i++){
                     var nickname = ret[i].AlarmEName;

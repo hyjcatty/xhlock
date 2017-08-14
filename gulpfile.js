@@ -135,6 +135,7 @@ gulp.task('scripts', function() {
         .pipe(minifycss())
         .pipe(gulp.dest(option.buildPath+"/css/"));
     gulp.src('./Login.html')
+        .pipe(rename('login.html'))
         .pipe(htmlmin(option_html))
         .pipe(gulp.dest(option.buildPath));
     gulp.src('./LostPassword.html')

@@ -12,10 +12,11 @@ var rename = require('gulp-rename');
 var clean = require('gulp-clean');
 var htmlmin = require('gulp-htmlmin');
 var replace = require('gulp-replace');
-
+var mkdirp = require('mkdirp');
 
 
 var replace_content = "D:/webrd/www/dist/usr_img/";
+var replace_content_admintools = "D:/webrd/www/dist/admintools/upload/";
 var replace_install = "/dist";
 var option = {
 
@@ -67,8 +68,7 @@ gulp.task("resourcecopy",function(){
         .pipe(gulp.dest(option.buildPath+"/video/"));
     gulp.src("./screensaver/**/*")
         .pipe(gulp.dest(option.buildPath+"/screensaver/"));
-    gulp.dest(option.buildPath+"/upload/");
-    gulp.dest(option.buildPath+"/usr_img/");
+
     gulp.src("./jump.php")
         .pipe(gulp.dest(option.buildPath+"/"));
     gulp.src("./request.php")
@@ -83,8 +83,17 @@ gulp.task("resourcecopy",function(){
         .pipe(gulp.dest(option.buildPath+"/"));
     gulp.src("./imageshow/**/*")
         .pipe(gulp.dest(option.buildPath+"/imageshow/"));
+    gulp.src("./admintools/upload.php")
+        .pipe(replace(/_UPLOAD_PATH_/,replace_content_admintools))
+        .pipe(gulp.dest(option.buildPath+"/admintools/"));
+    gulp.src("./admintools/admintools.php")
+        .pipe(gulp.dest(option.buildPath+"/admintools/"));
     //gulp.src("./*.html")
      //   .pipe(gulp.dest(option.buildPath+"/"));
+
+    mkdirp.sync(option.buildPath+"/upload/");
+    mkdirp.sync(option.buildPath+"/admintools/upload/");
+    mkdirp.sync(option.buildPath+"/usr_img/");
 })
 
 // 合并，压缩文件
@@ -144,6 +153,16 @@ gulp.task('scripts', function() {
     gulp.src('./scope.html')
         .pipe(htmlmin(option_html))
         .pipe(gulp.dest(option.buildPath));
+
+    gulp.src('./admintools/js/admintools.js')
+        .pipe(concat('admintools.js'))
+        //.pipe(gulp.dest('./dist/js'))
+        .pipe(rename('admintools.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest(option.buildPath+"/admintools/js/"));
+    gulp.src('./admintools/admintools.html')
+        .pipe(htmlmin(option_html))
+        .pipe(gulp.dest(option.buildPath+"/admintools/"));
 });
 
 // 默认任务

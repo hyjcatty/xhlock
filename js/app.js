@@ -14,6 +14,7 @@ var cycle_time = 60000;
 var request_head= basic_address+"request.php";
 var jump_url = basic_address+"jump.php";
 var upload_url=basic_address+"upload.php";
+var admintools_url=basic_address+"admintools/admintools.html";
 var screen_saver_address=basic_address+"screensaver/screen.html";
 var show_image_url=basic_address+"imageshow/ImageShow.html";
 function logout(){
@@ -783,6 +784,9 @@ $(document).ready(function() {
         active_menu("ExportTableManage");
         touchcookie();
         export_table();
+    });
+    $("#SoftwareLoadManage").on('click',function(){
+        window.location="http://"+window.location.host+admintools_url+"?session="+getQueryString("session")+"#";
     });
     $("#CableCheck").on('click',function(){
         CURRENT_URL = "CableCheck";

@@ -8,13 +8,14 @@ var wait_time_long =3000;
 var wait_time_middle = 1000;
 var wait_time_short= 500;
 var cycle_time = 60000;
-var request_head= basic_address+"../request.php";
+var install_path="_INSTALL_PATH_";
+var request_head= install_path+"/request.php";//basic_address+"../request.php";
 var admintools_head= basic_address+"/admintools.php";
-var jump_url = basic_address+"../jump.php";
+var jump_url = install_path+"/jump.php";//basic_address+"../jump.php";
 var upload_url=basic_address+"/upload.php";
 function logout(){
     delCookie("Environmental.inspection.session");
-    window.location="http://"+window.location.host+basic_address+"../login.html";
+    window.location="http://"+window.location.host+install_path+"/login.html";
 }
 
 function goback(){

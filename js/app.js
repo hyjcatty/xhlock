@@ -14,7 +14,7 @@ var cycle_time = 60000;
 var request_head= basic_address+"request.php";
 var jump_url = basic_address+"jump.php";
 var upload_url=basic_address+"upload.php";
-var admintools_url=basic_address+"admintools/admintools.html";
+var admintools_url="_ADMINTOOL_PATH_"+"\/admintools.html";
 var screen_saver_address=basic_address+"screensaver/screen.html";
 var show_image_url=basic_address+"imageshow/ImageShow.html";
 function logout(){

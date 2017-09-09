@@ -165,10 +165,12 @@ function getQueryString(name) {
     var r = window.location.search.substr(1).match(reg);
     if (r !== null) return unescape(r[2]); return null;
 }
-
+String.prototype.replaceAll = function(s1,s2){
+    return this.replace(new RegExp(s1,"gm"),s2);
+};
 function getRelativeURL(){
     var url = document.location.toString();
-    var arrUrl= url.split("//");
+    var arrUrl= url.split("://");
     var start = arrUrl[1].indexOf("/");
     var reUrl=arrUrl[1].substring(start);
     if(reUrl.indexOf("?")!=-1) {
@@ -176,6 +178,8 @@ function getRelativeURL(){
     }
     var end = reUrl.lastIndexOf("/");
     reUrl=reUrl.substring(0,end);
+
+    reUrl=reUrl.replaceAll(/\/\/*/, "/");
     return reUrl;
 
 }

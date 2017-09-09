@@ -1399,7 +1399,10 @@ function calculate_row(){
     else
         table_row=table_row+add_row;
 
+    //console.log("Now table row is:"+table_row);
+
 }
+window.onresize=calculate_row;
 function show_table_tags(){
 	$('#Warning_'+alarm_type_list[0].id+'_day').css('display','block');
 }

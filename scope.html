@@ -192,6 +192,18 @@
                         <div class="title_left" id="page_title">
                             <h3> <small></small></h3>
                         </div>
+                        <div class="title_right" id = "QueryBar">
+                            <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="查询..." id="CommonQueryInput">
+                                <span class="input-group-btn">
+                                  <button class="btn btn-default" type="button" id="CommonQueryCommit">
+                                      <i class="fa fa-search"></i>
+                                  </button>
+                                </span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="clearfix"></div>
@@ -296,11 +308,10 @@
                                                                         <div class="input-group" >
                                                                             <span class="input-group-addon" id="NewUserType" style="min-width: 100px">用户分组</span>
                                                                             <select class="form-control" placeholder="用户分组" aria-describedby="basic-addon1" id="NewUserType_choice">
-                                                                                <option value="4">三级用户</option>
-                                                                                <option value="3">二级用户</option>
-                                                                                <option value="2">一级用户</option>
-                                                                                <option value="1">高级用户</option>
-                                                                                <option value="0">管理员</option>
+                                                                                <option value="4">区级代维</option>
+                                                                                <option value="3">市级代维</option>
+                                                                                <option value="2">区级网管</option>
+                                                                                <option value="1">市级网管</option>
                                                                             </select>
 
                                                                         </div>
@@ -4788,6 +4799,23 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal" id="UnlockConfirmBtn" StateCode="">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="StationActiveConfirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="StationActiveConfirmModalLabel">请确认</h4>
+            </div>
+            <div class="modal-body" id="StationActiveConfirmModalContent">
+                <strong>请确认</strong>您要远程打开
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="StationActiveConfirmBtn" StateCode="">确认</button>
             </div>
         </div>
     </div>

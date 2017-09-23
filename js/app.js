@@ -17,6 +17,7 @@ var upload_url=basic_address+"upload.php";
 var admintools_url="_ADMINTOOL_PATH_"+"\/admintools.html";
 var screen_saver_address=basic_address+"screensaver/screen.html";
 var show_image_url=basic_address+"imageshow/ImageShow.html";
+var global_key_word = "";
 function logout(){
     delCookie("Environmental.inspection.session");
     window.location="http://"+window.location.host+basic_address+"login.html";
@@ -552,6 +553,7 @@ $(document).ready(function() {
         active_menu("UserManage");
         touchcookie();
         user_manager();
+
     });
     $("#KeyManage").on('click',function(){
         CURRENT_URL = "KeyManage";
@@ -1375,6 +1377,43 @@ $(document).ready(function() {
 		AlarmHandleUpdateCommit_button_commit();
     });
 
+    $("#CommonQueryCommit").on('click',function(){
+        if(global_key_word == $("#CommonQueryInput").val()) return;
+        global_key_word = $("#CommonQueryInput").val();
+        switch (CURRENT_URL){
+            case "UserManage":
+                user_intialize(0);
+                break;
+            case "KeyManage":
+                key_intialize(0);
+                break;
+            case "PGManage":
+                pg_intialize(0);
+                break;
+            case "ProjManage":
+                proj_intialize(0);
+                break;
+            case "MPManage":
+                point_intialize(0);
+                break;
+            case "DevManage":
+                dev_intialize(0);
+                break;
+            default:
+
+                break;
+        }
+        return;
+    });
+
+    $("#StationActiveConfirmBtn").on('click',function(){
+        selectedstationactive();
+    });
+
+
+
+
+
     //alert($(window).height());
     //alert($(window).width());
     clear_window();
@@ -1389,6 +1428,17 @@ $(document).ready(function() {
     $(window).resize();
 
 });
+
+
+
+function show_searchbar(){
+    global_key_word = "";
+    $("#CommonQueryInput").val("");
+    $("#QueryBar").css("display","block");
+}
+function hide_searchbar(){
+    $("#QueryBar").css("display","none");
+}
 function calculate_row(){
     var screen_high = $(window).height();
     var add_row = parseInt( ($(window).height()-650)/100);
@@ -1412,19 +1462,23 @@ function user_manager(){
     clear_window();
     write_title("用户管理","根据您的权限对用户进行添加/删除/修改等操作");
     $("#UserManageView").css("display","block");
-
-    if(!user_initial){ user_intialize(0);}
+    show_searchbar();
+    //if(!user_initial){ user_intialize(0);}
+    user_intialize(0);
 }
 function pg_manage(){
     clear_window();
     write_title("项目组管理","根据您的权限对项目组进行添加/删除/修改等操作");
     $("#PGManageView").css("display","block");
-    if(!pg_initial){ pg_intialize(0);}
+    show_searchbar();
+    //if(!pg_initial){ pg_intialize(0);}
+    pg_intialize(0);
 }
 function key_manage(){
     clear_window();
     write_title("钥匙管理","根据您的权限对项目组进行添加/删除/修改等操作");
     $("#KeyManageView").css("display","block");
+    show_searchbar();
     //if(!key_initial){ key_intialize(0);}
     key_intialize(0);
 }
@@ -1432,37 +1486,45 @@ function proj_manage(){
     clear_window();
     write_title("项目管理","根据您的权限对项目进行添加/删除/修改等操作");
     $("#ProjManageView").css("display","block");
+    show_searchbar();
     proj_intialize(0);
 }
 function para_manage(){
     clear_window();
     write_title("参数管理","您可以在这里升级您的设备版本");
     $("#ParaManageView").css("display","block");
+    hide_searchbar();
     if(!parameter_initial)parameter_initialize();
     //$("#Undefined").css("display","block");
 }
 function mp_manage(){
     clear_window();
     write_title("站点管理","根据您的权限对站点进行配置");
+    show_searchbar();
     $("#MPManageView").css("display","block");
     //需求修改，项目变成站点，变量名字不改了
-    if(!point_initial){ point_intialize(0);}
+    //if(!point_initial){ point_intialize(0);}
+    point_intialize(0);
 }
 function dev_manage(){
     clear_window();
     write_title("设备管理","根据您的权限对设备进行配置");
+    show_searchbar();
     $("#DevManageView").css("display","block");
-    if(!device_initial){ dev_intialize(0);}
+    //if(!device_initial){ dev_intialize(0);}
+    dev_intialize(0);
 }
 function mp_monitor(){
     clear_window();
     write_title("地图监控","在地图上对站点进行监控");
+    hide_searchbar();
     $("#MPMonitorView").css("display","block");
     if(!map_initialized)initializeMap();
 }
 function mp_monitor_table(){
     clear_window();
     write_title("站点聚合","实时刷新");
+    hide_searchbar();
     $("#MPMonitorTableView").css("display","block");
     if(!Monitor_table_initialized)initialize_warning_table();
 
@@ -1470,6 +1532,7 @@ function mp_monitor_table(){
 function mp_monitor_card(){
     clear_window();
     write_title("站点列块","点选设备卡片以获得详细信息");
+    hide_searchbar();
     $("#MPMonitorCardView").css("display","block");
 
     //if(!map_initialized)initializeMap();
@@ -1477,6 +1540,7 @@ function mp_monitor_card(){
 function mp_static_monitor_table(){
     clear_window();
     write_title("站点聚合","请手工刷新");
+    hide_searchbar();
     $("#MPMonitorStaticTableView").css("display","block");
     query_static_warning();
     //if(!Monitor_table_initialized)initialize_warning_table();
@@ -1485,11 +1549,13 @@ function mp_static_monitor_table(){
 function warning_check(){
     clear_window();
     write_title("告警查看","可以导出报表");
+    hide_searchbar();
     $("#WarningCheckView").css("display","block");
     if(!alarm_map_initialized)initializeAlarmMap();
 }
 function warning_handle(){
     clear_window();
+    hide_searchbar();
     $("#WarningHandleView").css("display","block");
     write_title("告警处理","请查看报表");
     query_warning_handle_list();
@@ -1497,7 +1563,7 @@ function warning_handle(){
 }
 function desktop(){
     clear_window();
-
+    hide_searchbar();
     write_title("欢迎","请选择您需要的功能");
     $("#Desktop").css("display","block");
 }
@@ -1505,130 +1571,163 @@ function desktop(){
 
 function Inst_Conf(){
     clear_window();
+    hide_searchbar();
     write_title("施工中","");
     $("#Undefined").css("display","block");
 }
 function Inst_Read(){
     clear_window();
+    hide_searchbar();
     write_title("施工中","");
     $("#Undefined").css("display","block");
 }
 function Inst_Design(){
     clear_window();
+    hide_searchbar();
     write_title("施工中","");
     $("#Undefined").css("display","block");
 }
 function Inst_Control(){
     clear_window();
+    hide_searchbar();
     write_title("施工中","");
     $("#Undefined").css("display","block");
 }
 function Inst_Snapshot(){
     clear_window();
+    hide_searchbar();
     write_title("施工中","");
     $("#Undefined").css("display","block");
 }
 function Inst_Video(){
     clear_window();
+    hide_searchbar();
     write_title("施工中","");
     $("#Undefined").css("display","block");
 }
 function Audit_Target(){
     clear_window();
+    hide_searchbar();
     write_title("施工中","");
     $("#Undefined").css("display","block");
 }
 function Audit_Stability(){
     clear_window();
+    hide_searchbar();
     write_title("施工中","");
     $("#Undefined").css("display","block");
 }
 function Audit_Availability(){
     clear_window();
+    hide_searchbar();
     write_title("施工中","");
     $("#Undefined").css("display","block");
 }
 function Audit_Error(){
     clear_window();
+    hide_searchbar();
     write_title("施工中","");
     $("#Undefined").css("display","block");
 }
 function Audit_Quality(){
     clear_window();
+    hide_searchbar();
     write_title("施工中","");
     $("#Undefined").css("display","block");
 }
 function Geo_InfoQuery(){
     clear_window();
+    hide_searchbar();
     CURRENT_URL="Undefined";
     write_title("施工中","");
     $("#Undefined").css("display","block");
 }
 function Geo_TrendAnalysis(){
     clear_window();
+    hide_searchbar();
     CURRENT_URL="Undefined";
     write_title("施工中","");
     $("#Undefined").css("display","block");
 }
 function Geo_DisaterForecast(){
     clear_window();
+    hide_searchbar();
     CURRENT_URL="Undefined";
     write_title("施工中","");
     $("#Undefined").css("display","block");
 }
 function Geo_EmergencyDirect(){
     clear_window();
+    hide_searchbar();
+    CURRENT_URL="Undefined";
     write_title("施工中","");
     $("#Undefined").css("display","block");
 }
 function Geo_DiffusionAnalysis(){
     clear_window();
+    hide_searchbar();
+    CURRENT_URL="Undefined";
     write_title("施工中","");
     $("#Undefined").css("display","block");
 }
 function Work_flowDesign(){
     clear_window();
+    hide_searchbar();
+    CURRENT_URL="Undefined";
     write_title("施工中","");
     $("#Undefined").css("display","block");
 }
 function Order_Management(){
     clear_window();
+    hide_searchbar();
+    CURRENT_URL="Undefined";
     write_title("施工中","");
     $("#Undefined").css("display","block");
 }
 function Unloading_Management(){
     clear_window();
+    hide_searchbar();
+    CURRENT_URL="Undefined";
     write_title("施工中","");
     $("#Undefined").css("display","block");
 }
 function Order_Audit(){
     clear_window();
+    hide_searchbar();
+    CURRENT_URL="Undefined";
     write_title("施工中","");
     $("#Undefined").css("display","block");
 }
 function AD_Conf(){
     clear_window();
+    hide_searchbar();
+    CURRENT_URL="Undefined";
     write_title("施工中","");
     $("#Undefined").css("display","block");
 }
 function WEB_Conf(){
     clear_window();
+    hide_searchbar();
+    CURRENT_URL="Undefined";
     write_title("施工中","");
     $("#Undefined").css("display","block");
 }
 function CABLE_Check(){
     clear_window();
+    hide_searchbar();
     write_title("纤芯管理","");
     $("#CableCheckView").css("display","block");
 }
 function RTU_Manage(){
     clear_window();
+    hide_searchbar();
     write_title("RTU管理","");
     $("#RTUManageView").css("display","block");
     query_RTU_list();
 }
 function OTDR_Manage(){
     clear_window();
+    hide_searchbar();
     write_title("OTDR管理","");
     $("#OTDRManageView").css("display","block");
     query_OTDR_list();
@@ -1641,12 +1740,14 @@ function KEY_Manage(){
 }*/
 function key_auth(){
     clear_window();
+    hide_searchbar();
     write_title("钥匙授权","");
     $("#KeyAuthView").css("display","block");
     key_auth_initialize();
 }
 function key_history(){
     clear_window();
+    hide_searchbar();
     write_title("开锁历史查询","请输入查询条件");
     $("#KeyHistoryView").css("display","block");
     key_history_initialize();
@@ -1654,6 +1755,7 @@ function key_history(){
 }
 function export_table(){
     clear_window();
+    hide_searchbar();
     write_title("报表导出","请输入查询条件");
     $("#ExportTableView").css("display","block");
     export_table_initialize();
@@ -1715,7 +1817,8 @@ function get_project_pg_list(){
 function get_user_table(start,length){
     var body = {
         startseq: start,
-        length:length
+        length:length,
+        keyword: global_key_word
     };
     var map={
         action:"UserTable",
@@ -2037,10 +2140,10 @@ function draw_user_table_head(){
 }
 function get_user_level(level){
     if (level =="0") return "管理员";
-    if (level =="1") return "高级用户";
-    if (level =="2") return "一级用户";
-    if (level =="3") return "二级用户";
-    if (level =="4") return "三级用户";
+    if (level =="1") return "市级网管";
+    if (level =="2") return "区级网管";
+    if (level =="3") return "市级代维";
+    if (level =="4") return "区级代维";
     return "未知级别";
 }
 function draw_user_table(data){
@@ -2430,7 +2533,8 @@ function get_project_list(){
 function get_pg_table(start,length){
     var body={
         startseq: start,
-        length:length
+        length:length,
+        keyword: global_key_word
     };
     var map={
         action:"PGTable",
@@ -3049,7 +3153,8 @@ function submit_mod_pg_module(){
 function get_key_table(start,length){
     var body={
         startseq: start,
-        length:length
+        length:length,
+        keyword: global_key_word
     };
     var map={
         action:"KeyTable",
@@ -3579,7 +3684,8 @@ function submit_mod_key_module(){
 function get_proj_table(start,length){
     var body={
         startseq: start,
-        length:length
+        length:length,
+        keyword: global_key_word
     };
     var map={
         action:"ProjTable",
@@ -4342,7 +4448,8 @@ function get_update_dev_list(){
 function get_point_table(start,length){
 	var body={
         startseq: start,
-        length:length
+        length:length,
+        keyword: global_key_word
 	};
     var map={
         action:"PointTable",
@@ -4747,7 +4854,7 @@ function Initialize_point_detail(){
 }
 function clear_point_detail_panel(){
     point_selected = null;
-    var txt = "<p></p><p></p>"+
+    var txt = "<button class='btn btn-default' type='button' disabled = 'true'>已激活</button>"+"<p></p><p></p>"+
         "<div class='col-md-6 col-sm-6 col-xs-12 column'>"+
         "<dl >"+
         "<dt >站点编号：</dt><dd>&nbsp&nbsp&nbsp&nbsp</dd>"+
@@ -4809,6 +4916,7 @@ function clear_point_detail_panel(){
     $("#Label_point_detail").empty();
     $("#Label_point_detail").append(txt);
     $("#Table_point_device").empty();
+    $("#Table_point_picture").empty();
 }
 function draw_point_detail_panel(){
     $("#Label_point_detail").empty();
@@ -4821,7 +4929,7 @@ function draw_point_detail_panel(){
             projname = project_list[j].name;break;
         }
     }
-    var txt = "<p></p><p></p>"+
+    var txt = "<button class='btn btn-default' type='button' id='selectpointactivebutton' disabled = 'true'>查询中</button>"+"<p></p><p></p>"+
         "<div class='col-md-6 col-sm-6 col-xs-12 column'>"+
         "<dl >"+
         "<dt >站点编号：</dt><dd>"+point_selected.StatCode+"</dd>"+
@@ -4889,6 +4997,13 @@ function draw_point_detail_panel(){
     }
     txt = txt+ "</tbody>";
     $("#Table_point_device").append(txt);
+    getselectedstationactived();
+    $("#selectpointactivebutton").on('click',function(){
+        $("#StationActiveConfirmModalContent").text("确定要激活站点："+point_selected.StatName+"?");
+        modal_middle($('#StationActiveConfirm'));
+
+        $('#StationActiveConfirm').modal('show');
+    });
 
 }
 
@@ -4916,7 +5031,8 @@ function show_new_point_module(){
 
     $("#newPointModalLabel").text("创建新站点");
     point_module_status = true;
-
+    $("#PointLatitude_Input").attr("disabled",true);
+    $("#PointLongitude_Input").attr("disabled",true);
     $("#PointStatCode_Input").val("");
     $('#PointStatCode_Input').attr("disabled",true);
     $("#PointStatName_Input").val("");
@@ -5070,6 +5186,9 @@ function show_mod_point_module(point){
     //Square:"10000",
     //ProStartTime:"2016-01-01",
     //Stage:"备注"+(start+i)
+
+    $("#PointLatitude_Input").attr("disabled",false);
+    $("#PointLongitude_Input").attr("disabled",false);
     $("#PointStatCode_Input").val(point.StatCode);
     $('#PointStatCode_Input').attr("disabled",true);
     $("#PointStatName_Input").val(point.StatName);
@@ -5182,7 +5301,8 @@ function get_proj_point_list(){
 function get_dev_table(start,length){
 	var body={
         startseq: start,
-        length:length
+        length:length,
+        keyword: global_key_word
 	};
     var map={
         action:"DevTable",
@@ -9523,4 +9643,59 @@ function getopenpicture(openid){
         }
     };
     JQ_get(request_head,map,get_open_picture_callback);
+}
+
+function getselectedstationactived(){
+
+    var map={
+        action:"GetStationActiveInfo",
+        body:{
+            StatCode:point_selected.StatCode
+        },
+        type:"query",
+        user:usr.id
+    };
+    var getselectedstationactived_callback = function(result){
+        var ret = result.status;
+        if(ret == "true"){
+            if(result.ret.actived == "true"){
+
+                $("#selectpointactivebutton").attr("disabled",true);
+                $("#selectpointactivebutton").text("已激活");
+            }else{
+                $("#selectpointactivebutton").attr("disabled",false);
+                $("#selectpointactivebutton").text("激活");
+            }
+
+        }else {
+            show_alarm_module(true, "请重新登录！" + result.msg, null);
+        }
+    };
+    JQ_get(request_head,map,getselectedstationactived_callback);
+}
+
+function selectedstationactive(){
+
+    var map={
+        action:"StationActive",
+        body:{
+            StatCode:point_selected.StatCode
+        },
+        type:"mod",
+        user:usr.id
+    };
+    var selectedstationactive_callback = function(result){
+        var ret = result.status;
+        if(ret == "true"){
+            setTimeout(function() {
+                show_alarm_module(false, "激活成功" , null);
+                point_intialize(0);
+            },500);
+        }else{
+            setTimeout(function() {
+                show_alarm_module(true, "激活失败" + result.msg, null);
+            },500);
+        }
+    };
+    JQ_get(request_head,map,selectedstationactive_callback);
 }

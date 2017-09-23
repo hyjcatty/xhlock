@@ -4787,6 +4787,75 @@ RESPONSE:
 		);
 		$jsonencode = _encode($retval);
 		echo $jsonencode; break;
+	case "GetStationActiveInfo":
+	/*
+        REQUEST:
+            var body={
+                StatCode:id
+            }
+            var map={
+                action:"GetStationActiveInfo",
+                body:body,
+                type:"query",
+                user:user
+            };
+        RESPONSE:
+
+            $body = array(
+                        'actived'=>'true'
+                    );
+            $retval=array(
+                'status'=>'true',
+                'auth'=>'true',
+                'ret'=>$body,
+                'msg'=>''
+            );
+    		*/
+        $body_in = $_GET['body'];
+        $StatCode = ($body_in['StatCode']);
+        $x = rand(1,100);
+        $actived = "true";
+        if($x>50) $actived = "false";
+        $body = array(
+            'actived'=>$actived
+        );
+        $retval=array(
+            'status'=>'true',
+            'auth'=>'true',
+            'ret'=>$body,
+            'msg'=>''
+        );
+        $jsonencode = _encode($retval);
+        echo $jsonencode; break;
+	case "StationActive":
+
+    /*
+        REQUEST:
+            var body={
+                StatCode:id
+            }
+            var map={
+                action:"StationActive",
+                body:body,
+                type:"mod",
+                user:user
+            };
+        RESPONSE:
+            $retval=array(
+                'status'=>'true',
+                'auth'=>'true',
+                'msg'=>''
+            );
+            */
+        $body_in = $_GET['body'];
+        $StatCode = ($body_in['StatCode']);
+        $retval=array(
+            'status'=>'true',
+            'auth'=>'true',
+            'msg'=>''
+        );
+        $jsonencode = _encode($retval);
+        echo $jsonencode; break;
 	default:
 	break;
 }

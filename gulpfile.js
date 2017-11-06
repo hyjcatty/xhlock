@@ -17,12 +17,15 @@ var mkdirp = require('mkdirp');
 
 var replace_content = "D:/webrd/www/dist/usr_img/";
 var replace_content_admintools = "D:/webrd/www/dist/admintools/upload/";
+
+
 var replace_content_admintools_url = "/dist/admintools";
 var replace_install = "/dist";
 var option = {
     admin_tools_path:"../www/dist/admintools",
     buildPath: "../www/dist"
 }
+var online_replace="true";
 var option_html = {
     collapseWhitespace:true,
     collapseBooleanAttributes:true,
@@ -76,6 +79,7 @@ gulp.task("resourcecopy",function(){
         .pipe(gulp.dest(option.buildPath+"/"));
     gulp.src("./request.php")
         .pipe(replace(/_INSTALL_PATH_/,replace_install))
+        .pipe(replace(/_OFFLINE_FLAG_/,online_replace))
         .pipe(gulp.dest(option.buildPath+"/"));
     gulp.src("./upload.php")
         .pipe(replace(/_UPLOAD_PATH_/,replace_content))
@@ -106,7 +110,7 @@ gulp.task('scripts', function() {
         .pipe(concat('app.js'))
         //.pipe(gulp.dest('./dist/js'))
         .pipe(rename('app.js'))
-        .pipe(uglify())
+        //.pipe(uglify())
         .pipe(gulp.dest(option.buildPath+"/js/"));
     gulp.src('./js/hcu_util.js')
         .pipe(concat('hcu_util.js'))
@@ -140,9 +144,6 @@ gulp.task('scripts', function() {
         .pipe(rename('nprogress.js'))
         .pipe(uglify())
         .pipe(gulp.dest(option.admin_tools_path+"/js/"));
-
-
-
     gulp.src('./css/Login.css')
        // .pipe(concat('Login.css'))
         .pipe(rename('Login.css'))
@@ -201,6 +202,34 @@ gulp.task('scripts', function() {
         .pipe(gulp.dest(option.admin_tools_path));
 });
 
+gulp.task('patch', function() {
+    mkdirp.sync(option.buildPath+"/tiles/");
+    gulp.src('./offlinepatch/css/bmap.css')
+        // .pipe(concat('Login.css'))
+        .pipe(rename('bmap.css'))
+        .pipe(minifycss())
+        .pipe(gulp.dest(option.buildPath+"/css/"));
+    gulp.src('./offlinepatch/js/apiv2.0.min.js')
+        //.pipe(gulp.dest('./dist/js'))
+        .pipe(gulp.dest(option.buildPath+"/js/"));
+    gulp.src('./offlinepatch/js/getmodules.js')
+        //.pipe(gulp.dest('./dist/js'))
+        .pipe(uglify())
+        .pipe(gulp.dest(option.buildPath+"/js/"));
+    gulp.src("./offlinepatch/images/**/*")
+        .pipe(gulp.dest(option.buildPath+"/images/"));
+    gulp.src("./tiles/**/*")
+        .pipe(gulp.dest(option.buildPath+"/tiles/"));
+    gulp.src('./offlinepatch/scope_offline.html')
+        .pipe(rename('scope.html'))
+        .pipe(htmlmin(option_html))
+        .pipe(gulp.dest(option.buildPath));
+    var offline_replace="false";
+    gulp.src("./request.php")
+        .pipe(replace(/_INSTALL_PATH_/,replace_install))
+        .pipe(replace(/_OFFLINE_FLAG_/,offline_replace))
+        .pipe(gulp.dest(option.buildPath+"/"));
+});
 // Ĭ������
 gulp.task('default',['clean'], function(){
     gulp.run('lint', 'sass', 'scripts','resourcecopy');

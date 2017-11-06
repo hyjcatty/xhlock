@@ -136,6 +136,10 @@ $retval=array(
     $user=null;
 	$userauth=null;
 	$webauth=null;
+    $if_offline=_OFFLINE_FLAG_;
+    $userpoint=array(
+        'Latitude'=>'31.240246','Longitude'=>'121.514168'
+    );
     if($session == "1234567"){
 		$webauth=array(
 			'UserManage' => 'true',
@@ -166,6 +170,9 @@ $retval=array(
 			'name'=> 'admin',
             'level'=> '0',
             'city'=> ("上海"),
+			'online'=>$if_offline,
+			'point'=>$userpoint,
+
 			'userauth'=>$userauth
 		);
     }
@@ -198,6 +205,9 @@ $retval=array(
             'name'=>'user',
             'level'=>'3',
             'city'=>("上海"),
+			'online'=>$if_offline,
+			'point'=>$userpoint,
+
 			'userauth'=>$userauth
         );
     }
@@ -231,6 +241,8 @@ $retval=array(
 			'name'=>'黄',
 			'level'=>'0',
 			'city'=>("上海"),
+			'online'=>$if_offline,
+			'point'=>$userpoint,
 			'userauth'=>$userauth
 		);
 	}
@@ -1639,7 +1651,7 @@ RESPONSE:
 		'ProStartTime'=>"2016-04-01",
 		'Stage'=>""
 	);
-	array_push($stat_list,$map1);
+	array_push($stat_list,$map2);
 	$map3= array(
 
 		'StatCode'=>"120101003",

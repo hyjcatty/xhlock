@@ -18,6 +18,14 @@ var admintools_url="_ADMINTOOL_PATH_"+"\/admintools.html";
 var screen_saver_address=basic_address+"screensaver/screen.html";
 var show_image_url=basic_address+"imageshow/ImageShow.html";
 var global_key_word = "";
+var default_point={
+    'Flag_la':"N",
+    'Latitude':"31.240246",
+    'Flag_lo':"E",
+    'Longitude':"121.514168"
+};
+var if_online=true;
+var user_point=default_point;
 function logout(){
     delCookie("Environmental.inspection.session");
     window.location="http://"+window.location.host+basic_address+"login.html";
@@ -219,7 +227,7 @@ var lineChartData = {
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-getLocation();
+//getLocation();
 var CURRENT_URL = "desktop",
     $BODY = $('body'),
     $MENU_TOGGLE = $('#menu_toggle'),
@@ -449,6 +457,14 @@ function get_user_information(){
             show_alarm_module(true,"获取用户失败，请联系管理员",null);
         }else{
             usr = result.ret;
+
+            if_online = usr.online;
+            if(if_online){
+
+            }else{
+                user_point = usr.point;
+                console.log("user_point:"+user_point);
+            }
 
             //getfavoritelist();
             get_user_message();
@@ -1519,7 +1535,8 @@ function mp_monitor(){
     write_title("地图监控","在地图上对站点进行监控");
     hide_searchbar();
     $("#MPMonitorView").css("display","block");
-    if(!map_initialized)initializeMap();
+    //if(!map_initialized)initializeMap();
+    initializeMap();
 }
 function mp_monitor_table(){
     clear_window();
@@ -5995,7 +6012,7 @@ function get_monitor_warning_on_map(){
             body:body,
             type:"query",
             user:usr.id
-        };
+        };/*
 		var get_monitor_warning_on_map_callback = function(result){
 			if(result.status == "false"){
                 show_expiredModule();
@@ -6035,29 +6052,25 @@ function get_monitor_warning_on_map(){
             }
             $("#VideoStatCode_Input").val(monitor_selected.StatName);
             video_selection_change();
-		};
-		JQ_get(request_head,map,get_monitor_warning_on_map_callback);
-		/*
-        jQuery.get(request_head, map, function (data) {
-            log(data);
-            var result=JSON.parse(data);
+		};*/
+        var get_monitor_warning_on_map_callback = function(result){
             if(result.status == "false"){
                 show_expiredModule();
                 return;
             }
-            var ret = result.ret;
+            var ret = result.ret.alarmlist;
             var txt = "";
             if(ret == "false"){
                 txt= "<Strong>获取告警失败</Strong>";
             }else{
-                txt = "<div id ='Element_card_floating' align='center' ><p style='font-size:14px;font-weight: bold' >"+"站点名称："+monitor_selected.StatName+"</p>"+
+                txt = "<div id ='Element_card_floating' align='center' ><p style='font-size:16px;font-weight: 800' >"+"站点名称："+monitor_selected.StatName+"</p>"+
                     "<HR style='FILTER: alpha(opacity=100,finishopacity=0,style=3)' width='80%' color=#987cb9 SIZE=3/>" +
-                    "<div style='font-size:10px; min-height: 350px; min-width:420px' >" ;
+                    "<div style='font-size:10px; min-height: 500px; min-width:480px' >" ;
                 txt = txt + " <div class='col-md-6 column'>";
                 for(var i=0;i<ret.length;i++){
                     var nickname = ret[i].AlarmEName;
-                    txt = txt + "<img src='./svg/icon/"+ret[i].AlarmEName+".svg' style='width:36px;hight:36px'></img><label style='max-width: 150px;min-width: 150px'>&nbsp&nbsp&nbsp&nbsp"+ret[i].AlarmName+":";
-                    var value = parseInt(ret[i].AlarmValue);
+                    txt = txt + "<img src='./svg/icon/"+ret[i].AlarmEName+".svg' style='width:36px;hight:36px'></img><label style='max-width: 150px;min-width: 150px;font-size: 14px'>&nbsp&nbsp&nbsp&nbsp"+ret[i].AlarmName+":";
+                    var value = ret[i].AlarmValue;//parseInt(ret[i].AlarmValue);
                     var warning = ret[i].WarningTarget;
 
                     if(warning == "true"){
@@ -6074,19 +6087,15 @@ function get_monitor_warning_on_map(){
                 txt = txt+"</div></div>";
             }
             if(monitor_map_handle!==null){
-                monitor_map_handle.setContent(txt);
+                $("#infowindow").empty();
+                $("#infowindow").append(txt);
 
             }
             $("#VideoStatCode_Input").val(monitor_selected.StatName);
             video_selection_change();
-            
-            //$("#VCRStatus_choice").empty();
-            //txt = "";
-            //for(var i =0;i<result.vcr.length;i++){
-            //    txt = txt +"<option value='"+result.vcr[i].vcraddress+"'>"+result.vcr[i].vcrname+"</option>"
-            //}
-            //$("#VCRStatus_choice").append(txt);
-        });*/
+        };
+		JQ_get(request_head,map,get_monitor_warning_on_map_callback);
+
     }
 
 }
@@ -6110,6 +6119,31 @@ function initializeMap(){
     //map_MPMonitor.addControl(new BMap.ScaleControl());
     map_MPMonitor.enableScrollWheelZoom();
 
+
+    /* I don't know why but if we do not put a mark here, other mark will not be displayed*/
+    var markertest = new BMap.Marker(new BMap.Point(111.404, 40.915));
+    map_MPMonitor.addOverlay(markertest);
+
+
+    var main_lable = new BMap.Label("1234",{offset:new BMap.Size(-50,-50),                  //label的偏移量，为了让label的中心显示在点上
+        position:new BMap.Point(111.404, 40.915)});                                //label的位置
+    main_lable.setStyle({                                   //给label设置样式，任意的CSS都是可以的
+        fontSize:"14px",               //字号
+        border:"0",                    //边
+        height:"100px",                //高度
+        width:"100px",                 //宽
+        textAlign:"center",            //文字水平居中显示
+        lineHeight:"12px",            //行高，文字垂直居中显示
+        background: "#000000",
+        opacity: 0.75
+    });
+    markertest.addEventListener("click", function(){
+
+        map_MPMonitor.addOverlay(main_lable);
+    });
+    map_MPMonitor.removeOverlay(markertest);
+    /*End of I do not know why*/
+
     //map_MPMonitor.centerAndZoom(new BMap.Point(Longitude,Latitude),15);
     /*
     if(usr.city === "GPS"){
@@ -6124,9 +6158,9 @@ function initializeMap(){
 
     if(usr_faverate_list === null || usr_faverate_list.length===0){
         console.log("usr_faverate_list:"+usr_faverate_list);
-        map_MPMonitor.centerAndZoom("beijing",15);
+        map_MPMonitor.centerAndZoom(new BMap.Point(parseFloat(user_point.Longitude),parseFloat(user_point.Latitude)),15);
     }else{
-        map_MPMonitor.centerAndZoom(new BMap.Point(usr_faverate_list[0].Longitude,usr_faverate_list[0].Latitude),15);
+        map_MPMonitor.centerAndZoom(new BMap.Point(parseFloat(usr_faverate_list[0].Longitude),parseFloat(usr_faverate_list[0].Latitude)),15);
     }
     // hyj this will not be a problem because the bmap initialization will cost several seconds.
     window.setTimeout(addMarker, wait_time_long);
@@ -6154,11 +6188,18 @@ function get_select_monitor(title){
 }
 
 function addMarker(point){
+    //test code for label
+
+
+
+
+
     // 创建图标对象
     if(monitor_map_list === null) return;
     var myIcon = new BMap.Icon("./image/map-marker-ball-azure-small.png", new BMap.Size(32, 32),{
         anchor: new BMap.Size(16, 30)
     });
+    /*
 	monitor_mark_click = function(){
 		get_select_monitor(this.getTitle());
 		//console.log("Selected:"+monitor_selected.StatName);
@@ -6171,27 +6212,54 @@ function addMarker(point){
 		infoWindow.addEventListener("close",function(){
 			if(monitor_map_handle == this) monitor_map_handle = null;
 		});
-	};
+	};*/
+    monitor_mark_click = function(){
+        get_select_monitor(this.getTitle());
+        //console.log("Selected:"+monitor_selected.StatName);
+        var sContent = this.getTitle();
+        if(monitor_map_handle !== null){
+            map_MPMonitor.removeOverlay(monitor_map_handle);
+            monitor_map_handle = null;
+        }
+        temp = "<div style='padding: 10px;min-width:150px'><div class='pull-left' style='margin-top:5px'><a class='maintext' style='font-size: 18px;font-weight:900'>状态监控</a></div><div class='pull-right' style='margin-top: -5px;margin-right: -7px'><a class='label_close_button' >[x]</a></div><div id='infowindow' style='margin-top: 40px;'>";
+        //temp = "<div style='padding: 10px;min-width:150px'><div class='pull-right' style='margin-top: -5px;margin-right: -7px'><a class='label_close_button' >[x]</a></div><li id='infowindow' style='margin-top: 40px;'>";
+
+        temp=temp+"</div></div>";
+        var detail_label = new BMap.Label(temp,{offset:new BMap.Size(24,-32),                //label的偏移量，为了让label的中心显示在点上
+            position:new BMap.Point(parseFloat(monitor_selected.Longitude),parseFloat(monitor_selected.Latitude))});                                //label的位置
+        detail_label.setStyle({                                   //给label设置样式，任意的CSS都是可以的
+            fontSize:"24px",               //字号
+            border:"0",                 //宽
+            textAlign:"left",            //文字水平居中显示
+            lineHeight:"10px",            //行高，文字垂直居中显示
+            background: "#ffffff",
+            opacity: 0.9
+        });
+
+
+        monitor_map_handle = detail_label;
+        get_monitor_warning_on_map();
+        map_MPMonitor.addOverlay(detail_label);
+
+        $(".label_close_button").on('click',function(){
+            console.log("close button click");
+            if(monitor_map_handle !== null){
+                map_MPMonitor.removeOverlay(monitor_map_handle);
+                monitor_map_handle = null;
+            }
+        });
+    };
     if(monitor_map_list === null) monitor_map_list = [];
+    console.log(monitor_map_list);
     for(var i=0;i<monitor_map_list.length;i++){
+        //console.log(monitor_map_list[i].Longitude+";"+monitor_map_list[i].Latitude);
+        //console.log(parseFloat(monitor_map_list[i].Longitude)+";"+parseFloat(monitor_map_list[i].Latitude));
         var t_point = new BMap.Point(parseFloat(monitor_map_list[i].Longitude),parseFloat(monitor_map_list[i].Latitude));
         var marker = new BMap.Marker(t_point, {icon: myIcon});
+        //var marker = new BMap.Marker(t_point);//, {icon: myIcon});
         marker.setTitle(monitor_map_list[i].StatCode+":"+monitor_map_list[i].StatName);
         map_MPMonitor.addOverlay(marker);
-		/*
-        marker.addEventListener("click", function(){
-            get_select_monitor(this.getTitle());
-            //console.log("Selected:"+monitor_selected.StatName);
-            var sContent = this.getTitle();
-            var infoWindow = new BMap.InfoWindow(sContent,{offset:new BMap.Size(0,-23)});
-            infoWindow.setWidth(600);
-            monitor_map_handle = infoWindow;
-            get_monitor_warning_on_map();
-            this.openInfoWindow(infoWindow);
-            infoWindow.addEventListener("close",function(){
-                if(monitor_map_handle == this) monitor_map_handle = null;
-            });
-        });*/
+
 		marker.addEventListener("click", monitor_mark_click);
         mark_MPMonitor_List.push(marker);
 
@@ -7463,10 +7531,10 @@ function initializeAlarmMap(){
         map_MPMonitor.centerAndZoom(usr.city,15);
     }*/
     if(usr_faverate_list === null ||usr_faverate_list.length===0){
-
-        map_MPMonitor.centerAndZoom("beijing",15);
+        map_MPMonitor.centerAndZoom(new BMap.Point(user_point.Longitude,user_point.Latitude),15);
+        //map_MPMonitor.centerAndZoom("beijing",17);
     }else{
-        map_MPMonitor.centerAndZoom(new BMap.Point(usr_faverate_list[0].Longitude,usr_faverate_list[0].Latitude),15);
+        map_MPMonitor.centerAndZoom(new BMap.Point(usr_faverate_list[0].Longitude,usr_faverate_list[0].Latitude),17);
     }
     //HYJ this will not be a problem because bmap will cost
     window.setTimeout(alarm_addMarker, wait_time_long);
@@ -7475,6 +7543,7 @@ function initializeAlarmMap(){
     alarm_map_initialized=true;
 }
 function alarm_cycle(){
+    if(CURRENT_URL != "WarningCheck") return;
     if(alarm_map_initialized === false) return;
     get_monitor_alarm_list();
     window.setTimeout(alarm_addMarker, wait_time_long);
@@ -7605,11 +7674,14 @@ function get_alarmpointinfo_on_map(){
 
 }
 function alarm_addMarker(point){
+
+    if(CURRENT_URL != "WarningCheck") return;
     if(alarm_map_list === null)return;
     // 创建图标对象
     var myIcon = new BMap.Icon("./image/map-marker-ball-pink-small.png", new BMap.Size(32, 32),{
         anchor: new BMap.Size(16, 30)
     });
+    map_MPMonitor.clearOverlays();
 	alarm_mark_click = function(){
 		get_select_alarm(this.getTitle());
 		//console.log("Selected:"+alarm_selected.StatName);
@@ -9534,7 +9606,10 @@ function getfavoritelist(){
             usr_faverate_list = result.ret;
             //console.log("usr_faverate_list:"+usr_faverate_list);
             if(usr_faverate_list.length>0){
-                get_city(usr_faverate_list[0].Latitude,usr_faverate_list[0].Longitude);
+                if(if_online){
+                    get_city(usr_faverate_list[0].Latitude,usr_faverate_list[0].Longitude);
+
+                }
             }
             build_fast_guild();
         }else {

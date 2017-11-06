@@ -26,3 +26,28 @@ a{font-size:14px;text-decoration:none;outline:0;}
     width:40px;}
 .open .cycle-center{border-color:#ffffff;}
 .cycle-menuItem{border-radius:50%;color:#eeeeee;display:block;height:40px;line-height:40px;margin-left:-20px;margin-top:-20px;position:relative;text-align:center;width:40px;}
+
+.maintext{
+    color:#000000;
+    margin-left:10px;
+    margin-top:10px;
+    margin-right:10px;
+    margin-bottom:10px;
+}
+.alarmtext{
+    color:#DD0000;
+    margin-left:10px;
+    margin-top:10px;
+    margin-right:10px;
+    margin-bottom:10px;
+}
+.warningtext{
+    color:#FFff00;
+    margin-left:10px;
+    margin-top:10px;
+    margin-right:10px;
+    margin-bottom:10px;
+}
+.label_close_button{
+    cursor: pointer;
+}

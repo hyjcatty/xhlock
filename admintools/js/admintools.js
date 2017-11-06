@@ -160,6 +160,7 @@ function get_user_information(){
             show_alarm_module(true,"获取用户失败，请联系管理员",null);
         }else{
             usr = result.ret;
+            nav_check();
             query_Software_Load_list();
         }
     };

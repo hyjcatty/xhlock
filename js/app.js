@@ -135,6 +135,7 @@ var key_module_status;
 
 //warning Control
 var monitor_map_list = null;
+var fake_monitor_map_list = null;
 var monitor_handle;
 var monitor_selected = null;
 var monitor_list = null;
@@ -478,6 +479,7 @@ function get_user_information(){
 			get_proj_point_list();
             //hyj add in 20160926 for server very slow
             get_monitor_list();
+            get_fake_monitor_list();
             hide_menu();
 			getfavoritelist();
             
@@ -5961,18 +5963,22 @@ function get_monitor_list(){
         monitor_map_list = result.ret;
 	};
 	JQ_get(request_head,map,get_monitor_list_callback);
-	/*
-    jQuery.get(request_head, map, function (data) {
-        log(data);
-        var result=JSON.parse(data);
+}
+function get_fake_monitor_list(){
+    var map={
+        action:"FakeMonitorList",
+        type:"query",
+        user:usr.id
+    };
+    //console.log(map);
+    var get_fake_monitor_list_callback = function(result){
         if(result.status == "false"){
             show_expiredModule();
             return;
         }
-        monitor_map_list = result.ret;
-
-        //console.log(monitor_map_list);
-    });*/
+        fake_monitor_map_list = result.ret;
+    };
+    JQ_get(request_head,map,get_fake_monitor_list_callback);
 }
 function get_monitor_alarm_list(){
     var map={
@@ -6199,6 +6205,9 @@ function addMarker(point){
     var myIcon = new BMap.Icon("./image/map-marker-ball-azure-small.png", new BMap.Size(32, 32),{
         anchor: new BMap.Size(16, 30)
     });
+    var myIconfake = new BMap.Icon("./image/map-marker-ball-pink-small.png", new BMap.Size(32, 32),{
+        anchor: new BMap.Size(16, 30)
+    });
     /*
 	monitor_mark_click = function(){
 		get_select_monitor(this.getTitle());
@@ -6262,6 +6271,14 @@ function addMarker(point){
 
 		marker.addEventListener("click", monitor_mark_click);
         mark_MPMonitor_List.push(marker);
+
+    }
+    if(fake_monitor_map_list === null) fake_monitor_map_list = [];
+    for(i=0;i<fake_monitor_map_list.length;i++){
+        var fake_t_point = new BMap.Point(parseFloat(fake_monitor_map_list[i].Longitude),parseFloat(fake_monitor_map_list[i].Latitude));
+        var fake_marker = new BMap.Marker(fake_t_point, {icon: myIconfake});
+        fake_marker.setTitle(fake_monitor_map_list[i].StatCode+":"+fake_monitor_map_list[i].StatName);
+        map_MPMonitor.addOverlay(fake_marker);
 
     }
 
@@ -8935,7 +8952,8 @@ function show_alarm_module(ifalarm,text,callback){
         emptyfunction = function(){};
         $('#UserAlarm').on('hide.bs.modal',emptyfunction);
     }else{
-        $('#UserAlarm').on('hide.bs.modal',function(){ setTimeout(callback, 500);});
+        var countevent = 0 ;
+        $('#UserAlarm').on('hide.bs.modal',function(){ if(++countevent==1){setTimeout(callback, 500);}});
     }
 }
 
